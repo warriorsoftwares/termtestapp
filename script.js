@@ -1,7 +1,4 @@
-/* 
-   MASTER'S QUIZZES PRO - FULL SCRIPT 
-   (ICT English Feedback Support Included)
-*/
+
 
 let masterQuestionBank = {}; 
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
