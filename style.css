@@ -32,6 +32,7 @@ body { background-color: var(--bg-cyan); margin: 0; height: 100vh; font-family: 
     align-items: center; 
     justify-content: center; 
     z-index: 4000;
+    overflow-y: auto; 
 }
 
 .screen.active {
@@ -59,9 +60,9 @@ body { background-color: var(--bg-cyan); margin: 0; height: 100vh; font-family: 
 .top-nav { position: absolute; top: 20px; width: 92%; display: flex; }
 .btn-nav-icon { background: var(--accent-yellow); border: 3px solid var(--btn-border); border-radius: 12px; width: 39px; height: 39px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 0px var(--btn-border); }
 
-.btn-menu { display: block; margin: 12px auto; width: 260px; height: 58px; background: linear-gradient(145deg, var(--accent-yellow), #e1e800); border: 4px solid var(--btn-border); border-radius: 50px; font-size: 22px; color: var(--primary-blue); font-weight: 900; box-shadow: 4px 4px 0px var(--btn-border); cursor: pointer; transition: transform 0.1s; }
+.btn-menu { display: block; margin: 12px auto; width: 300px; height: 58px; background: linear-gradient(145deg, var(--accent-yellow), #e1e800); border: 4px solid var(--btn-border); border-radius: 50px; font-size: 22px; color: var(--primary-blue); font-weight: 900; box-shadow: 4px 4px 0px var(--btn-border); cursor: pointer; transition: transform 0.1s; }
 .btn-menu:active { transform: scale(0.95); }
-.no-shadow-btn { box-shadow: none !important; }
+.no-shadow-btn { box-shadow: none !important; width: 300px; }
 
 .q-header-title { font-size: 30px; color: var(--primary-blue); font-weight: 900; text-align: center; margin-bottom: 15px; }
 .no-shadow-title { text-shadow: none !important; font-family: 'Georgia', serif; text-decoration: underline double var(--underline-pink); text-underline-offset: 10px; }
@@ -92,3 +93,5 @@ body { background-color: var(--bg-cyan); margin: 0; height: 100vh; font-family: 
 
 .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 5000; justify-content: center; align-items: center; }
 .settings-card { background: var(--bg-cyan); border: 3px solid #000; border-radius: 20px; width: 280px; padding: 20px; box-shadow: none !important; }
+
+
