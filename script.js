@@ -1,11 +1,17 @@
-
+/* 
+   MASTER'S QUIZZES PRO - FINAL PROJECT LOGIC 
+   Supports: term1.json, term2.json, term3.json
+*/
 
 let masterQuestionBank = {}; 
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
 
+// 1. INITIALIZATION & SPLASH SCREEN
 window.onload = () => { 
-    history.replaceState({ screen: 'menu-screen' }, "", "");
+    history.replaceState({ screen: 'login-screen' }, "", "");
+    
+    // 4-second splash screen (Rotating Globe)
     setTimeout(() => { 
         const start = document.getElementById('start-screen');
         if(start) {
@@ -13,36 +19,13 @@ window.onload = () => {
             start.style.opacity = "0";
             setTimeout(() => {
                 start.style.display = "none";
-                showScreen('menu-screen', true); 
+                showScreen('login-screen', true); 
             }, 500);
         }
     }, 4000); 
 };
 
-window.onpopstate = function(event) {
-    const quizScreen = document.getElementById('quiz-container');
-    if (quizScreen && quizScreen.classList.contains('active')) {
-        if (confirm(selectedSubj === "තොරතුරු තාක්ෂණය" ? "Exit quiz and lose progress?" : "ප්‍රශ්නාවලියෙන් ඉවත් වී ඔබගේ ප්‍රගතිය අහිමි කරගන්නවාද?")) {
-            showScreen('menu-screen');
-        } else {
-            history.pushState({ screen: 'quiz-container' }, "", "");
-        }
-        return;
-    }
-    if (event.state && event.state.screen) {
-        showScreen(event.state.screen, true);
-    } else {
-        showScreen('menu-screen', true);
-    }
-};
-
-function handleBackRequest() {
-    let msg = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "Exit quiz? Progress will be lost." : "ප්‍රශ්නාවලියෙන් ඉවත් වෙනවාද? ප්‍රගතිය අහිමි වනු ඇත.";
-    if (confirm(msg)) {
-        showScreen('term-screen');
-    }
-}
-
+// 2. NAVIGATION & SCREEN CONTROL
 function showScreen(screenId, isBack = false) {
     const currentScreen = document.querySelector('.screen.active');
     const targetScreen = document.getElementById(screenId);
@@ -70,6 +53,20 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
+// 3. LOGIN & SETTINGS
+function handleLogin() {
+    const user = document.getElementById('user-name').value;
+    const pass = document.getElementById('user-pass').value;
+    const feedback = document.getElementById('login-feedback');
+    
+    if(user.trim() !== "" && pass.trim() !== "") {
+        showScreen('menu-screen');
+    } else {
+        feedback.innerText = "කරුණාකර දත්ත ඇතුලත් කරන්න!";
+        feedback.style.color = "var(--error-red)";
+    }
+}
+
 function toggleSettings(show) {
     const overlay = document.getElementById('settings-overlay');
     if(overlay) overlay.style.display = show ? "flex" : "none";
@@ -79,24 +76,27 @@ function toggleSettings(show) {
     }
 }
 
+// 4. QUIZ FLOW (GRADE -> SUBJECT -> TERM)
 function goHome() { showScreen('menu-screen'); }
 function showGrades() { showScreen('grade-screen'); }
-function selectGrade() { showScreen('subject-screen'); }
+function selectGrade(grade) { showScreen('subject-screen'); }
+function showTerms(subj) { selectedSubj = subj; showScreen('term-screen'); }
 
-function showTerms(subj) { 
-    if(subj) selectedSubj = subj; 
-    showScreen('term-screen'); 
-}
-
-async function startGame() {
+async function startGame(term) {
     try {
-        const response = await fetch('questions.json');
+        // [MODIFIED: Select file based on term]
+        let fileName = "term1.json";
+        if (term === '2nd Term') fileName = "term2.json";
+        if (term === '3rd Term') fileName = "term3.json";
+
+        const response = await fetch(fileName);
+        if (!response.ok) throw new Error("File not found");
+
         masterQuestionBank = await response.json();
         let currentQuestions = masterQuestionBank[selectedSubj] || [];
 
         if (currentQuestions.length === 0) {
-            let errorMsg = (selectedSubj === "තොරතුරු තාක්ෂණය") ? `No questions found for ICT!` : `'${selectedSubj}' විෂයට අදාළ ප්‍රශ්න හමු නොවීය!`;
-            alert(errorMsg);
+            alert(`No questions found for ${selectedSubj} in ${term}!`);
             showScreen('subject-screen');
             return;
         }
@@ -104,37 +104,34 @@ async function startGame() {
         showScreen('quiz-container');
         document.getElementById('active-subj').innerText = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "I.C.T." : selectedSubj;
 
-        let tempShuffled = [...currentQuestions].sort(() => Math.random() - 0.5);
-        shuffled = tempShuffled.slice(0, sessionLimit); 
+        shuffled = [...currentQuestions].sort(() => Math.random() - 0.5).slice(0, sessionLimit); 
         current = 0; score = 0;
         loadQuestion();
     } catch (error) {
-        console.error("Error loading JSON:", error);
-        alert("JSON file loading error!");
+        console.error("JSON Error:", error);
+        alert("JSON file missing or broken! Check your filenames.");
     }
 }
 
+// 5. CORE QUIZ LOGIC
 function loadQuestion() {
     isAnswered = false;
-    const submitBtn = document.getElementById('main-submit');
-    if(submitBtn) submitBtn.style.visibility = "visible";
+    document.getElementById('main-submit').style.visibility = "visible";
     document.getElementById('feedback').innerText = "";
     
     const data = shuffled[current];
     document.getElementById('q-idx').innerText = current + 1;
     document.getElementById('q-text').innerText = data.q;
     
-    const labels = document.querySelectorAll('.opt-row');
-    const texts = document.querySelectorAll('.yasiru');
-    
-    labels.forEach((label, i) => {
-        if(texts[i]) {
-            texts[i].innerText = data.options[i];
-            texts[i].classList.remove('correct-text', 'wrong-text');
-        }
+    for(let i=0; i<4; i++) {
         const radio = document.getElementById(`o${i}`);
+        const textSpan = document.getElementById(`t${i}`);
+        if(textSpan) {
+            textSpan.innerText = data.options[i];
+            textSpan.classList.remove('correct-text', 'wrong-text');
+        }
         if(radio) { radio.checked = false; radio.disabled = false; }
-    });
+    }
     startTimer();
 }
 
@@ -150,8 +147,8 @@ function startTimer() {
         if(timeLeft <= 0) { 
             clearInterval(timer); 
             highlightCorrect(); 
-            let timeUpMsg = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "Time's Up!" : "කාලය අවසන්!";
-            handleEnd(timeUpMsg, false); 
+            let msg = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "Time's Up!" : "කාලය අවසන්!";
+            handleEnd(msg, false); 
         }
     }, 1000);
 }
@@ -163,53 +160,79 @@ function check() {
     
     if(sel === -1) {
         const f = document.getElementById('feedback');
-        f.innerText = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "Please select an answer!" : "කරුණාකර පිළිතුරක් තෝරන්න!";
+        f.innerText = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "Select an answer!" : "පිළිතුරක් තෝරන්න!";
         f.style.color = "var(--error-red)";
         return;
     }
 
     clearInterval(timer);
     const cor = shuffled[current].correct;
-    const texts = document.querySelectorAll('.yasiru');
+    const targetText = document.getElementById(`t${sel}`);
     
     if(sel === cor) { 
         score++; 
-        if(texts[sel]) texts[sel].classList.add('correct-text'); 
+        if(targetText) targetText.classList.add('correct-text'); 
         handleEnd((selectedSubj === "තොරතුරු තාක්ෂණය") ? "Correct! ✅" : "නිවැරදියි! ✅", true); 
     } 
     else { 
-        if(texts[sel]) texts[sel].classList.add('wrong-text'); 
+        if(targetText) targetText.classList.add('wrong-text'); 
         highlightCorrect(); 
-        handleEnd((selectedSubj === "තොරතුරු තාක්ෂණය") ? "Wrong Answer! ❌" : "වැරදියි! ❌", false); 
+        handleEnd((selectedSubj === "තොරතුරු තාක්ෂණය") ? "Wrong! ❌" : "වැරදියි! ❌", false); 
     }
 }
 
 function highlightCorrect() {
     const cor = shuffled[current].correct;
-    const texts = document.querySelectorAll('.yasiru');
-    if(texts[cor]) texts[cor].classList.add('correct-text');
+    const corText = document.getElementById(`t${cor}`);
+    if(corText) corText.classList.add('correct-text');
 }
 
 function handleEnd(msg, isCorrect) {
     isAnswered = true;
-    const submitBtn = document.getElementById('main-submit');
-    if(submitBtn) submitBtn.style.visibility = "hidden";
+    document.getElementById('main-submit').style.visibility = "hidden";
     for(let i=0; i<4; i++) {
         const radio = document.getElementById(`o${i}`);
         if(radio) radio.disabled = true;
     }
+    
     const f = document.getElementById('feedback');
     f.innerText = msg; 
     f.style.color = isCorrect ? "var(--success-green)" : "var(--error-red)";
+    
+    document.getElementById('live-score').innerText = Math.round((score / (current + 1)) * 100) + "%";
     
     setTimeout(() => {
         current++;
         if(current < shuffled.length) { 
             loadQuestion(); 
-            document.getElementById('live-score').innerText = Math.round((score/shuffled.length)*100) + "%"; 
         } else { 
             showScreen('result-screen'); 
-            document.getElementById('final-score').innerText = Math.round((score/shuffled.length)*100) + "%"; 
+            document.getElementById('final-score').innerText = Math.round((score / shuffled.length) * 100) + "%"; 
         }
     }, 2000);
+}
+
+// 6. ADMIN & BACK NAVIGATION
+function handleBackRequest() {
+    let msg = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "Exit quiz?" : "ප්‍රශ්නාවලියෙන් ඉවත් වෙනවාද?";
+    if (confirm(msg)) showScreen('subject-screen');
+}
+
+function generateJSON() {
+    const q = document.getElementById('adm-q').value;
+    const options = [
+        document.getElementById('adm-o0').value,
+        document.getElementById('adm-o1').value,
+        document.getElementById('adm-o2').value,
+        document.getElementById('adm-o3').value
+    ];
+    const correct = parseInt(document.getElementById('adm-cor').value);
+    
+    if(!q || options.some(opt => opt === "")) {
+        alert("Please fill all admin fields!");
+        return;
+    }
+
+    const result = { q, options, correct };
+    document.getElementById('json-output').value = JSON.stringify(result, null, 2);
 }
