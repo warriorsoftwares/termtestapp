@@ -1,6 +1,6 @@
 /* 
    MASTER'S QUIZZES PRO - FINAL PROJECT LOGIC 
-   Supports: term1.json, term2.json, term3.json
+   Supports: questions.json
 */
 
 let masterQuestionBank = {}; 
@@ -9,9 +9,9 @@ let timeLeft = 5, selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
 
 // 1. INITIALIZATION & SPLASH SCREEN
 window.onload = () => { 
-    history.replaceState({ screen: 'login-screen' }, "", "");
+    // Set initial history state to menu instead of login
+    history.replaceState({ screen: 'menu-screen' }, "", "");
     
-    // 4-second splash screen (Rotating Globe)
     setTimeout(() => { 
         const start = document.getElementById('start-screen');
         if(start) {
@@ -19,7 +19,7 @@ window.onload = () => {
             start.style.opacity = "0";
             setTimeout(() => {
                 start.style.display = "none";
-                showScreen('login-screen', true); 
+                showScreen('menu-screen', true); // Skip login-screen
             }, 500);
         }
     }, 4000); 
@@ -53,20 +53,7 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
-// 3. LOGIN & SETTINGS
-function handleLogin() {
-    const user = document.getElementById('user-name').value;
-    const pass = document.getElementById('user-pass').value;
-    const feedback = document.getElementById('login-feedback');
-    
-    if(user.trim() !== "" && pass.trim() !== "") {
-        showScreen('menu-screen');
-    } else {
-        feedback.innerText = "කරුණාකර දත්ත ඇතුලත් කරන්න!";
-        feedback.style.color = "var(--error-red)";
-    }
-}
-
+// 3. SETTINGS (Login functions removed)
 function toggleSettings(show) {
     const overlay = document.getElementById('settings-overlay');
     if(overlay) overlay.style.display = show ? "flex" : "none";
@@ -76,7 +63,7 @@ function toggleSettings(show) {
     }
 }
 
-// 4. QUIZ FLOW (GRADE -> SUBJECT -> TERM)
+// 4. QUIZ FLOW
 function goHome() { showScreen('menu-screen'); }
 function showGrades() { showScreen('grade-screen'); }
 function selectGrade(grade) { showScreen('subject-screen'); }
@@ -84,16 +71,17 @@ function showTerms(subj) { selectedSubj = subj; showScreen('term-screen'); }
 
 async function startGame(term) {
     try {
-        // [MODIFIED: Select file based on term]
-        let fileName = "term1.json";
-        if (term === '2nd Term') fileName = "term2.json";
-        if (term === '3rd Term') fileName = "term3.json";
-
-        const response = await fetch(fileName);
+        // [MODIFIED: Single JSON file connection]
+        const response = await fetch("questions.json");
         if (!response.ok) throw new Error("File not found");
 
-        masterQuestionBank = await response.json();
-        let currentQuestions = masterQuestionBank[selectedSubj] || [];
+        const fullBank = await response.json();
+        
+        // Logical check: Term -> Subject -> Question Array
+        let currentQuestions = [];
+        if (fullBank[term] && fullBank[term][selectedSubj]) {
+            currentQuestions = fullBank[term][selectedSubj];
+        }
 
         if (currentQuestions.length === 0) {
             alert(`No questions found for ${selectedSubj} in ${term}!`);
@@ -109,11 +97,11 @@ async function startGame(term) {
         loadQuestion();
     } catch (error) {
         console.error("JSON Error:", error);
-        alert("JSON file missing or broken! Check your filenames.");
+        alert("questions.json missing or formatted incorrectly!");
     }
 }
 
-// 5. CORE QUIZ LOGIC
+// 5. CORE QUIZ LOGIC (Includes skip-prevention fix)
 function loadQuestion() {
     isAnswered = false;
     document.getElementById('main-submit').style.visibility = "visible";
@@ -188,6 +176,7 @@ function highlightCorrect() {
 }
 
 function handleEnd(msg, isCorrect) {
+    if(isAnswered) return; // Anti-skip protection
     isAnswered = true;
     document.getElementById('main-submit').style.visibility = "hidden";
     for(let i=0; i<4; i++) {
@@ -212,27 +201,7 @@ function handleEnd(msg, isCorrect) {
     }, 2000);
 }
 
-// 6. ADMIN & BACK NAVIGATION
 function handleBackRequest() {
     let msg = (selectedSubj === "තොරතුරු තාක්ෂණය") ? "Exit quiz?" : "ප්‍රශ්නාවලියෙන් ඉවත් වෙනවාද?";
     if (confirm(msg)) showScreen('subject-screen');
-}
-
-function generateJSON() {
-    const q = document.getElementById('adm-q').value;
-    const options = [
-        document.getElementById('adm-o0').value,
-        document.getElementById('adm-o1').value,
-        document.getElementById('adm-o2').value,
-        document.getElementById('adm-o3').value
-    ];
-    const correct = parseInt(document.getElementById('adm-cor').value);
-    
-    if(!q || options.some(opt => opt === "")) {
-        alert("Please fill all admin fields!");
-        return;
-    }
-
-    const result = { q, options, correct };
-    document.getElementById('json-output').value = JSON.stringify(result, null, 2);
 }
