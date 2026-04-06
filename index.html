@@ -13,68 +13,79 @@
 </head>
 <body>
 
+    <!-- 1. START SCREEN (Rotating Globe) -->
     <div id="start-screen">
         <h1 class="start-title">MASTER'S QUIZZES</h1>
         <div id="nova-globe"></div>
     </div>
 
+    <!-- 2. LOGIN SCREEN (Appears after Globe) -->
+    <div id="login-screen" class="screen">
+        <h1 class="q-header-title no-shadow-title">Login</h1>
+        <div style="width: 85%; display: flex; flex-direction: column; align-items: center;">
+            <input type="text" id="user-name" placeholder="Username" style="width: 100%; height: 45px; margin-bottom: 10px; border-radius: 10px; border: 3px solid var(--btn-border); padding: 5px; font-weight: 700; background: #fff;">
+            
+            <!-- Hidden Password -->
+            <input type="password" id="user-pass" placeholder="Password" style="width: 100%; height: 45px; margin-bottom: 20px; border-radius: 10px; border: 3px solid var(--btn-border); padding: 5px; font-weight: 700; background: #fff;">
+            
+            <button class="btn-menu" onclick="handleLogin()" style="width: 100%;">LOGIN</button>
+        </div>
+        <p id="login-feedback"></p>
+    </div><!-- 3. MAIN MENU (Original Colors/Buttons) -->
     <div id="menu-screen" class="screen">
         <h1 class="q-header-title main-menu-title" style="font-size:40px; color:#20d400; text-decoration: underline double var(--underline-pink); text-underline-offset:10px;">Main Menu</h1>
         <button class="btn-menu" onclick="showGrades()">Play</button>
         <button class="btn-menu" onclick="toggleSettings(true)">Settings</button>
         <button class="btn-menu" onclick="alert('How to Play:\n1. Select your Grade and Subject.\n2. Answer questions before the timer runs out.\n3. Tap Submit to check your answer.')">How to Play</button>
         <button class="btn-menu">High Scores</button>
-        <button class="btn-menu" onclick="alert('Master\'s Quizzes v1.0\nCreated for Students.')">Info</button>
+        <button class="btn-menu" onclick="alert('Master\'s Quizzes v1.0\nCreated for Students.\nPower of BCG!')">Info</button>
+        <!-- Admin Entry (Optional) -->
+        <button class="btn-menu" style="font-size: 14px; height: 40px; background: #eee;" onclick="showScreen('admin-screen')">Admin Panel</button>
     </div>
 
+    <!-- 4. SETTINGS OVERLAY -->
     <div id="settings-overlay" class="overlay">
         <div class="popup settings-card">
-            <div class="popup-header">
-                <h2 class="settings-title-styled">SETTINGS</h2>
+            <h2 class="settings-title-styled">SETTINGS</h2>
+            <div class="setting-row">
+                <label class="setting-label-dark">Difficulty</label>
+                <select id="diff-select" class="custom-select">
+                    <option value="10">Easy</option>
+                    <option value="5" selected>Normal</option>
+                    <option value="3">Hard</option>
+                </select>
             </div>
-            <div class="settings-body">
-                <div class="setting-row">
-                    <label class="setting-label-dark">Difficulty</label>
-                    <select id="diff-select" class="custom-select">
-                        <option value="10">Easy</option>
-                        <option value="5" selected>Normal</option>
-                        <option value="3">Hard</option>
-                    </select>
-                </div>
-                <div class="setting-row">
-                    <label class="setting-label-dark">Questions</label>
-                    <select id="limit-select" class="custom-select">
-                        <option value="10">10 Q</option>
-                        <option value="50">50 Q</option>
-                        <option value="100" selected>100 Q</option>
-                    </select>
-                </div>
+            <div class="setting-row">
+                <label class="setting-label-dark">Questions</label>
+                <select id="limit-select" class="custom-select">
+                    <option value="10">10 Q</option>
+                    <option value="50">50 Q</option>
+                    <option value="100" selected>100 Q</option>
+                </select>
             </div>
-            <div class="popup-footer">
-                <button class="btn-save-settings" onclick="toggleSettings(false)">SAVE</button>
-            </div>
+            <button class="btn-submit" onclick="toggleSettings(false)" style="width:120px; height:45px;">SAVE</button>
         </div>
     </div>
 
+    <!-- 5. GRADE SELECTION -->
     <div id="grade-screen" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="goHome()">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">Select Grade</h1>
         <div class="grade-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade()">Grade 6</button>
-            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade()">Grade 7</button>
-            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade()">Grade 8</button>
-            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade()">Grade 9</button>
-            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade()">Grade 10</button>
-            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade()">Grade 11</button>
+            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 6')">Grade 6</button>
+            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 7')">Grade 7</button>
+            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 8')">Grade 8</button>
+            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 9')">Grade 9</button>
+            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 10')">Grade 10</button>
+            <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 11')">Grade 11</button>
         </div>
-        <button class="btn-menu no-shadow-btn" style="margin-top:20px; width:280px;" onclick="selectGrade()">O/L Mode</button>
+        <button class="btn-menu no-shadow-btn" style="margin-top:20px; width:280px;" onclick="selectGrade('O/L Mode')">O/L Mode</button>
     </div>
 
-        <div id="subject-screen" class="screen">
+    <!-- 6. SUBJECT SELECTION -->
+    <div id="subject-screen" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="showGrades()">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">Select Subject</h1>
-        
-        <!-- විෂයන් ලැයිස්තුව -->
         <div class="subject-list" style="overflow-y: auto; width: 100%; display: flex; flex-direction: column; align-items: center; padding-bottom: 20px;">
             <button class="btn-menu no-shadow-btn" onclick="showTerms('භූගෝල විද්‍යාව')">භූගෝල විද්‍යාව</button>
             <button class="btn-menu no-shadow-btn" onclick="showTerms('ඉතිහාසය')">ඉතිහාසය</button>
@@ -89,14 +100,16 @@
         </div>
     </div>
 
+    <!-- 7. TERM SELECTION -->
     <div id="term-screen" class="screen">
-        <div class="top-nav"><button class="btn-nav-icon" onclick="selectGrade()">⬅️</button></div>
+        <div class="top-nav"><button class="btn-nav-icon" onclick="showGrades()">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">Select Term</h1>
-        <button class="btn-menu no-shadow-btn" onclick="startGame()">1. First Term</button>
-        <button class="btn-menu no-shadow-btn" onclick="startGame()">2. Second Term</button>
-        <button class="btn-menu no-shadow-btn" onclick="startGame()">3. Third Term</button>
+        <button class="btn-menu no-shadow-btn" onclick="startGame('1st Term')">1. First Term</button>
+        <button class="btn-menu no-shadow-btn" onclick="startGame('2nd Term')">2. Second Term</button>
+        <button class="btn-menu no-shadow-btn" onclick="startGame('3rd Term')">3. Third Term</button>
     </div>
 
+    <!-- 8. QUIZ CONTAINER -->
     <div id="quiz-container" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="handleBackRequest()">⬅️</button></div>
         <h1 class="q-header-title" id="active-subj">Geography</h1>
@@ -118,6 +131,28 @@
         <button class="btn-submit" id="main-submit" onclick="check()">SUBMIT</button>
     </div>
 
+    <!-- 9. ADMIN PANEL (Bypass) -->
+    <div id="admin-screen" class="screen">
+        <div class="top-nav"><button class="btn-nav-icon" onclick="goHome()">🏠</button></div>
+        <h1 class="q-header-title">Admin Code Generator</h1>
+        <div style="width: 90%; background: white; padding: 15px; border-radius: 20px; border: 3px solid black; display: flex; flex-direction: column; align-items: center;">
+            <input type="text" id="adm-q" placeholder="Enter Question" style="width:95%; margin-bottom: 5px;">
+            <input type="text" id="adm-o0" placeholder="Option 1" style="width:95%;">
+            <input type="text" id="adm-o1" placeholder="Option 2" style="width:95%;">
+            <input type="text" id="adm-o2" placeholder="Option 3" style="width:95%;">
+            <input type="text" id="adm-o3" placeholder="Option 4" style="width:95%;">
+            <select id="adm-cor" class="custom-select" style="width: 100%; margin: 10px 0;">
+                <option value="0">Correct: 1</option>
+                <option value="1">Correct: 2</option>
+                <option value="2">Correct: 3</option>
+                <option value="3">Correct: 4</option>
+            </select>
+            <button class="btn-submit" onclick="generateJSON()" style="width: 100%;">GENERATE</button>
+            <textarea id="json-output" readonly style="width: 100%; height: 60px; margin-top: 10px; font-size: 10px;"></textarea>
+        </div>
+    </div>
+
+    <!-- 10. RESULT SCREEN -->
     <div id="result-screen" class="screen">
         <h1 class="q-header-title" style="font-size: 40px;">Final Score</h1>
         <div id="final-score">0%</div>
