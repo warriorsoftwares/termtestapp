@@ -13,13 +13,24 @@
 </head>
 <body>
 
-    <!-- 1. START SCREEN (Rotating Globe) -->
+    <!-- 1. START SCREEN -->
     <div id="start-screen">
         <h1 class="start-title">MASTER'S QUIZZES</h1>
         <div id="nova-globe"></div>
     </div>
 
-    <!-- 2. MAIN MENU (Directly after Splash) -->
+    <!-- 2. LOGIN SCREEN -->
+    <div id="login-screen" class="screen">
+        <h1 class="q-header-title no-shadow-title">Login</h1>
+        <div style="width: 85%; display: flex; flex-direction: column; align-items: center;">
+            <input type="text" id="usernameField" placeholder="Username" style="width: 100%; height: 45px; margin-bottom: 10px; border-radius: 10px; border: 3px solid var(--btn-border); padding: 5px; font-weight: 700; background: #fff;">
+            <input type="password" id="passwordField" placeholder="Password" style="width: 100%; height: 45px; margin-bottom: 20px; border-radius: 10px; border: 3px solid var(--btn-border); padding: 5px; font-weight: 700; background: #fff;">
+            <button class="btn-menu" onclick="handleLogin()" style="width: 100%;">LOGIN</button>
+        </div>
+        <p id="login-feedback"></p>
+    </div>
+
+    <!-- 3. MAIN MENU -->
     <div id="menu-screen" class="screen">
         <h1 class="q-header-title main-menu-title" style="font-size:40px; color:#20d400; text-decoration: underline double var(--underline-pink); text-underline-offset:10px;">Main Menu</h1>
         <button class="btn-menu" onclick="showGrades()">Play</button>
@@ -27,10 +38,10 @@
         <button class="btn-menu" onclick="alert('How to Play:\n1. Select your Grade and Subject.\n2. Answer questions before the timer runs out.\n3. Tap Submit to check your answer.')">How to Play</button>
         <button class="btn-menu">High Scores</button>
         <button class="btn-menu" onclick="alert('Master\'s Quizzes v1.0\nCreated for Students.\nPower of BCG!')">Info</button>
-        <button class="btn-menu" style="font-size: 14px; height: 40px; background: #eee;" onclick="showScreen('admin-screen')">Admin Panel</button>
+        <button class="xxx" style="font-size: 14px; height: 40px;" onclick="showScreen('admin-screen')">Admin Panel</button>
     </div>
 
-    <!-- 3. SETTINGS OVERLAY -->
+    <!-- 4. SETTINGS OVERLAY -->
     <div id="settings-overlay" class="overlay">
         <div class="popup settings-card">
             <h2 class="settings-title-styled">SETTINGS</h2>
@@ -54,7 +65,7 @@
         </div>
     </div>
 
-    <!-- 4. GRADE SELECTION -->
+    <!-- 5. GRADE SELECTION -->
     <div id="grade-screen" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="goHome()">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">Select Grade</h1>
@@ -66,9 +77,10 @@
             <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 10')">Grade 10</button>
             <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 11')">Grade 11</button>
         </div>
+        <button class="btn-menu no-shadow-btn" style="margin-top:20px; width:280px;" onclick="selectGrade('O/L Mode')">O/L Mode</button>
     </div>
 
-    <!-- 5. SUBJECT SELECTION -->
+    <!-- 6. SUBJECT SELECTION -->
     <div id="subject-screen" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="showGrades()">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">Select Subject</h1>
@@ -76,12 +88,17 @@
             <button class="btn-menu no-shadow-btn" onclick="showTerms('භූගෝල විද්‍යාව')">භූගෝල විද්‍යාව</button>
             <button class="btn-menu no-shadow-btn" onclick="showTerms('ඉතිහාසය')">ඉතිහාසය</button>
             <button class="btn-menu no-shadow-btn" onclick="showTerms('විද්‍යාව')">විද්‍යාව</button>
+            <button class="btn-menu no-shadow-btn" onclick="showTerms('සිංහල')">සිංහල</button>
+            <button class="btn-menu no-shadow-btn" onclick="showTerms('ගණිතය')">ගණිතය</button>
+            <button class="btn-menu no-shadow-btn" onclick="showTerms('බුද්ධ ධර්මය')">බුද්ධ ධර්මය</button>
             <button class="btn-menu no-shadow-btn" onclick="showTerms('තොරතුරු තාක්ෂණය')">I.C.T</button>
+            <button class="btn-menu no-shadow-btn" onclick="showTerms('පුරවැසි අධ්‍යාපනය')">පුරවැසි අධ්‍යාපනය</button>
+            <button class="btn-menu no-shadow-btn" onclick="showTerms('සෞඛ්‍යය හා ශාරීරික අධ්‍යාපනය')">සෞඛ්‍යය</button>
             <button class="btn-menu no-shadow-btn" onclick="showTerms('නාට්‍ය හා රංගකලාව')">Drama</button>
         </div>
     </div>
 
-    <!-- 6. TERM SELECTION -->
+    <!-- 7. TERM SELECTION -->
     <div id="term-screen" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="showScreen('subject-screen')">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">Select Term</h1>
@@ -90,7 +107,7 @@
         <button class="btn-menu no-shadow-btn" onclick="startGame('3rd Term')">3. Third Term</button>
     </div>
 
-    <!-- 7. QUIZ CONTAINER -->
+    <!-- 8. QUIZ CONTAINER -->
     <div id="quiz-container" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="handleBackRequest()">⬅️</button></div>
         <h1 class="q-header-title" id="active-subj">Geography</h1>
@@ -100,7 +117,7 @@
         </div>
         <div class="q-row">
             <div class="q-circle" id="q-idx">1</div>
-            <div class="q-box" id="q-text">Loading...</div>
+            <div class="q-box" id="q-text">ප්‍රශ්නය පූරණය වේ...</div>
         </div>
         <div id="options-area" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
             <label class="opt-row"><input type="radio" name="opt" id="o0"><span class="yasiru" id="t0"></span></label>
@@ -112,10 +129,10 @@
         <button class="btn-submit" id="main-submit" onclick="check()">SUBMIT</button>
     </div>
 
-    <!-- 8. ADMIN PANEL -->
-    <div id="admin-screen" class="screen">
+    <!-- 9. ADMIN PANEL -->
+    <div id="admin-screen" class="screen" hidden>
         <div class="top-nav"><button class="btn-nav-icon" onclick="goHome()">🏠</button></div>
-        <h1 class="q-header-title">Code Generator</h1>
+        <h1 class="q-header-title">Admin Code Generator</h1>
         <div style="width: 90%; background: white; padding: 15px; border-radius: 20px; border: 3px solid black; display: flex; flex-direction: column; align-items: center;">
             <input type="text" id="adm-q" placeholder="Enter Question" style="width:95%; margin-bottom: 5px;">
             <input type="text" id="adm-o0" placeholder="Option 1" style="width:95%;">
@@ -133,12 +150,13 @@
         </div>
     </div>
 
-    <!-- 9. RESULT SCREEN -->
+    <!-- 10. RESULT SCREEN -->
     <div id="result-screen" class="screen">
-        <h1 class="q-header-title" style="font-size: 40px;">Final Score</h1>
-        <div id="final-score" style="font-size: 48px; margin: 20px 0;">0%</div>
+        <h1 class="q-header-title" style="font-size: 40px; text-decoration: 4px double underline #FF1493; margin: 14px; text-underline-offset: 10px;">Final Score</h1>
+        <div id="final-score" style="font-size: 48px; font-weight: bold; margin: 20px 0;">0%</div>
         <button class="btn-menu" onclick="location.reload()">REPLAY</button>
     </div>
 
     <script src="script.js"></script>
 </body>
+</html>
