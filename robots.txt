@@ -21,11 +21,11 @@ User-agent: *
 # Files and folders to block
 Disallow: /uses.json
 Disallow: /master_data.json
-Disallow: /robots.txt
+
 # Explicitly allows search engines to read your core styling and scripts
-Disallow: /style.css
-Disallow: /index.html
-Disallow: /script.js
+Allow: /style.css
+Allow: /index.html
+Allow: /script.js
 
 # Your correct sitemap location
 Sitemap: https://yasirukudda.github.io/Termtestapp.com/
