@@ -129,7 +129,8 @@ body {
 
 .no-shadow-title { 
     font-family: 'Georgia', serif; 
-    text-decoration: underline double var(--underline-pink); 
+    text-decoration: underline double var(--underline-pink);
+     text-transform: capitalize;
     text-underline-offset: 10px; 
 }
 
@@ -137,6 +138,7 @@ body {
 .btn-menu { 
     display: block; 
     margin: 12px auto; 
+    text-transform: capitalize;
     width: 280px; 
     height: 58px; 
     background: linear-gradient(145deg, var(--accent-yellow), #e1e800); 
@@ -329,4 +331,9 @@ textarea { height: 80px; padding: 10px; font-family: monospace; }
 
 .xxx{
     display: none;
+}
+
+.hj{
+    color: #1523ff;
+    font-size: 16.5px;
 }
