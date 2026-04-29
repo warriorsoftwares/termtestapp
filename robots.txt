@@ -28,4 +28,4 @@ Allow: /index.html
 Allow: /script.js
 
 # Your correct sitemap location
-Sitemap: https://yasirukudda.github.io/Termtestapp.com/sitemap.xml
+Sitemap: https://warriorsoftwares.github.io/termtestapp/sitemap.xml
