@@ -11,21 +11,16 @@ Disallow: /
 User-agent: PerplexityBot
 Disallow: /
 
-# Blocks Google Gemini from using your site for AI training and answers
 User-agent: Google-Extended
 Disallow: /
 
-
 # Directives for search engines (Google, Bing, etc.)
 User-agent: *
-# Files and folders to block
 Disallow: /uses.json
 Disallow: /master_data.json
+Disallow: /edu.json
 
-# Explicitly allows search engines to read your core styling and scripts
-Allow: /style.css
-Allow: /index.html
-Allow: /script.js
+Allow: /
 
 # Your correct sitemap location
 Sitemap: https://warriorsoftwares.github.io/termtestapp/sitemap.xml
