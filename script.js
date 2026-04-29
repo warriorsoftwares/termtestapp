@@ -24,9 +24,9 @@ window.onload = () => {
                 } else {
                     showScreen('login-screen', true); 
                 }
-            }, 400);
+            }, 300);
         }
-    }, 3000); 
+    }, 1500); 
 };
 
 // 2. NAVIGATION
