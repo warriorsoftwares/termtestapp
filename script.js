@@ -1,9 +1,14 @@
 let masterData = {}; 
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
+let selectedMode = ""; // (වෙනස් කළා) - Selected Game Mode variable
 
-// 1. INITIALIZATION
+// 1. INITIALIZATION (වෙනස් කළා)
 window.onload = () => { 
+    // diddy.html එකෙන් එන URL එක පරීක්ෂා කිරීම
+    const urlParams = new URLSearchParams(window.location.search);
+    const screenToLoad = urlParams.get('screen');
+
     history.replaceState({ screen: 'login-screen' }, "", "");
     setTimeout(() => { 
         const start = document.getElementById('start-screen');
@@ -12,7 +17,13 @@ window.onload = () => {
             start.style.opacity = "0";
             setTimeout(() => {
                 start.style.display = "none";
-                showScreen('login-screen', true); 
+                
+                // (වෙනස් කළා) Back button එකෙන් ආවා නම් කෙලින්ම Mode screen එක පෙන්වයි
+                if(screenToLoad === 'mode-screen') {
+                    showScreen('mode-screen', true);
+                } else {
+                    showScreen('login-screen', true); 
+                }
             }, 400);
         }
     }, 3000); 
@@ -64,14 +75,28 @@ function showGrades() { showScreen('grade-screen'); }
 function selectGrade(grade) { selectedGrade = grade; showScreen('subject-screen'); }
 function showTerms(subj) { selectedSubj = subj; showScreen('term-screen'); }
 
+// (වෙනස් කළා) - Function to handle Game Mode Selection
+function selectGameMode(mode) {
+    selectedMode = mode;
+    showScreen('grade-screen');
+}
+
 function toggleSettings(show) {
     const overlay = document.getElementById('settings-overlay');
     if(show) {
         overlay.style.display = 'flex';
     } else {
+        // 1. Get values from the dropdowns
         difficultyTime = parseInt(document.getElementById('diff-select').value);
         sessionLimit = parseInt(document.getElementById('limit-select').value);
+        
+        // 2. Save them to browser memory (localStorage)
+        localStorage.setItem('master_quiz_time', difficultyTime);
+        localStorage.setItem('master_quiz_limit', sessionLimit);
+        
+        // 3. Hide the overlay
         overlay.style.display = 'none';
+        console.log("Settings Saved: " + difficultyTime + "s per question.");
     }
 }
 
