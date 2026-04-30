@@ -207,7 +207,7 @@ function handleEnd(msg, isCorrect) {
             showScreen('result-screen');
             document.getElementById('final-score').innerText = Math.round((score / shuffled.length) * 100) + "%";
         }
-    }, 1500);
+    }, 1650);
 }
 
 function handleBackRequest() {
