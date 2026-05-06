@@ -219,3 +219,14 @@ function generateJSON() {
     const output = { q, options, correct };
     document.getElementById('json-output').value = JSON.stringify(output) + ",";
 }
+window.showScreen = showScreen;
+window.handleLogin = handleLogin;
+window.showGrades = showGrades;
+window.selectGrade = selectGrade;
+window.showTerms = showTerms;
+window.startGame = startGame;
+window.selectGameMode = selectGameMode;
+window.toggleSettings = toggleSettings;
+window.check = check;
+window.handleBackRequest = handleBackRequest;
+window.goHome = goHome;
