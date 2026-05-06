@@ -1,11 +1,10 @@
 let masterData = {}; 
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
-let selectedMode = ""; // (වෙනස් කළා) - Selected Game Mode variable
+let selectedMode = ""; 
 
-// 1. INITIALIZATION (වෙනස් කළා)
-window.onload = () => { 
-    // diddy.html එකෙන් එන URL එක පරීක්ෂා කිරීම
+// 1. INITIALIZATION (Fixed for Samsung Internet compatibility)
+window.addEventListener('DOMContentLoaded', () => { 
     const urlParams = new URLSearchParams(window.location.search);
     const screenToLoad = urlParams.get('screen');
 
@@ -17,8 +16,7 @@ window.onload = () => {
             start.style.opacity = "0";
             setTimeout(() => {
                 start.style.display = "none";
-                
-                // (වෙනස් කළා) Back button එකෙන් ආවා නම් කෙලින්ම Mode screen එක පෙන්වයි
+
                 if(screenToLoad === 'mode-screen') {
                     showScreen('mode-screen', true);
                 } else {
@@ -27,9 +25,9 @@ window.onload = () => {
             }, 375);
         }
     }, 1650); 
-};
+});
 
-// 2. NAVIGATION
+// 2. NAVIGATION (Kept exactly as you had it)
 function showScreen(screenId, isBack = false) {
     const screens = document.querySelectorAll('.screen');
     const targetScreen = document.getElementById(screenId);
@@ -46,14 +44,15 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
-// 3. LOGIN
+// 3. LOGIN (Added cache-busting to ensure it works every time)
 async function handleLogin() {
     const u = document.getElementById("usernameField").value;
     const p = document.getElementById("passwordField").value;
     const feedback = document.getElementById("login-feedback");
 
     try {
-        const response = await fetch('./users.json'); 
+        // Added ?v= to prevent Samsung Internet from using an old cached file
+        const response = await fetch('./users.json?v=' + Date.now()); 
         const data = await response.json();
         const account = data.accounts.find(acc => acc.user === u && acc.pass === p);
 
@@ -75,7 +74,6 @@ function showGrades() { showScreen('grade-screen'); }
 function selectGrade(grade) { selectedGrade = grade; showScreen('subject-screen'); }
 function showTerms(subj) { selectedSubj = subj; showScreen('term-screen'); }
 
-// (වෙනස් කළා) - Function to handle Game Mode Selection
 function selectGameMode(mode) {
     selectedMode = mode;
     showScreen('grade-screen');
@@ -86,23 +84,18 @@ function toggleSettings(show) {
     if(show) {
         overlay.style.display = 'flex';
     } else {
-        // 1. Get values from the dropdowns
         difficultyTime = parseInt(document.getElementById('diff-select').value);
         sessionLimit = parseInt(document.getElementById('limit-select').value);
-        
-        // 2. Save them to browser memory (localStorage)
         localStorage.setItem('master_quiz_time', difficultyTime);
         localStorage.setItem('master_quiz_limit', sessionLimit);
-        
-        // 3. Hide the overlay
         overlay.style.display = 'none';
-        console.log("Settings Saved: " + difficultyTime + "s per question.");
     }
 }
 
 async function startGame(term) {
     try {
-        const response = await fetch("master_data.json");
+        // Added cache-busting here as well
+        const response = await fetch("master_data.json?v=" + Date.now());
         masterData = await response.json();
 
         const subjectMap = {
@@ -127,16 +120,16 @@ async function startGame(term) {
     } catch (e) { alert("Error loading master_data.json"); }
 }
 
-// 5. CORE QUIZ
+// 5. CORE QUIZ (Rest of logic remains the same)
 function loadQuestion() {
     isAnswered = false;
     document.getElementById('main-submit').style.visibility = "visible";
     document.getElementById('feedback').innerText = "";
-    
+
     const data = shuffled[current];
     document.getElementById('q-idx').innerText = current + 1;
     document.getElementById('q-text').innerText = data.q;
-    
+
     for(let i=0; i<4; i++) {
         const r = document.getElementById(`o${i}`);
         const t = document.getElementById(`t${i}`);
@@ -152,7 +145,7 @@ function startTimer() {
     timeLeft = difficultyTime;
     const box = document.getElementById('timer-box');
     box.innerText = `Time: ${timeLeft}s`;
-    
+
     timer = setInterval(() => {
         timeLeft--;
         box.innerText = `Time: ${timeLeft}s`;
@@ -168,7 +161,7 @@ function check() {
     if(isAnswered) return;
     let sel = -1;
     for(let i=0; i<4; i++) { if(document.getElementById(`o${i}`).checked) sel = i; }
-    
+
     if(sel === -1) return;
 
     clearInterval(timer);
@@ -193,13 +186,13 @@ function handleEnd(msg, isCorrect) {
     isAnswered = true;
     document.getElementById('main-submit').style.visibility = "hidden";
     document.querySelectorAll('input[name="opt"]').forEach(r => r.disabled = true);
-    
+
     const f = document.getElementById('feedback');
     f.innerText = msg; 
     f.style.color = isCorrect ? "green" : "red";
-    
+
     document.getElementById('live-score').innerText = Math.round((score / (current + 1)) * 100) + "%";
-    
+
     setTimeout(() => {
         current++;
         if(current < shuffled.length) loadQuestion(); 
