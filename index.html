@@ -31,14 +31,18 @@
         <p id="login-feedback"></p>
     </div>
 
-    <!-- 3. MAIN MENU -->
+        <!-- 3. MAIN MENU -->
     <div id="menu-screen" class="screen">
         <h1 class="q-header-title main-menu-title" style="font-size:40px; color:#20d400; text-decoration: underline double var(--underline-pink); text-underline-offset:10px;">Main Menu</h1>
         <button class="btn-menu" onclick="showScreen('mode-screen')">play</button>
         <button class="btn-menu" onclick="toggleSettings(true)">settings</button>
         <button class="btn-menu" onclick="alert('How to Play:\n1. Select your Grade and Subject.\n2. Answer questions before the timer runs out.\n3. Tap Submit to check your answer.')">how to play</button>
         <button class="btn-menu">high scores</button>
+        <button class="btn-menu" onclick="window.location.href='xxe.html'">past papers</button>
         <button class="btn-menu" onclick="alert('Master\'s Quizzes v1.0\nCreated for Students.\nPower of BCG!')">info</button>
+        <button class="btn-menu" onclick="window.location.href='super.html'">about us</button>
+    </div>
+
         <button class="xxx" style="font-size: 14px; height: 40px;" onclick="showScreen('admin-screen')">admin panel</button>
     </div>
     <div id="settings-overlay" class="overlay">
