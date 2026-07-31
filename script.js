@@ -43,7 +43,7 @@ window.addEventListener('beforeunload', (e) => {
     }
 });
 
-// 2. NAVIGATION (Kept exactly as you had it)
+// 2. NAVIGATION
 function showScreen(screenId, isBack = false) {
     const screens = document.querySelectorAll('.screen');
     const targetScreen = document.getElementById(screenId);
@@ -69,7 +69,7 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
-// 3. LOGIN (Added cache-busting to ensure it works every time)
+// 3. LOGIN
 async function handleLogin() {
     const u = document.getElementById("usernameField").value;
     const p = document.getElementById("passwordField").value;
@@ -123,12 +123,12 @@ function toggleSettings(show) {
         overlay.style.display = 'none';
     }
 }
+
 async function startGame(term) {
     try {
         const isDhamma = !document.getElementById('subject-screen');
-        // Removed the dynamic query parameter (?v=) to ensure stable server file matching
         const dataFile = isDhamma ? "edu.json" : "master_data.json";
-        
+
         const response = await fetch(dataFile);
         masterData = await response.json();
 
@@ -164,7 +164,7 @@ async function startGame(term) {
     }
 }
 
-// 5. CORE QUIZ (Rest of logic remains the same)
+// 5. CORE QUIZ
 function loadQuestion() {
     isAnswered = false;
     document.getElementById('main-submit').style.visibility = "visible";
@@ -189,7 +189,7 @@ function startTimer() {
     const savedTime = localStorage.getItem('master_quiz_time');
     difficultyTime = savedTime ? parseInt(savedTime) : difficultyTime;
     timeLeft = difficultyTime;
-    
+
     const box = document.getElementById('timer-box');
     box.innerText = `Time: ${timeLeft}s`;
 
@@ -212,7 +212,7 @@ function check() {
     if(sel === -1) return;
 
     clearInterval(timer);
-    const cor = shuffled[current].correct;
+    const cor = shuffled[current].ans;
     if(sel === cor) { 
         score++; 
         document.getElementById(`t${sel}`).classList.add('correct-text'); 
@@ -225,7 +225,7 @@ function check() {
 }
 
 function highlightCorrect() {
-    const cor = shuffled[current].correct;
+    const cor = shuffled[current].ans;
     document.getElementById(`t${cor}`).classList.add('correct-text');
 }
 
@@ -271,10 +271,12 @@ function generateJSON() {
         document.getElementById('adm-o2').value,
         document.getElementById('adm-o3').value
     ];
-    const correct = parseInt(document.getElementById('adm-cor').value);
-    const output = { q, options, correct };
+    const ans = parseInt(document.getElementById('adm-cor').value);
+    const output = { q, options, ans };
     document.getElementById('json-output').value = JSON.stringify(output) + ",";
 }
+
+// 6. GLOBAL WINDOW MAPPINGS
 window.showScreen = showScreen;
 window.handleLogin = handleLogin;
 window.showGrades = showGrades;
@@ -284,5 +286,3 @@ window.startGame = startGame;
 window.selectGameMode = selectGameMode;
 window.toggleSettings = toggleSettings;
 window.check = check;
-window.handleBackRequest = handleBackRequest;
-window.goHome = goHome;
