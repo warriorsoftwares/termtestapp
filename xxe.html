@@ -11,18 +11,20 @@
             height: auto !important;
             min-height: 100%;
             margin: 0;
+            padding: 0;
             background-color: var(--bg-cyan);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-y: auto !important;
-            overflow-x: hidden;
+            overflow-x: hidden !important;
         }
 
         .main-wrapper {
             width: 100%;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 85px 14px 40px;
+            padding: 85px 16px 40px;
         }
 
         /* Top Nav */
@@ -38,6 +40,7 @@
             background: var(--bg-cyan);
             z-index: 100;
             border-bottom: 3px solid var(--btn-border);
+            box-sizing: border-box;
         }
 
         .top-nav a {
@@ -54,6 +57,7 @@
             text-transform: capitalize;
             margin: 10px 0 6px;
             text-align: center;
+            width: 100%;
         }
 
         .page-subtitle {
@@ -62,26 +66,35 @@
             color: #000;
             text-align: center;
             margin-bottom: 22px;
+            width: 100%;
+            padding: 0 8px;
+            box-sizing: border-box;
         }
 
-        /* ===== FILTER SECTION - CLEAR LABELS ===== */
+        /* ===== FILTER SECTION - FIXED ===== */
         .filter-section {
-            width: 94%;
+            width: 100%;
             max-width: 900px;
             margin-bottom: 28px;
+            box-sizing: border-box;
+            padding: 0 4px;
         }
 
         .filter-group {
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .filter-label {
             display: block;
-            font-size: clamp(15px, 2vw, 18px);
+            font-size: clamp(15px, 2.1vw, 18px);
             font-weight: 900;
             color: #000;
-            margin-bottom: 6px;
-            padding-left: 4px;
+            margin-bottom: 7px;
+            padding-left: 6px;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .filter-section .custom-select {
@@ -96,14 +109,17 @@
             padding: 0 14px;
             cursor: pointer;
             box-shadow: 3px 3px 0 var(--btn-border);
+            box-sizing: border-box;
+            display: block;
         }
 
-        /* On larger screens make filters side by side */
+        /* Larger screens */
         @media (min-width: 700px) {
             .filter-section {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 16px 20px;
+                gap: 18px 22px;
+                padding: 0;
             }
             .filter-group {
                 margin-bottom: 0;
@@ -121,9 +137,10 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
             gap: 18px;
-            width: 94%;
+            width: 100%;
             max-width: 1100px;
             padding-bottom: 30px;
+            box-sizing: border-box;
         }
 
         .paper-card {
@@ -137,6 +154,7 @@
             text-align: center;
             box-shadow: 5px 5px 0 var(--btn-border);
             transition: transform 0.18s;
+            box-sizing: border-box;
         }
 
         .paper-card:hover {
@@ -229,6 +247,8 @@
             font-weight: 800;
             color: #000;
             margin-top: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -242,7 +262,7 @@
         <h1 class="q-header-title no-shadow-title">Past Papers</h1>
         <p class="page-subtitle">Select your filters to display evaluations instantly.</p>
 
-        <!-- ========== ALL 6 SELECTORS WITH CLEAR LABELS ========== -->
+        <!-- ========== ALL 6 SELECTORS - FIXED ========== -->
         <div class="filter-section">
 
             <div class="filter-group">
