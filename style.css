@@ -14,16 +14,13 @@
     --btn-border: #004d40;
 }
 
-/* 1. Base Setup */
+/* 1. Base Setup - FIXED for scrolling pages */
 body { 
     background-color: var(--bg-cyan); 
     margin: 0; 
-    height: 100vh; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    overflow: hidden; 
+    overflow-x: hidden;
+    overflow-y: auto;
     touch-action: manipulation;
 }
 
@@ -200,9 +197,9 @@ body {
     font-weight: 700; 
     font-size: clamp(16px, 2vw, 26px); 
     line-height: 1.4;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none;     /* IE 10 and IE 11 */
-    user-select: none;         /* Standard syntax to block text copying */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* 8. Options UI */
@@ -217,9 +214,9 @@ body {
     background-color: transparent; 
     cursor: pointer; 
     transition: background 0.2s; 
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none;     /* IE 10 and IE 11 */
-    user-select: none;         /* Standard syntax to block text copying */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .opt-row input[type="radio"] { 
