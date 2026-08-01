@@ -1,7 +1,6 @@
 /* 
    MASTER'S QUIZZES PRO - COMPLETE STYLESHEET 
    Theme: Cyan, Yellow, and Royal Gold 
-   Updated for perfect mobile fit (X + Y)
 */
 
 :root {
@@ -15,18 +14,14 @@
     --btn-border: #004d40;
 }
 
-/* 1. Base Setup - Locked to screen, top always visible */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-    background-color: var(--bg-cyan);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow-x: hidden;          /* never allow horizontal scroll */
-    overflow-y: auto;            /* vertical scroll only when needed */
+/* 1. Base Setup - only overflow fixed, sizes kept original */
+body { 
+    background-color: var(--bg-cyan); 
+    margin: 0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    overflow-x: hidden;
+    overflow-y: auto;
     touch-action: manipulation;
-    -webkit-text-size-adjust: 100%;
 }
 
 /* 2. Animations */
@@ -54,8 +49,6 @@ html, body {
     z-index: 4000;
     overflow-y: auto; 
     padding: 20px 0;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .screen.active {
@@ -77,28 +70,23 @@ html, body {
     align-items: center; 
     justify-content: flex-start; 
     z-index: 9999; 
-    padding-top: 50px;
-    width: 100%;
-    box-sizing: border-box;
+    padding-top: 50px; 
 }
 
 .start-title { 
     font-family: 'Georgia', serif; 
-    font-size: clamp(26px, 4vw, 54px); 
+    font-size: clamp(30px, 4vw, 54px); 
     font-weight: 900; 
     color: var(--royal-gold); 
     text-align: center; 
     text-decoration: underline double var(--underline-pink); 
-    text-underline-offset: 12px;
-    width: 100%;
-    padding: 0 12px;
-    box-sizing: border-box;
+    text-underline-offset: 15px; 
 }
 
 #nova-globe { 
-    width: clamp(240px, 35vw, 450px); 
-    height: clamp(240px, 35vw, 450px); 
-    margin-top: 60px; 
+    width: clamp(280px, 35vw, 450px); 
+    height: clamp(280px, 35vw, 450px); 
+    margin-top: 80px; 
     border-radius: 50%; 
     background: url('globe.jpg') center/cover no-repeat; 
     box-shadow: 0 0 30px rgba(0,0,0,0.25); 
@@ -109,39 +97,31 @@ html, body {
 .top-nav { 
     position: absolute; 
     top: 20px; 
-    left: 0;
-    width: 100%;
-    padding: 0 16px;
+    width: 90%; 
     display: flex; 
     justify-content: flex-start;
-    box-sizing: border-box;
-    z-index: 50;
 }
 
 .btn-nav-icon { 
     background: var(--accent-yellow); 
     border: 3px solid var(--btn-border); 
     border-radius: 12px; 
-    width: clamp(40px, 5vw, 65px); 
-    height: clamp(40px, 5vw, 65px); 
-    font-size: clamp(18px, 2.5vw, 32px); 
+    width: clamp(42px, 5vw, 65px); 
+    height: clamp(42px, 5vw, 65px); 
+    font-size: clamp(20px, 2.5vw, 32px); 
     cursor: pointer; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    box-shadow: 2px 2px 0px var(--btn-border);
-    flex-shrink: 0;
+    box-shadow: 2px 2px 0px var(--btn-border); 
 }
 
 .q-header-title { 
-    font-size: clamp(24px, 3.5vw, 48px); 
+    font-size: clamp(28px, 3.5vw, 48px); 
     color: var(--primary-blue); 
     font-weight: 900; 
     text-align: center; 
-    margin-bottom: 16px;
-    width: 100%;
-    padding: 0 12px;
-    box-sizing: border-box;
+    margin-bottom: 20px; 
 }
 
 .no-shadow-title { 
@@ -156,18 +136,17 @@ html, body {
     display: block; 
     margin: 12px auto; 
     text-transform: capitalize;
-    width: clamp(260px, 35vw, 450px); 
-    height: clamp(52px, 7vw, 90px); 
+    width: clamp(280px, 35vw, 450px); 
+    height: clamp(58px, 7vw, 90px); 
     background: linear-gradient(145deg, var(--accent-yellow), #e1e800); 
     border: 4px solid var(--btn-border); 
     border-radius: 50px; 
-    font-size: clamp(18px, 2.5vw, 32px); 
+    font-size: clamp(20px, 2.5vw, 32px); 
     color: var(--primary-blue); 
     font-weight: 900; 
     box-shadow: 4px 4px 0px var(--btn-border); 
     cursor: pointer; 
-    transition: transform 0.1s;
-    box-sizing: border-box;
+    transition: transform 0.1s; 
 }
 
 .btn-menu:active { transform: scale(0.96); }
@@ -176,66 +155,60 @@ html, body {
 
 /* 7. Quiz UI Components */
 .stats-bar { 
-    width: 90%; 
-    max-width: 900px;
+    width: 85%; 
     display: flex; 
     justify-content: space-between; 
     font-weight: 900; 
-    font-size: clamp(16px, 2.2vw, 28px); 
-    margin-bottom: 15px;
-    box-sizing: border-box;
+    font-size: clamp(18px, 2.2vw, 28px); 
+    margin-bottom: 15px; 
 }
 
 .q-row { 
     display: flex; 
     align-items: center; 
-    gap: 10px; 
-    width: 92%;
-    max-width: 900px;
-    margin-bottom: 18px;
-    box-sizing: border-box;
+    gap: 12px; 
+    width: 90%; 
+    margin-bottom: 20px; 
 }
 
 .q-circle { 
-    width: clamp(48px, 7vw, 85px); 
-    height: clamp(48px, 7vw, 85px); 
+    width: clamp(55px, 7vw, 85px); 
+    height: clamp(55px, 7vw, 85px); 
     background: var(--accent-yellow); 
     border: 3.5px solid var(--primary-blue); 
     border-radius: 50%; 
     display: flex; 
     justify-content: center; 
     align-items: center; 
-    font-size: clamp(20px, 3vw, 38px); 
+    font-size: clamp(24px, 3vw, 38px); 
     font-weight: 900; 
     flex-shrink: 0; 
 }
 
 .q-box { 
     flex-grow: 1; 
-    min-height: 56px; 
+    min-height: 60px; 
     background: var(--bg-cyan); 
     border: 3px solid #000; 
     border-radius: 15px; 
     display: flex; 
     align-items: center; 
-    padding: 10px 14px; 
+    padding: 12px 15px; 
     font-weight: 700; 
-    font-size: clamp(15px, 2vw, 26px); 
+    font-size: clamp(16px, 2vw, 26px); 
     line-height: 1.4;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    box-sizing: border-box;
 }
 
 /* 8. Options UI */
 .opt-row { 
     display: flex; 
     align-items: center; 
-    width: 90%;
-    max-width: 900px;
+    width: 85%; 
     margin-bottom: 10px; 
-    padding: 12px; 
+    padding: 14px; 
     border: 3px solid #000; 
     border-radius: 18px; 
     background-color: transparent; 
@@ -244,16 +217,15 @@ html, body {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    box-sizing: border-box;
 }
 
 .opt-row input[type="radio"] { 
-    margin-right: 12px; 
-    transform: scale(1.5); 
+    margin-right: 15px; 
+    transform: scale(1.6); 
 }
 
 .yasiru { 
-    font-size: clamp(16px, 2.2vw, 28px); 
+    font-size: clamp(18px, 2.2vw, 28px); 
     font-weight: 900; 
     color: #000; 
     transition: color 0.3s ease; 
@@ -264,41 +236,38 @@ html, body {
 
 /* 9. Feedback & Submit */
 #feedback { 
-    min-height: 32px; 
+    min-height: 35px; 
     width: 90%; 
     text-align: center; 
-    font-size: clamp(18px, 2.8vw, 36px); 
+    font-size: clamp(22px, 2.8vw, 36px); 
     font-weight: 900; 
-    margin: 10px 0;
-    box-sizing: border-box;
+    margin: 10px 0; 
 }
 
 .btn-submit { 
     display: block; 
     margin: 10px auto; 
-    width: clamp(180px, 25vw, 320px); 
-    height: clamp(50px, 7vw, 85px); 
+    width: clamp(200px, 25vw, 320px); 
+    height: clamp(55px, 7vw, 85px); 
     background: var(--accent-yellow); 
     border: 4px solid var(--success-green); 
     border-radius: 40px; 
-    font-size: clamp(18px, 2.8vw, 34px); 
+    font-size: clamp(22px, 2.8vw, 34px); 
     color: #1a008f; 
     font-weight: 900; 
     cursor: pointer;
-    text-transform: capitalize;
-    box-sizing: border-box;
+    text-transform: capitalize; 
 }
 
 /* 10. Result Screen */
 #final-score { 
-    font-size: clamp(56px, 9vw, 120px); 
+    font-size: clamp(70px, 9vw, 120px); 
     font-weight: 900; 
     color: var(--success-green); 
     border: 8px double #000; 
-    padding: 16px 24px; 
+    padding: 20px 30px; 
     border-radius: 20px; 
     background: var(--bg-cyan);
-    box-sizing: border-box;
 }
 
 /* 11. Overlays & Cards */
@@ -316,45 +285,38 @@ html, body {
     background: var(--bg-cyan); 
     border: 4px solid #000; 
     border-radius: 25px; 
-    width: clamp(280px, 40vw, 500px); 
-    padding: 22px; 
-    box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
-    box-sizing: border-box;
+    width: clamp(300px, 40vw, 500px); 
+    padding: 25px; 
+    box-shadow: 8px 8px 0px rgba(0,0,0,0.2); 
 }
 
 .custom-select {
     width: 100%;
-    height: clamp(44px, 6vw, 75px);
+    height: clamp(45px, 6vw, 75px);
     background: var(--accent-yellow);
     border: 3px solid #000;
     border-radius: 12px;
-    font-size: clamp(15px, 2.2vw, 28px);
+    font-size: clamp(18px, 2.2vw, 28px);
     font-weight: 700;
-    padding: 0 12px;
-    margin-top: 8px;
+    padding: 5px;
+    margin-top: 10px;
     cursor: pointer;
-    box-sizing: border-box;
 }
 
 /* 12. Input Fields (Login & Admin) */
 input[type="text"], input[type="password"], textarea {
     width: 90%;
-    height: clamp(44px, 6vw, 75px);
-    margin-bottom: 14px;
+    height: clamp(45px, 6vw, 75px);
+    margin-bottom: 15px;
     border: 3px solid var(--btn-border);
     border-radius: 12px;
-    padding: 0 14px;
-    font-size: clamp(15px, 2.2vw, 26px);
+    padding: 0 15px;
+    font-size: clamp(17px, 2.2vw, 26px);
     font-weight: 700;
     background: #fff;
-    box-sizing: border-box;
 }
 
-textarea { 
-    height: clamp(70px, 10vw, 150px); 
-    padding: 10px; 
-    font-family: monospace; 
-}
+textarea { height: clamp(80px, 10vw, 150px); padding: 10px; font-family: monospace; }
 
 /* 13. Grids */
 .grade-grid {
@@ -363,7 +325,6 @@ textarea {
     gap: 10px;
     width: 90%;
     margin-top: 10px;
-    box-sizing: border-box;
 }
 
 /* Mobile Scrollbar fix */
@@ -378,5 +339,5 @@ textarea {
 
 .hj{
     color: #1523ff;
-    font-size: clamp(15px, 2vw, 26px);
+    font-size: clamp(16.5px, 2vw, 26px);
 }
