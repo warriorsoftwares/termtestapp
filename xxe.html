@@ -6,243 +6,228 @@
     <title>Master's Quizzes | Past Papers Hub</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ===== BASE ===== */
+        /* ===== PAGE-SPECIFIC OVERRIDES (matches your theme 100%) ===== */
         html, body {
             height: 100%;
             margin: 0;
-            padding: 0;
             background-color: var(--bg-cyan);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
             overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        /* ===== TOP NAV ===== */
+        .main-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 90px 16px 50px;
+            flex: 1 0 auto;
+        }
+
+        /* Top Nav */
         .top-nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 54px;
+            height: 70px;
             display: flex;
             align-items: center;
-            padding: 0 12px;
+            padding: 0 18px;
             background: var(--bg-cyan);
-            border-bottom: 3px solid var(--btn-border);
             z-index: 100;
+            border-bottom: 3px solid var(--btn-border);
         }
 
         .top-nav a {
             text-decoration: none;
         }
 
-        /* ===== MAIN CONTENT ===== */
-        .main-wrapper {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 62px 14px 40px;   /* reduced top padding */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Title - smaller */
+        /* Header */
         .q-header-title.no-shadow-title {
             font-family: 'Georgia', serif;
-            font-size: clamp(24px, 6vw, 36px);
+            font-size: clamp(32px, 5vw, 52px);
             color: var(--primary-blue);
             text-decoration: underline double var(--underline-pink);
-            text-underline-offset: 7px;
+            text-underline-offset: 12px;
             text-transform: capitalize;
+            margin-bottom: 8px;
             text-align: center;
-            margin: 0 0 4px 0;
-            line-height: 1.2;
         }
 
         .page-subtitle {
-            font-size: clamp(12px, 3.2vw, 15px);
+            font-size: clamp(15px, 2.1vw, 20px);
             font-weight: 800;
             color: #000;
             text-align: center;
-            margin: 0 0 16px 0;
-            padding: 0 8px;
-            line-height: 1.3;
+            margin-bottom: 28px;
+            max-width: 90%;
         }
 
-        /* ===== FILTER PANEL - stacked ===== */
+        /* ===== FILTER PANEL ===== */
         .filter-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 11px;
-            width: 100%;
-            max-width: 340px;
-            margin-bottom: 22px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 94%;
+            max-width: 980px;
+            margin-bottom: 32px;
         }
 
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
+        @media (min-width: 700px) {
+            .filter-panel {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
-        .filter-label {
-            font-size: 13px;
-            font-weight: 900;
-            color: #000;
-            padding-left: 3px;
+        @media (min-width: 1000px) {
+            .filter-panel {
+                grid-template-columns: repeat(6, 1fr);
+            }
         }
 
         .filter-panel .custom-select {
             width: 100%;
-            height: 46px;
+            height: clamp(48px, 6vw, 62px);
             background: var(--accent-yellow);
             border: 3px solid #000;
-            border-radius: 12px;
-            font-size: 15px;
+            border-radius: 14px;
+            font-size: clamp(13px, 1.8vw, 16px);
             font-weight: 800;
             color: var(--primary-blue);
-            padding: 0 12px;
-            margin: 0;
+            padding: 0 10px;
+            margin-top: 0;
             cursor: pointer;
             box-shadow: 3px 3px 0 var(--btn-border);
-            -webkit-appearance: none;
-            appearance: none;
+            transition: transform 0.12s;
         }
 
-        /* ===== PAPERS GRID ===== */
+        .filter-panel .custom-select:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== PAPER CARDS ===== */
         .papers-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            width: 100%;
-            max-width: 360px;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 20px;
+            width: 94%;
+            max-width: 1100px;
+            padding: 10px 0 30px;
         }
 
-        @media (min-width: 500px) {
-            .papers-grid {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 680px;
-                gap: 18px;
-            }
-        }
-
-        @media (min-width: 900px) {
-            .papers-grid {
-                grid-template-columns: repeat(3, 1fr);
-                max-width: 1000px;
-            }
-        }
-
-        /* Paper Card */
         .paper-card {
             background: var(--bg-cyan);
             border: 3.5px solid #000;
-            border-radius: 18px;
-            padding: 18px 14px;
+            border-radius: 22px;
+            padding: 22px 18px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            box-shadow: 4px 4px 0 var(--btn-border);
+            box-shadow: 5px 5px 0 var(--btn-border);
+            transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1);
+        }
+
+        .paper-card:hover {
+            transform: translateY(-6px);
         }
 
         .paper-icon {
-            font-size: 44px;
-            margin-bottom: 6px;
+            font-size: clamp(44px, 6vw, 60px);
+            margin-bottom: 10px;
+            filter: drop-shadow(2px 3px 0 rgba(0,0,0,0.15));
         }
 
         .paper-title {
-            font-size: 17px;
+            font-size: clamp(18px, 2.3vw, 22px);
             font-weight: 900;
             color: #000;
             text-transform: uppercase;
-            margin: 3px 0 5px;
+            margin: 4px 0 6px;
+            letter-spacing: 0.3px;
         }
 
         .paper-meta {
-            font-size: 13px;
+            font-size: clamp(13px, 1.7vw, 16px);
             font-weight: 700;
             color: #1a008f;
-            line-height: 1.4;
-            margin-bottom: 16px;
+            line-height: 1.45;
+            margin-bottom: 20px;
         }
 
-        /* ===== DOWNLOAD BUTTON ===== */
+        /* Download button */
         .download-action-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            max-width: 200px;
-            height: 48px;
+            width: 88%;
+            height: 50px;
             background: linear-gradient(145deg, var(--accent-yellow), #e1e800);
-            border: 3.5px solid #000;
+            border: 3.5px solid var(--btn-border);
             border-radius: 40px;
-            font-size: 14px;
+            font-size: clamp(15px, 1.9vw, 17px);
             font-weight: 900;
             color: var(--primary-blue);
             text-decoration: none;
             text-transform: uppercase;
             box-shadow: 3px 3px 0 var(--btn-border);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1),
-                        box-shadow 0.18s ease;
-        }
-
-        .download-action-btn::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -80%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
-            transform: skewX(-25deg);
-            transition: left 0.55s ease;
-        }
-
-        .download-action-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 5px 5px 0 var(--btn-border);
-        }
-
-        .download-action-btn:hover::before {
-            left: 130%;
+            cursor: pointer;
+            transition: transform 0.1s;
         }
 
         .download-action-btn:active {
-            transform: translateY(1px) scale(0.97);
-            box-shadow: 2px 2px 0 var(--btn-border);
+            transform: scale(0.96);
         }
 
-        /* Empty State */
+        /* Empty state */
         #noResults {
             display: none;
-            margin-top: 22px;
-            padding: 14px 18px;
+            margin-top: 30px;
+            padding: 18px 28px;
             background: var(--bg-cyan);
             border: 3.5px solid var(--error-red);
-            border-radius: 14px;
+            border-radius: 18px;
             color: var(--error-red);
             font-weight: 900;
-            font-size: 15px;
+            font-size: clamp(18px, 2.4vw, 24px);
             text-align: center;
             box-shadow: 4px 4px 0 var(--error-red);
-            width: 90%;
-            max-width: 320px;
         }
 
-        /* Bottom text */
         .dev-note {
             color: #000;
             font-weight: 700;
-            font-size: 13px;
-            margin-top: 28px;
+            font-size: clamp(14px, 1.8vw, 18px);
+            margin-top: 36px;
             text-align: center;
             font-style: italic;
-            padding: 0 10px;
+        }
+
+        .my-box {
+            margin-top: 18px;
+            padding: 10px 26px;
+            background: var(--primary-blue);
+            color: var(--accent-yellow);
+            font-weight: 900;
+            font-size: 16px;
+            border: 3px solid #000;
+            border-radius: 50px;
+            box-shadow: 3px 3px 0 #000;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-stamp {
+            background: var(--bg-cyan);
+            padding: 18px;
+            border-top: 3px solid var(--btn-border);
+            text-align: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #000;
         }
     </style>
 </head>
@@ -254,140 +239,214 @@
 
     <div class="main-wrapper">
         <h1 class="q-header-title no-shadow-title">Past Papers</h1>
-        <p class="page-subtitle">Select filters to find papers</p>
+        <p class="page-subtitle">Select your filters to display evaluations instantly.</p>
 
-        <!-- FILTERS - appear first -->
+        <!-- FILTER PANEL (now includes Exam Type + Paper Type) -->
         <div class="filter-panel">
 
-            <div class="filter-group">
-                <label class="filter-label">Grade</label>
-                <select id="gradeFilter" class="custom-select">
-                    <option value="all">All Grades</option>
-                    <option value="g1">Grade 1</option>
-                    <option value="g2">Grade 2</option>
-                    <option value="g3">Grade 3</option>
-                    <option value="g4">Grade 4</option>
-                    <option value="g5">Grade 5</option>
-                    <option value="g6">Grade 6</option>
-                    <option value="g7">Grade 7</option>
-                    <option value="g8">Grade 8</option>
-                    <option value="g9">Grade 9</option>
-                    <option value="g10">Grade 10</option>
-                    <option value="g11">Grade 11</option>
-                    <option value="g12">Grade 12</option>
-                    <option value="g13">Grade 13</option>
-                </select>
-            </div>
+            <!-- 1. Exam Type (new) -->
+            <select id="examFilter" class="custom-select">
+                <option value="all">All Exam Types</option>
+                <option value="school-term-test">School Term Test</option>
+                <option value="dhamma-school-term-test">Dhamma School Term Test</option>
+                <option value="ol">O/L</option>
+                <option value="al">A/L</option>
+                <option value="grade-5-scholarship">Grade 5 Scholarship</option>
+                <option value="olympiad">Olympiad</option>
+            </select>
 
-            <div class="filter-group">
-                <label class="filter-label">Subject</label>
-                <select id="subjFilter" class="custom-select">
-                    <option value="all">All Subjects</option>
-                    <option value="science">Science / විද්‍යාව</option>
-                    <option value="math">Mathematics / ගණිතය</option>
-                    <option value="history">History / ඉතිහාසය</option>
-                    <option value="sinhala">Sinhala / සිංහල</option>
-                    <option value="religion">Buddhism / බුද්ධ ධර්මය</option>
-                    <option value="english">English / ඉංග්‍රීසි</option>
-                    <option value="ict">I.C.T</option>
-                    <option value="civics">Civic Education</option>
-                    <option value="health">Health & PE</option>
-                    <option value="pts">Practical Skills</option>
-                    <option value="geography">Geography</option>
-                    <option value="commerce">Commerce</option>
-                    <option value="art">Art</option>
-                    <option value="music">Music</option>
-                    <option value="drama">Drama</option>
-                    <option value="media">Media Studies</option>
-                    <option value="physics">Physics</option>
-                    <option value="chemistry">Chemistry</option>
-                    <option value="bio">Biology</option>
-                    <option value="combinedmath">Combined Maths</option>
-                    <option value="accounting">Accounting</option>
-                    <option value="econ">Economics</option>
-                    <option value="bs">Business Studies</option>
-                    <option value="political">Political Science</option>
-                </select>
-            </div>
+            <!-- 2. Paper Type (new) -->
+            <select id="paperTypeFilter" class="custom-select">
+                <option value="all">All Paper Types</option>
+                <option value="module-papers">Module papers</option>
+                <option value="past-papers">past papers</option>
+                <option value="only-mcq">Only MCQ</option>
+                <option value="unit-tests">Unit Tests</option>
+                <option value="short-note">Short Note</option>
+                <option value="only-writing">Only writing</option>
+            </select>
 
-            <div class="filter-group">
-                <label class="filter-label">Term</label>
-                <select id="termFilter" class="custom-select">
-                    <option value="all">All Terms</option>
-                    <option value="t1">1st Term</option>
-                    <option value="t2">2nd Term</option>
-                    <option value="t3">3rd Term</option>
-                </select>
-            </div>
+            <!-- 3. Grade -->
+            <select id="gradeFilter" class="custom-select">
+                <option value="all">All Grades</option>
+                <option value="g1">Grade 1</option>
+                <option value="g2">Grade 2</option>
+                <option value="g3">Grade 3</option>
+                <option value="g4">Grade 4</option>
+                <option value="g5">Grade 5</option>
+                <option value="g6">Grade 6</option>
+                <option value="g7">Grade 7</option>
+                <option value="g8">Grade 8</option>
+                <option value="g9">Grade 9</option>
+                <option value="g10">Grade 10</option>
+                <option value="g11">Grade 11</option>
+                <option value="g12">Grade 12</option>
+                <option value="g13">Grade 13</option>
+            </select>
 
-            <div class="filter-group">
-                <label class="filter-label">Medium</label>
-                <select id="mediumFilter" class="custom-select">
-                    <option value="all">All Media</option>
-                    <option value="si">Sinhala Medium</option>
-                    <option value="en">English Medium</option>
-                </select>
-            </div>
+            <!-- 4. Subject -->
+            <select id="subjFilter" class="custom-select">
+                <option value="all">All Subjects</option>
+                <option value="science">Science / විද්‍යාව</option>
+                <option value="math">Mathematics / ගණිතය</option>
+                <option value="history">History / ඉතිහාසය</option>
+                <option value="sinhala">Sinhala / සිංහල භාෂාව</option>
+                <option value="religion">Buddhism / බුද්ධ ධර්මය</option>
+                <option value="english">English / ඉංග්‍රීසි භාෂාව</option>
+                <option value="ict">I.C.T / තොරතුරු තාක්ෂණය</option>
+                <option value="civics">Civic Education / පුරවැසි අධ්‍යාපනය</option>
+                <option value="health">Health & Physical Ed / සෞඛ්‍යය</option>
+                <option value="pts">Practical & Technical Skills</option>
+                <option value="geography">Geography / භූගෝල විද්‍යාව</option>
+                <option value="commerce">Commerce / ව්‍යාපාර අධ්‍යයනය</option>
+                <option value="art">Art / චිත්‍ර කලාව</option>
+                <option value="music">Music / සංගීතය</option>
+                <option value="drama">Drama / නාට්‍ය හා රංගකලාව</option>
+                <option value="media">Media Studies / මාධ්‍ය අධ්‍යයනය</option>
+                <option value="physics">Physics / භෞතික විද්‍යාව</option>
+                <option value="chemistry">Chemistry / රසායන විද්‍යාව</option>
+                <option value="bio">Biology / ජීව විද්‍යාව</option>
+                <option value="combinedmath">Combined Maths</option>
+                <option value="accounting">Accounting / ගිණුම්කරණය</option>
+                <option value="econ">Economics / ආර්ථික විද්‍යාව</option>
+                <option value="bs">Business Studies</option>
+                <option value="political">Political Science / දේශපාලන විද්‍යාව</option>
+            </select>
 
+            <!-- 5. Term -->
+            <select id="termFilter" class="custom-select">
+                <option value="all">All Terms</option>
+                <option value="t1">1st Term</option>
+                <option value="t2">2nd Term</option>
+                <option value="t3">3rd Term</option>
+            </select>
+
+            <!-- 6. Medium -->
+            <select id="mediumFilter" class="custom-select">
+                <option value="all">All Media</option>
+                <option value="si">Sinhala Medium</option>
+                <option value="en">English Medium</option>
+            </select>
         </div>
 
-        <!-- PAPERS -->
+        <!-- PAPERS GRID -->
         <div class="papers-grid" id="papersGrid">
 
-            <!-- Example Paper 1 -->
-            <div class="paper-card" data-grade="g11" data-subj="science" data-term="t1" data-medium="si">
+            <!-- Example 1 -->
+            <div class="paper-card" 
+                 data-exam="school-term-test" 
+                 data-papertype="past-papers" 
+                 data-grade="g11" 
+                 data-subj="science" 
+                 data-term="t1" 
+                 data-medium="si">
                 <div class="paper-icon">🧪</div>
                 <div class="paper-title">Science Paper</div>
-                <div class="paper-meta">Grade 11 · 1st Term<br>Sinhala Medium</div>
+                <div class="paper-meta">Grade 11 · 1st Term<br>Sinhala Medium · Past Paper</div>
                 <a href="papers/g11_sci_t1_si.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Example Paper 2 -->
-            <div class="paper-card" data-grade="g10" data-subj="history" data-term="t2" data-medium="en">
+            <!-- Example 2 -->
+            <div class="paper-card" 
+                 data-exam="school-term-test" 
+                 data-papertype="past-papers" 
+                 data-grade="g10" 
+                 data-subj="history" 
+                 data-term="t2" 
+                 data-medium="en">
                 <div class="paper-icon">📜</div>
                 <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 10 · 2nd Term<br>English Medium</div>
+                <div class="paper-meta">Grade 10 · 2nd Term<br>English Medium · Past Paper</div>
                 <a href="papers/g10_hist_t2_en.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Example Paper 3 -->
-            <div class="paper-card" data-grade="g13" data-subj="physics" data-term="t3" data-medium="si">
+            <!-- Example 3 -->
+            <div class="paper-card" 
+                 data-exam="al" 
+                 data-papertype="module-papers" 
+                 data-grade="g13" 
+                 data-subj="physics" 
+                 data-term="t3" 
+                 data-medium="si">
                 <div class="paper-icon">⚡</div>
                 <div class="paper-title">Physics Paper</div>
-                <div class="paper-meta">Grade 13 · 3rd Term<br>Sinhala Medium</div>
+                <div class="paper-meta">Grade 13 · 3rd Term<br>Sinhala Medium · Module Paper</div>
                 <a href="papers/g13_phys_t3_si.pdf" download class="download-action-btn">Download PDF</a>
+            </div>
+
+            <!-- Example 4 -->
+            <div class="paper-card" 
+                 data-exam="ol" 
+                 data-papertype="only-mcq" 
+                 data-grade="g11" 
+                 data-subj="math" 
+                 data-term="t1" 
+                 data-medium="si">
+                <div class="paper-icon">📐</div>
+                <div class="paper-title">Mathematics MCQ</div>
+                <div class="paper-meta">Grade 11 · 1st Term<br>Sinhala Medium · Only MCQ</div>
+                <a href="papers/g11_math_mcq_si.pdf" download class="download-action-btn">Download PDF</a>
+            </div>
+
+            <!-- Example 5 -->
+            <div class="paper-card" 
+                 data-exam="grade-5-scholarship" 
+                 data-papertype="past-papers" 
+                 data-grade="g5" 
+                 data-subj="sinhala" 
+                 data-term="t2" 
+                 data-medium="si">
+                <div class="paper-icon">🏆</div>
+                <div class="paper-title">Scholarship Paper</div>
+                <div class="paper-meta">Grade 5 · 2nd Term<br>Sinhala Medium · Past Paper</div>
+                <a href="papers/g5_scholarship_si.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
         </div>
 
         <p id="noResults">No documents match your parameters.</p>
 
-        <p class="dev-note">* Papers are dynamically updated by Developers...</p>
+        <p class="dev-note"><i>*Papers are dynamically updated by Developers...</i></p>
+        
+        <div class="my-box">
+            Power of BCG!
+        </div>
+    </div>
+
+    <div class="footer-stamp">
+        &copy; 2026 Master's Quizzes Sri Lanka. Created for Students.
     </div>
 
     <script>
-        const gradeSel = document.getElementById('gradeFilter');
-        const subjSel  = document.getElementById('subjFilter');
-        const termSel  = document.getElementById('termFilter');
-        const medSel   = document.getElementById('mediumFilter');
-        const cards    = document.querySelectorAll('.paper-card');
+        const examSel      = document.getElementById('examFilter');
+        const paperTypeSel = document.getElementById('paperTypeFilter');
+        const gradeSel     = document.getElementById('gradeFilter');
+        const subjSel      = document.getElementById('subjFilter');
+        const termSel      = document.getElementById('termFilter');
+        const medSel       = document.getElementById('mediumFilter');
+
+        const cards     = document.querySelectorAll('.paper-card');
         const noResults = document.getElementById('noResults');
 
         function filterPapers() {
-            const gradeVal = gradeSel.value;
-            const subjVal  = subjSel.value;
-            const termVal  = termSel.value;
-            const medVal   = medSel.value;
+            const examVal      = examSel.value;
+            const paperTypeVal = paperTypeSel.value;
+            const gradeVal     = gradeSel.value;
+            const subjVal      = subjSel.value;
+            const termVal      = termSel.value;
+            const medVal       = medSel.value;
 
             let visibleCount = 0;
 
             cards.forEach(card => {
-                const matchesGrade = (gradeVal === 'all' || card.getAttribute('data-grade') === gradeVal);
-                const matchesSubj  = (subjVal  === 'all' || card.getAttribute('data-subj')  === subjVal);
-                const matchesTerm  = (termVal  === 'all' || card.getAttribute('data-term')  === termVal);
-                const matchesMed   = (medVal   === 'all' || card.getAttribute('data-medium') === medVal);
+                const matchesExam      = (examVal === 'all' || card.getAttribute('data-exam') === examVal);
+                const matchesPaperType = (paperTypeVal === 'all' || card.getAttribute('data-papertype') === paperTypeVal);
+                const matchesGrade     = (gradeVal === 'all' || card.getAttribute('data-grade') === gradeVal);
+                const matchesSubj      = (subjVal  === 'all' || card.getAttribute('data-subj')  === subjVal);
+                const matchesTerm      = (termVal  === 'all' || card.getAttribute('data-term')  === termVal);
+                const matchesMed       = (medVal   === 'all' || card.getAttribute('data-medium') === medVal);
 
-                if (matchesGrade && matchesSubj && matchesTerm && matchesMed) {
+                if (matchesExam && matchesPaperType && matchesGrade && matchesSubj && matchesTerm && matchesMed) {
                     card.style.display = 'flex';
                     visibleCount++;
                 } else {
@@ -398,6 +457,9 @@
             noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
         }
 
+        // Attach events
+        examSel.addEventListener('change', filterPapers);
+        paperTypeSel.addEventListener('change', filterPapers);
         gradeSel.addEventListener('change', filterPapers);
         subjSel.addEventListener('change', filterPapers);
         termSel.addEventListener('change', filterPapers);
