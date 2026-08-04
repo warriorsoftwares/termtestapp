@@ -7,30 +7,19 @@
     <link rel="stylesheet" href="style.css">
     <style>
         html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
+            margin: 0; padding: 0; width: 100%;
             background-color: var(--bg-cyan);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow-x: hidden; overflow-y: auto;
         }
-
         .main-wrapper {
-            width: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            width: 100%; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center;
             padding: 20px 16px 40px;
         }
-
         .back-btn {
-            align-self: flex-start;
-            margin: 10px 0 20px 4px;
-            text-decoration: none;
+            align-self: flex-start; margin: 10px 0 20px 4px; text-decoration: none;
         }
-
         .q-header-title.no-shadow-title {
             font-family: 'Georgia', serif;
             font-size: clamp(28px, 5vw, 48px);
@@ -38,173 +27,93 @@
             text-decoration: underline double var(--underline-pink);
             text-underline-offset: 10px;
             text-transform: capitalize;
-            margin: 0 0 8px;
-            text-align: center;
-            width: 100%;
+            margin: 0 0 8px; text-align: center; width: 100%;
         }
-
         .page-subtitle {
-            font-size: clamp(14px, 2vw, 18px);
-            font-weight: 800;
-            color: #000;
-            text-align: center;
-            margin-bottom: 22px;
-            width: 100%;
-            padding: 0 8px;
-            box-sizing: border-box;
+            font-size: clamp(14px, 2vw, 18px); font-weight: 800; color: #000;
+            text-align: center; margin-bottom: 22px; width: 100%;
+            padding: 0 8px; box-sizing: border-box;
         }
-
         .filter-section {
-            width: 100%;
-            max-width: 900px;
-            box-sizing: border-box;
-            padding: 0 4px;
-            margin-bottom: 28px;
+            width: 100%; max-width: 900px; box-sizing: border-box;
+            padding: 0 4px; margin-bottom: 28px;
         }
-
-        .filter-group {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-        }
-
+        .filter-group { width: 100%; box-sizing: border-box; margin-bottom: 16px; }
         .filter-label {
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 16px;
-            font-weight: 900;
-            color: #000;
-            margin: 0 0 7px 0;
-            padding: 0 0 0 6px;
+            display: block; width: 100%; box-sizing: border-box;
+            font-size: 16px; font-weight: 900; color: #000;
+            margin: 0 0 7px 0; padding: 0 0 0 6px;
         }
-
         .filter-section .custom-select {
-            width: 100%;
-            height: 52px;
-            background: var(--accent-yellow);
-            border: 3px solid #000;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--primary-blue);
-            padding: 0 14px;
-            margin: 0;
-            box-sizing: border-box;
-            box-shadow: 3px 3px 0 var(--btn-border);
-            display: block;
+            width: 100%; height: 52px; background: var(--accent-yellow);
+            border: 3px solid #000; border-radius: 14px;
+            font-size: 15px; font-weight: 800; color: var(--primary-blue);
+            padding: 0 14px; margin: 0; box-sizing: border-box;
+            box-shadow: 3px 3px 0 var(--btn-border); display: block;
         }
-
         @media (min-width: 700px) {
             .filter-section {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 18px 20px;
-                padding: 0;
+                display: grid; grid-template-columns: 1fr 1fr;
+                gap: 18px 20px; padding: 0;
             }
             .filter-group { margin-bottom: 0; }
         }
-
         @media (min-width: 1000px) {
-            .filter-section {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
+            .filter-section { grid-template-columns: 1fr 1fr 1fr; }
         }
-
         .papers-grid {
-            width: 100%;
-            max-width: 1100px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 18px;
-            box-sizing: border-box;
-            padding: 0 4px 30px;
+            width: 100%; max-width: 1100px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 18px; box-sizing: border-box; padding: 0 4px 30px;
         }
-
         .paper-card {
-            background: var(--bg-cyan);
-            border: 3.5px solid #000;
-            border-radius: 22px;
-            padding: 22px 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            box-shadow: 5px 5px 0 var(--btn-border);
+            background: var(--bg-cyan); border: 3.5px solid #000;
+            border-radius: 22px; padding: 22px 16px;
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; box-shadow: 5px 5px 0 var(--btn-border);
             box-sizing: border-box;
         }
-
-        .paper-icon { font-size: 52px; margin-bottom: 8px; }
+        .paper-icon { font-size: 48px; margin-bottom: 8px; }
         .paper-title {
-            font-size: 17px;
-            font-weight: 900;
-            color: #000;
-            text-transform: uppercase;
-            margin: 4px 0 6px;
+            font-size: 16px; font-weight: 900; color: #000;
+            text-transform: uppercase; margin: 4px 0 6px;
         }
         .paper-meta {
-            font-size: 13px;
-            font-weight: 700;
-            color: #1a008f;
-            line-height: 1.4;
-            margin-bottom: 18px;
+            font-size: 13px; font-weight: 700; color: #1a008f;
+            line-height: 1.45; margin-bottom: 18px;
         }
-
         .download-action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 88%;
-            height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            width: 88%; height: 48px;
             background: linear-gradient(145deg, var(--accent-yellow), #e1e800);
-            border: 3.5px solid var(--btn-border);
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 900;
-            color: var(--primary-blue);
-            text-decoration: none;
-            text-transform: uppercase;
+            border: 3.5px solid var(--btn-border); border-radius: 40px;
+            font-size: 15px; font-weight: 900; color: var(--primary-blue);
+            text-decoration: none; text-transform: uppercase;
             box-shadow: 3px 3px 0 var(--btn-border);
         }
-
         .download-action-btn:active { transform: scale(0.96); }
-
         #noResults {
-            display: none;
-            margin: 25px 0;
-            padding: 16px 24px;
-            background: var(--bg-cyan);
-            border: 3.5px solid var(--error-red);
-            border-radius: 16px;
-            color: var(--error-red);
-            font-weight: 900;
-            font-size: 18px;
-            text-align: center;
+            display: none; margin: 25px 0; padding: 16px 24px;
+            background: var(--bg-cyan); border: 3.5px solid var(--error-red);
+            border-radius: 16px; color: var(--error-red);
+            font-weight: 900; font-size: 18px; text-align: center;
             box-shadow: 4px 4px 0 var(--error-red);
         }
-
         .dev-note {
-            color: #000;
-            font-weight: 700;
-            font-size: 15px;
-            margin-top: 30px;
-            text-align: center;
-            font-style: italic;
+            color: #000; font-weight: 700; font-size: 15px;
+            margin-top: 30px; text-align: center; font-style: italic;
         }
     </style>
 </head>
 <body>
-
     <div class="main-wrapper">
-
         <a href="index.html" class="btn-nav-icon back-btn">⬅️</a>
 
         <h1 class="q-header-title no-shadow-title">Past Papers</h1>
         <p class="page-subtitle">Select your filters to display evaluations instantly.</p>
 
         <div class="filter-section">
-
-            <!-- Exam Type (with new කාර්ය පත්‍රිකා) -->
+            <!-- Exam Type -->
             <div class="filter-group">
                 <label class="filter-label">Exam Type</label>
                 <select id="examFilter" class="custom-select">
@@ -215,22 +124,21 @@
                     <option value="al">A/L</option>
                     <option value="grade-5-scholarship">Grade 5 Scholarship</option>
                     <option value="olympiad">Olympiad</option>
-                    <option value="karya-pathrika">කාර්ය පත්‍රිකා</option>
                 </select>
             </div>
 
-            <!-- Paper Type (with new Textbooks) -->
+            <!-- Paper Type (කාර්ය පත්‍රිකා moved here + Textbooks) -->
             <div class="filter-group">
                 <label class="filter-label">Paper Type</label>
                 <select id="paperTypeFilter" class="custom-select">
                     <option value="all">All Paper Types</option>
-                    <option value="module-papers">Module papers</option>
-                    <option value="past-papers">past papers</option>
-                    <option value="only-mcq">Only MCQ</option>
+                    <option value="past-papers">Past Papers</option>
+                    <option value="module-papers">Module Papers</option>
                     <option value="unit-tests">Unit Tests</option>
+                    <option value="karya-pathrika">කාර්ය පත්‍රිකා</option>
+                    <option value="textbooks">Textbooks / Study Packs</option>
+                    <option value="only-mcq">Only MCQ</option>
                     <option value="short-note">Short Note</option>
-                    <option value="only-writing">Only writing</option>
-                    <option value="textbooks">Textbooks</option>
                 </select>
             </div>
 
@@ -239,10 +147,6 @@
                 <select id="gradeFilter" class="custom-select">
                     <option value="all">All Grades</option>
                     <option value="g9">Grade 9</option>
-                    <option value="g10">Grade 10</option>
-                    <option value="g11">Grade 11</option>
-                    <option value="g12">Grade 12</option>
-                    <option value="g13">Grade 13</option>
                 </select>
             </div>
 
@@ -251,16 +155,13 @@
                 <select id="subjFilter" class="custom-select">
                     <option value="all">All Subjects</option>
                     <option value="science">Science / විද්‍යාව</option>
-                    <option value="math">Mathematics / ගණිතය</option>
                     <option value="history">History / ඉතිහාසය</option>
+                    <option value="geography">Geography / භූගෝලය</option>
                     <option value="sinhala">Sinhala / සිංහල</option>
                     <option value="tamil">Tamil / දෙමළ</option>
                     <option value="religion">Buddhism / බුද්ධ ධර්මය</option>
-                    <option value="english">English</option>
-                    <option value="geography">Geography / භූගෝල විද්‍යාව</option>
                     <option value="health">Health / සෞඛ්‍ය</option>
                     <option value="civics">Civic Education / පුරවැසි</option>
-                    <option value="ict">I.C.T</option>
                 </select>
             </div>
 
@@ -279,233 +180,230 @@
                 <select id="mediumFilter" class="custom-select">
                     <option value="all">All Media</option>
                     <option value="si">Sinhala Medium</option>
-                    <option value="en">English Medium</option>
                     <option value="ta">Tamil Medium</option>
                 </select>
             </div>
-
         </div>
 
-        <!-- PAPERS GRID - Unique papers only -->
         <div class="papers-grid" id="papersGrid">
 
-            <!-- Buddhism -->
+            <!-- ========== BUDDHISM ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="religion" data-term="t1" data-medium="si">
                 <div class="paper-icon">🕊️</div>
-                <div class="paper-title">Buddhism Paper</div>
-                <div class="paper-meta">Grade 9 · 1st Term 2025<br>Royal College · Sinhala</div>
+                <div class="paper-title">Buddhism</div>
+                <div class="paper-meta">Grade 9 · 1st Term 2025<br>Royal College - Colombo 07<br>Sinhala Medium</div>
                 <a href="Buddhism-First-Term-Test-Paper-2025-in-Sinhala-Medium.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="religion" data-term="t1" data-medium="si">
                 <div class="paper-icon">🕊️</div>
-                <div class="paper-title">Buddhism Paper</div>
+                <div class="paper-title">Buddhism</div>
                 <div class="paper-meta">Grade 9 · 1st Term<br>Sinhala Medium</div>
                 <a href="G9-buddhism-t1-si-no1.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- History -->
+            <!-- ========== HISTORY ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t1" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Western Province</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Western Province<br>Sinhala Medium</div>
                 <a href="G9-1-වාරය-2018-ඉතිහාසය-බස්නාහිර-පළාත-ප්_රශ්න.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t1" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Sabaragamuwa</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Sabaragamuwa Province<br>Sinhala Medium</div>
                 <a href="G9-1-වාරය-2018-ඉතිහාසය-සබරගමුව-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t2" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2018<br>North Western</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2018<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2018-ඉතිහාසය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t2" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>Southern Province</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>Southern Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2019-ඉතිහාසය-දකුණු-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t2" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>North Western</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2019-ඉතිහාසය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t2" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2023<br>North Western</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2023<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2023-ඉතිහාසය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t3" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2018<br>North Western</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2018<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2018-ඉතිහාසය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t3" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2019<br>North Western</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2019<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2019-ඉතිහාසය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t3" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2023<br>North Western</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2023<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2023-ඉතිහාසය-වයඹ-පළාත-ප්_රශ්න.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="history" data-term="t3" data-medium="si">
                 <div class="paper-icon">📜</div>
-                <div class="paper-title">History Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2024<br>North Western</div>
+                <div class="paper-title">History</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2024<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2024-ඉතිහාසය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Geography -->
+            <!-- ========== GEOGRAPHY ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t1" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Sabaragamuwa</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Sabaragamuwa Province<br>Sinhala Medium</div>
                 <a href="G9-1-වාරය-2018-භූගෝලය-සබරගමුව-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t2" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2018<br>North Western</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2018<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2018-භූගෝලය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t2" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>North Western</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2019-භූගෝලය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t2" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>Southern</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2019<br>Southern Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2019-භූගෝලය-දකුණු-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t2" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2023<br>North Western</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2023<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2023-භූගෝලය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t3" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2018<br>North Western</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2018<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2018-භූගෝලය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t3" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2019<br>North Western</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2019<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2019-භූගෝලය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t3" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2019<br>Central Province</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2019<br>Central Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2019-භූගෝලය-මධ්_යම-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="geography" data-term="t3" data-medium="si">
                 <div class="paper-icon">🌍</div>
-                <div class="paper-title">Geography Paper</div>
-                <div class="paper-meta">Grade 9 · 3rd Term 2023<br>North Western</div>
+                <div class="paper-title">Geography</div>
+                <div class="paper-meta">Grade 9 · 3rd Term 2023<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-3-වාරය-2023-භූගෝලය-වයඹ-පළාත-ප්_රශ්න.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Science -->
+            <!-- ========== SCIENCE ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="science" data-term="t1" data-medium="si">
                 <div class="paper-icon">🧪</div>
-                <div class="paper-title">Science Paper</div>
+                <div class="paper-title">Science</div>
                 <div class="paper-meta">Grade 9 · 1st Term<br>Sinhala Medium</div>
                 <a href="G9-Science-t1.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="science" data-term="t2" data-medium="si">
                 <div class="paper-icon">🧪</div>
-                <div class="paper-title">Science Paper</div>
+                <div class="paper-title">Science</div>
                 <div class="paper-meta">Grade 9 · 2nd Term 2018<br>Sinhala Medium</div>
                 <a href="SM_Sci_G9_T2_I,II pp  Ans_2018.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="science" data-term="t3" data-medium="si">
                 <div class="paper-icon">🧪</div>
-                <div class="paper-title">Science Paper</div>
+                <div class="paper-title">Science</div>
                 <div class="paper-meta">Grade 9 · 3rd Term 2018<br>Sinhala Medium</div>
                 <a href="SM_Sci_G9_T3_I,II pp  Ans_2018.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="science" data-term="t3" data-medium="si">
                 <div class="paper-icon">🧪</div>
-                <div class="paper-title">Science Paper</div>
+                <div class="paper-title">Science</div>
                 <div class="paper-meta">Grade 9 · 3rd Term 2019<br>Sinhala Medium</div>
                 <a href="SM_Sci_T3_G9_I,II pp  Ans_2019.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Health -->
+            <!-- ========== HEALTH ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="health" data-term="t1" data-medium="si">
                 <div class="paper-icon">❤️</div>
-                <div class="paper-title">Health Paper</div>
-                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Sabaragamuwa</div>
+                <div class="paper-title">Health</div>
+                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Sabaragamuwa Province<br>Sinhala Medium</div>
                 <a href="G9-1-වාරය-2018-සෞඛ්_ය-සබරගමුව-පළාත-ප්_රශ්න.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="health" data-term="t2" data-medium="si">
                 <div class="paper-icon">❤️</div>
-                <div class="paper-title">Health Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2018<br>North Western</div>
+                <div class="paper-title">Health</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2018<br>North Western Province<br>Sinhala Medium</div>
                 <a href="G9-2-වාරය-2018-සෞඛ්_ය-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="health" data-term="t3" data-medium="si">
                 <div class="paper-icon">❤️</div>
-                <div class="paper-title">Health Paper</div>
+                <div class="paper-title">Health</div>
                 <div class="paper-meta">Grade 9 · 3rd Term<br>Sinhala Medium</div>
                 <a href="G9-health-t3.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Sinhala -->
+            <!-- ========== SINHALA ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="sinhala" data-term="t1" data-medium="si">
                 <div class="paper-icon">📖</div>
-                <div class="paper-title">Sinhala Paper</div>
-                <div class="paper-meta">Grade 9 · 1st Term 2017<br>Sabaragamuwa</div>
+                <div class="paper-title">Sinhala</div>
+                <div class="paper-meta">Grade 9 · 1st Term 2017<br>Sabaragamuwa Province<br>Sinhala Medium</div>
                 <a href="G9sinhala-t1.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="sinhala" data-term="t1" data-medium="si">
                 <div class="paper-icon">📖</div>
-                <div class="paper-title">Sinhala Paper</div>
-                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Western Province</div>
+                <div class="paper-title">Sinhala</div>
+                <div class="paper-meta">Grade 9 · 1st Term 2018<br>Western Province<br>Sinhala Medium</div>
                 <a href="G9-1-වාරය-2018-සිංහල-බස්නාහිර-පළාත-ප්_රශ්න.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Civic -->
+            <!-- ========== CIVIC ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="civics" data-term="t2" data-medium="si">
                 <div class="paper-icon">🏛️</div>
                 <div class="paper-title">Civic Education</div>
@@ -513,34 +411,34 @@
                 <a href="sri-lanka-grade-9-civic-education-2025-2nd-term-test-paper-68919711dab93.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Tamil -->
+            <!-- ========== TAMIL ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="past-papers" data-grade="g9" data-subj="tamil" data-term="t2" data-medium="ta">
                 <div class="paper-icon">📚</div>
-                <div class="paper-title">Tamil Paper</div>
-                <div class="paper-meta">Grade 9 · 2nd Term 2023<br>North Western · Tamil</div>
+                <div class="paper-title">Tamil</div>
+                <div class="paper-meta">Grade 9 · 2nd Term 2023<br>North Western Province<br>Tamil Medium</div>
                 <a href="G9-2-වාරය-2023-දෙමළ-වයඹ-පළාත-ප්_රශ්න-සහ-පිළිතුරු.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Unit Tests / Lessons (කාර්ය පත්‍රිකා style) -->
-            <div class="paper-card" data-exam="karya-pathrika" data-papertype="unit-tests" data-grade="g9" data-subj="science" data-term="t1" data-medium="si">
+            <!-- ========== කාර්ය පත්‍රිකා / UNIT TESTS ========== -->
+            <div class="paper-card" data-exam="school-term-test" data-papertype="karya-pathrika" data-grade="g9" data-subj="science" data-term="t1" data-medium="si">
                 <div class="paper-icon">📝</div>
                 <div class="paper-title">Science Unit 4</div>
-                <div class="paper-meta">Grade 9 · Unit Test<br>කාර්ය පත්‍රිකා</div>
+                <div class="paper-meta">Grade 9 · කාර්ය පත්‍රිකා<br>Unit Test</div>
                 <a href="unit 4.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
-            <!-- Textbooks / Study Packs -->
+            <!-- ========== TEXTBOOKS / STUDY PACKS ========== -->
             <div class="paper-card" data-exam="school-term-test" data-papertype="textbooks" data-grade="g9" data-subj="religion" data-term="t1" data-medium="si">
                 <div class="paper-icon">📘</div>
-                <div class="paper-title">Buddhism Study Pack</div>
-                <div class="paper-meta">Grade 9 · Study Pack 2<br>Textbooks</div>
+                <div class="paper-title">Buddhism Study Pack 2</div>
+                <div class="paper-meta">Grade 9 · Study Pack<br>Textbooks</div>
                 <a href="Grade-09-Study-Pack-–-Buddhism-2.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
             <div class="paper-card" data-exam="school-term-test" data-papertype="textbooks" data-grade="g9" data-subj="religion" data-term="t1" data-medium="si">
                 <div class="paper-icon">📘</div>
-                <div class="paper-title">Buddhism Study Pack</div>
-                <div class="paper-meta">Grade 9 · Study Pack 3<br>Textbooks</div>
+                <div class="paper-title">Buddhism Study Pack 3</div>
+                <div class="paper-meta">Grade 9 · Study Pack<br>Textbooks</div>
                 <a href="Grade-09-Study-Pack-–-Buddhism-3.pdf" download class="download-action-btn">Download PDF</a>
             </div>
 
@@ -558,27 +456,27 @@
     </div>
 
     <script>
-        const examSel      = document.getElementById('examFilter');
+        const examSel = document.getElementById('examFilter');
         const paperTypeSel = document.getElementById('paperTypeFilter');
-        const gradeSel     = document.getElementById('gradeFilter');
-        const subjSel      = document.getElementById('subjFilter');
-        const termSel      = document.getElementById('termFilter');
-        const medSel       = document.getElementById('mediumFilter');
-        const cards        = document.querySelectorAll('.paper-card');
-        const noResults    = document.getElementById('noResults');
+        const gradeSel = document.getElementById('gradeFilter');
+        const subjSel = document.getElementById('subjFilter');
+        const termSel = document.getElementById('termFilter');
+        const medSel = document.getElementById('mediumFilter');
+        const cards = document.querySelectorAll('.paper-card');
+        const noResults = document.getElementById('noResults');
 
         function filterPapers() {
-            const examVal      = examSel.value;
+            const examVal = examSel.value;
             const paperTypeVal = paperTypeSel.value;
-            const gradeVal     = gradeSel.value;
-            const subjVal      = subjSel.value;
-            const termVal      = termSel.value;
-            const medVal       = medSel.value;
+            const gradeVal = gradeSel.value;
+            const subjVal = subjSel.value;
+            const termVal = termSel.value;
+            const medVal = medSel.value;
 
             let visibleCount = 0;
 
             cards.forEach(card => {
-                const match = 
+                const match =
                     (examVal === 'all' || card.dataset.exam === examVal) &&
                     (paperTypeVal === 'all' || card.dataset.papertype === paperTypeVal) &&
                     (gradeVal === 'all' || card.dataset.grade === gradeVal) &&
