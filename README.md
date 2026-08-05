@@ -1,0 +1,1 @@
+The Term Test App by Warrior Softwares is an educational platform offering past papers and interactive MCQ modules for Sri Lankan students from Grades 6 to 13. It functions as a centralized repository for preparing for regional and national examinations, including GCE O/L and A/L. You can explore the tool at Term Test App.
