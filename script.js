@@ -290,16 +290,30 @@ window.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
 
     if (urlParams.get('from') === 'pastpapers') {
-        // Coming from Past Papers → skip start + login and go to Main Menu
+        // Stop any existing timers that switch screens
+        // (this is the important part)
+        const highestTimeoutId = setTimeout(";");
+        for (let i = 0; i < highestTimeoutId; i++) {
+            clearTimeout(i);
+        }
+
+        // Force hide start and login
         const startScreen = document.getElementById('start-screen');
         const loginScreen = document.getElementById('login-screen');
 
-        if (startScreen) startScreen.style.display = 'none';
-        if (loginScreen) loginScreen.style.display = 'none';
+        if (startScreen) {
+            startScreen.style.display = 'none';
+            startScreen.style.opacity = '0';
+        }
+        if (loginScreen) {
+            loginScreen.style.display = 'none';
+            loginScreen.style.opacity = '0';
+        }
 
+        // Go to Main Menu
         showScreen('menu-screen');
 
-        // Clean the URL so normal refresh still shows Start → Login
+        // Clean the URL
         history.replaceState(null, '', 'index.html');
     }
 });
