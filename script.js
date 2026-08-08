@@ -286,21 +286,20 @@ window.startGame = startGame;
 window.selectGameMode = selectGameMode;
 window.toggleSettings = toggleSettings;
 window.check = check;
-window.addEventListener('load', function () {
+window.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
-    
-    if (urlParams.get('go') === 'menu') {
-        // Force hide start & login screens
-        const start = document.getElementById('start-screen');
-        const login = document.getElementById('login-screen');
-        
-        if (start) start.style.display = 'none';
-        if (login) login.style.display = 'none';
-        
-        // Show main menu
+
+    if (urlParams.get('from') === 'pastpapers') {
+        // Coming from Past Papers → skip start + login and go to Main Menu
+        const startScreen = document.getElementById('start-screen');
+        const loginScreen = document.getElementById('login-screen');
+
+        if (startScreen) startScreen.style.display = 'none';
+        if (loginScreen) loginScreen.style.display = 'none';
+
         showScreen('menu-screen');
-        
-        // Clean the URL so refresh still goes to login
+
+        // Clean the URL so normal refresh still shows Start → Login
         history.replaceState(null, '', 'index.html');
     }
 });
