@@ -286,31 +286,4 @@ window.startGame = startGame;
 window.selectGameMode = selectGameMode;
 window.toggleSettings = toggleSettings;
 window.check = check;
-window.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    if (urlParams.get('from') === 'pastpapers') {
-        // Stop any existing timers that switch screens
-        // (this is the important part)
-        const highestTimeoutId = setTimeout(";");
-        for (let i = 0; i < highestTimeoutId; i++) {
-            clearTimeout(i);
-        }
-
-        // Force hide start and login
-        const startScreen = document.getElementById('start-screen');
-        const loginScreen = document.getElementById('login-screen');
-
-        
-        if (loginScreen) {
-            loginScreen.style.display = 'none';
-            loginScreen.style.opacity = '0';
-        }
-
-        // Go to Main Menu
-        showScreen('menu-screen');
-
-        // Clean the URL
-        history.replaceState(null, '', 'index.html');
-    }
-});
+         
