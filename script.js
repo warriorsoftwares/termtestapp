@@ -286,11 +286,21 @@ window.startGame = startGame;
 window.selectGameMode = selectGameMode;
 window.toggleSettings = toggleSettings;
 window.check = check;
-window.addEventListener('DOMContentLoaded', function() {
-    if (window.location.hash === '#menu-screen') {
-        // Skip start & login and go straight to main menu
-        document.getElementById('start-screen').style.display = 'none';
-        document.getElementById('login-screen').style.display = 'none';
+window.addEventListener('load', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.get('go') === 'menu') {
+        // Force hide start & login screens
+        const start = document.getElementById('start-screen');
+        const login = document.getElementById('login-screen');
+        
+        if (start) start.style.display = 'none';
+        if (login) login.style.display = 'none';
+        
+        // Show main menu
         showScreen('menu-screen');
+        
+        // Clean the URL so refresh still goes to login
+        history.replaceState(null, '', 'index.html');
     }
 });
