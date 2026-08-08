@@ -286,3 +286,11 @@ window.startGame = startGame;
 window.selectGameMode = selectGameMode;
 window.toggleSettings = toggleSettings;
 window.check = check;
+window.addEventListener('DOMContentLoaded', function() {
+    if (window.location.hash === '#menu-screen') {
+        // Skip start & login and go straight to main menu
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'none';
+        showScreen('menu-screen');
+    }
+});
