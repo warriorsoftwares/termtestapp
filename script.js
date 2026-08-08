@@ -301,10 +301,7 @@ window.addEventListener('DOMContentLoaded', function () {
         const startScreen = document.getElementById('start-screen');
         const loginScreen = document.getElementById('login-screen');
 
-        if (startScreen) {
-            startScreen.style.display = 'none';
-            startScreen.style.opacity = '0';
-        }
+        
         if (loginScreen) {
             loginScreen.style.display = 'none';
             loginScreen.style.opacity = '0';
