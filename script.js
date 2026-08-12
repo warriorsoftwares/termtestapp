@@ -4,14 +4,20 @@ let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, ses
 let selectedMode = ""; 
 let isQuizActive = false; 
 
-// 1. INITIALIZATION (Fixed for Samsung Internet compatibility)
+// ========== SUPABASE CONNECTION (ONLY ONCE) ==========
+const SUPABASE_URL = 'https://eiyeimfuogqwitbelcpa.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWVpbWZ1b2dxd2l0YmVsY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MjA0NDAsImV4cCI6MjEwMTk5NjQ0MH0.rLlmoY5icyyWp9o3vqJaMyoFi9H5-uugmYQanAg6N_w';
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// 1. INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => { 
     const urlParams = new URLSearchParams(window.location.search);
     const screenToLoad = urlParams.get('screen');
-
     const loginScreenExist = document.getElementById('login-screen');
 
     history.replaceState({ screen: loginScreenExist ? 'login-screen' : 'dhamma-screen' }, "", "");
+    
     setTimeout(() => { 
         const start = document.getElementById('start-screen');
         if(start) {
@@ -31,10 +37,39 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             }, 375);
         }
-    }, 1650); 
+    }, 1650);
+
+    // Load profile letter
+    const savedName = localStorage.getItem('mq_name');
+    if (savedName) {
+        updateProfileCircle(savedName);
+    }
+
+    // Coming from Past Papers
+    if (urlParams.get('from') === 'pastpapers') {
+        const highestTimeoutId = setTimeout(";");
+        for (let i = 0; i < highestTimeoutId; i++) {
+            clearTimeout(i);
+        }
+
+        const startScreen = document.getElementById('start-screen');
+        const loginScreen = document.getElementById('login-screen');
+
+        if (startScreen) {
+            startScreen.style.display = 'none';
+            startScreen.style.opacity = '0';
+        }
+        if (loginScreen) {
+            loginScreen.style.display = 'none';
+            loginScreen.style.opacity = '0';
+        }
+
+        showScreen('menu-screen');
+        history.replaceState(null, '', 'index.html');
+    }
 });
 
-// Browser closing or reload protection handler
+// Browser closing protection
 window.addEventListener('beforeunload', (e) => {
     if (isQuizActive) {
         e.preventDefault();
@@ -69,42 +104,111 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
-// 3. LOGIN
-async function handleLogin() {
-    const u = document.getElementById("usernameField").value;
-    const p = document.getElementById("passwordField").value;
-    const feedback = document.getElementById("login-feedback");
+// 3. AUTH SYSTEM
+async function handleSignup() {
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const confirm = document.getElementById('signupConfirm').value;
+    const feedback = document.getElementById('signup-feedback');
 
-    try {
-        const response = await fetch('./users.json?v=' + Date.now()); 
-        const data = await response.json();
-        const account = data.accounts.find(acc => acc.user === u && acc.pass === p);
-
-        if (account) {
-            showScreen('menu-screen');
-        } else {
-            feedback.innerText = "Invalid Username or Password!";
-            feedback.style.color = "red";
-        }
-    } catch (e) {
-        console.error(e);
-        alert("Check if users.json exists in your folder!");
+    if (!email || !password) {
+        feedback.innerText = "Please fill all fields";
+        feedback.style.color = "red";
+        return;
     }
+    if (password !== confirm) {
+        feedback.innerText = "Passwords do not match";
+        feedback.style.color = "red";
+        return;
+    }
+
+    const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        feedback.innerText = error.message;
+        feedback.style.color = "red";
+    } else {
+        feedback.innerText = "Account created! Check your email to confirm.";
+        feedback.style.color = "green";
+        setTimeout(() => {
+            showScreen('name-screen');
+        }, 1500);
+    }
+}
+
+async function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const feedback = document.getElementById('login-feedback');
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        feedback.innerText = error.message;
+        feedback.style.color = "red";
+    } else {
+        const name = localStorage.getItem('mq_name');
+        if (!name) {
+            showScreen('name-screen');
+        } else {
+            updateProfileCircle(name);
+            showScreen('menu-screen');
+        }
+    }
+}
+
+function saveUserName() {
+    const name = document.getElementById('userNameField').value.trim();
+    if (!name) {
+        alert("Please enter your name");
+        return;
+    }
+    localStorage.setItem('mq_name', name);
+    updateProfileCircle(name);
+    showScreen('menu-screen');
+}
+
+function updateProfileCircle(name) {
+    const circle = document.getElementById('profile-circle');
+    if (circle && name) {
+        circle.innerText = name.charAt(0).toUpperCase();
+    }
+}
+
+function showHighScores() {
+    const list = document.getElementById('highscores-list');
+    list.innerHTML = "<p style='text-align:center; font-weight:700;'>No scores yet.<br>Play quizzes to see high scores here.</p>";
+    showScreen('highscores-screen');
 }
 
 // 4. QUIZ FLOW
-function goHome() { showScreen('menu-screen'); }
-function showGrades() { showScreen('grade-screen'); }
+function goHome() { 
+    showScreen('menu-screen'); 
+}
+
+function showGrades() { 
+    showScreen('grade-screen'); 
+}
+
 function selectGrade(grade) { 
     selectedGrade = grade; 
-    const termScreenExist = document.getElementById('term-screen');
     if (document.getElementById('subject-screen')) {
         showScreen('subject-screen'); 
-    } else if (termScreenExist) {
+    } else if (document.getElementById('term-screen')) {
         showScreen('term-screen');
     }
 }
-function showTerms(subj) { selectedSubj = subj; showScreen('term-screen'); }
+
+function showTerms(subj) { 
+    selectedSubj = subj; 
+    showScreen('term-screen'); 
+}
 
 function selectGameMode(mode) {
     selectedMode = mode;
@@ -137,9 +241,14 @@ async function startGame(term) {
             questions = (masterData[selectedGrade] && masterData[selectedGrade][term]) ? masterData[selectedGrade][term] : [];
         } else {
             const subjectMap = {
-                "විද්‍යාව": "Science", "ඉතිහාසය": "History", "භූගෝල විද්‍යාව": "Geography",
-                "ගණිතය": "Mathematics", "I.C.T": "I.C.T.", "තොරතුරු තාක්ෂණය": "I.C.T.",
-                "සිංහල": "Sinhala", "බුද්ධ ධර්මය": "Buddhism"
+                "විද්‍යාව": "Science", 
+                "ඉතිහාසය": "History", 
+                "භූගෝල විද්‍යාව": "Geography",
+                "ගණිතය": "Mathematics", 
+                "I.C.T": "I.C.T.", 
+                "තොරතුරු තාක්ෂණය": "I.C.T.",
+                "සිංහල": "Sinhala", 
+                "බුද්ධ ධර්මය": "Buddhism"
             };
             const jsonKey = subjectMap[selectedSubj] || selectedSubj;
             questions = masterData[selectedGrade] && masterData[selectedGrade][term] ? masterData[selectedGrade][term][jsonKey] : [];
@@ -151,7 +260,8 @@ async function startGame(term) {
         }
 
         shuffled = [...questions].sort(() => Math.random() - 0.5).slice(0, sessionLimit);
-        current = 0; score = 0;
+        current = 0; 
+        score = 0;
         isQuizActive = true;
 
         const titleObj = document.getElementById('active-subj') || document.getElementById('active-title');
@@ -160,7 +270,8 @@ async function startGame(term) {
         showScreen('quiz-container');
         loadQuestion();
     } catch (e) { 
-        alert("Error loading data file! Make sure master_data.json or edu.json exists in your directory."); 
+        console.error(e);
+        alert("Error loading data file! Make sure master_data.json or edu.json exists."); 
     }
 }
 
@@ -174,12 +285,13 @@ function loadQuestion() {
     document.getElementById('q-idx').innerText = current + 1;
     document.getElementById('q-text').innerText = data.q;
 
-    for(let i=0; i<4; i++) {
+    for(let i = 0; i < 4; i++) {
         const r = document.getElementById(`o${i}`);
         const t = document.getElementById(`t${i}`);
         t.innerText = data.options[i];
         t.classList.remove('correct-text', 'wrong-text');
-        r.checked = false; r.disabled = false;
+        r.checked = false; 
+        r.disabled = false;
     }
     startTimer();
 }
@@ -207,7 +319,9 @@ function startTimer() {
 function check() {
     if(isAnswered) return;
     let sel = -1;
-    for(let i=0; i<4; i++) { if(document.getElementById(`o${i}`).checked) sel = i; }
+    for(let i = 0; i < 4; i++) { 
+        if(document.getElementById(`o${i}`).checked) sel = i; 
+    }
 
     if(sel === -1) return;
 
@@ -242,12 +356,15 @@ function handleEnd(msg, isCorrect) {
 
     setTimeout(() => {
         current++;
-        if(current < shuffled.length) loadQuestion(); 
-        else {
+        if(current < shuffled.length) {
+            loadQuestion(); 
+        } else {
             isQuizActive = false;
             showScreen('result-screen');
             const scoreDisplay = document.getElementById('final-score') || document.getElementById('final-score-val');
-            if (scoreDisplay) scoreDisplay.innerText = Math.round((score / shuffled.length) * 100) + "%";
+            if (scoreDisplay) {
+                scoreDisplay.innerText = Math.round((score / shuffled.length) * 100) + "%";
+            }
         }
     }, 1650);
 }
@@ -279,6 +396,9 @@ function generateJSON() {
 // 6. GLOBAL WINDOW MAPPINGS
 window.showScreen = showScreen;
 window.handleLogin = handleLogin;
+window.handleSignup = handleSignup;
+window.saveUserName = saveUserName;
+window.showHighScores = showHighScores;
 window.showGrades = showGrades;
 window.selectGrade = selectGrade;
 window.showTerms = showTerms;
@@ -286,35 +406,6 @@ window.startGame = startGame;
 window.selectGameMode = selectGameMode;
 window.toggleSettings = toggleSettings;
 window.check = check;
-window.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    if (urlParams.get('from') === 'pastpapers') {
-        // Stop any existing timers that switch screens
-        // (this is the important part)
-        const highestTimeoutId = setTimeout(";");
-        for (let i = 0; i < highestTimeoutId; i++) {
-            clearTimeout(i);
-        }
-
-        // Force hide start and login
-        const startScreen = document.getElementById('start-screen');
-        const loginScreen = document.getElementById('login-screen');
-
-        if (startScreen) {
-            startScreen.style.display = 'none';
-            startScreen.style.opacity = '0';
-        }
-        if (loginScreen) {
-            loginScreen.style.display = 'none';
-            loginScreen.style.opacity = '0';
-        }
-
-        // Go to Main Menu
-        showScreen('menu-screen');
-
-        // Clean the URL
-        history.replaceState(null, '', 'index.html');
-    }
-});
-         
+window.handleBackRequest = handleBackRequest;
+window.generateJSON = generateJSON;
+window.goHome = goHome;
