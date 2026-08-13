@@ -4,7 +4,7 @@ let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, ses
 let selectedMode = ""; 
 let isQuizActive = false; 
 
-// ========== SUPABASE CONNECTION (ONLY ONCE) ==========
+// ========== SUPABASE CONNECTION ==========
 const SUPABASE_URL = 'https://eiyeimfuogqwitbelcpa.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWVpbWZ1b2dxd2l0YmVsY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MjA0NDAsImV4cCI6MjEwMTk5NjQ0MH0.rLlmoY5icyyWp9o3vqJaMyoFi9H5-uugmYQanAg6N_w';
 
@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }, 1650);
 
-    // Load profile letter
+    // Load profile letter if name exists
     const savedName = localStorage.getItem('mq_name');
     if (savedName) {
         updateProfileCircle(savedName);
@@ -152,23 +152,55 @@ async function handleLogin() {
     if (error) {
         feedback.innerText = error.message;
         feedback.style.color = "red";
+        return;
+    }
+
+    // Check if name already exists in profiles table
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('name')
+        .eq('email', email)
+        .single();
+
+    if (profile && profile.name) {
+        localStorage.setItem('mq_name', profile.name);
+        updateProfileCircle(profile.name);
+        showScreen('menu-screen');
     } else {
-        const name = localStorage.getItem('mq_name');
-        if (!name) {
-            showScreen('name-screen');
-        } else {
-            updateProfileCircle(name);
-            showScreen('menu-screen');
-        }
+        showScreen('name-screen');
     }
 }
 
-function saveUserName() {
+async function saveUserName() {
     const name = document.getElementById('userNameField').value.trim();
     if (!name) {
         alert("Please enter your name");
         return;
     }
+
+    // Get current logged-in user
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+        alert("You are not logged in");
+        return;
+    }
+
+    // Save name + email to profiles table
+    const { error } = await supabaseClient
+        .from('profiles')
+        .upsert({
+            email: user.email,
+            name: name
+        });
+
+    if (error) {
+        console.error(error);
+        alert("Error saving name: " + error.message);
+        return;
+    }
+
+    // Also save in localStorage for quick access
     localStorage.setItem('mq_name', name);
     updateProfileCircle(name);
     showScreen('menu-screen');
