@@ -3,6 +3,7 @@ let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
 let selectedMode = ""; 
 let isQuizActive = false; 
+let currentTerm = "";   // to store the term
 
 // ========== SUPABASE CONNECTION ==========
 const SUPABASE_URL = 'https://eiyeimfuogqwitbelcpa.supabase.co';
@@ -178,7 +179,6 @@ async function saveUserName() {
         return;
     }
 
-    // Get current logged-in user
     const { data: { user } } = await supabaseClient.auth.getUser();
 
     if (!user) {
@@ -186,7 +186,6 @@ async function saveUserName() {
         return;
     }
 
-    // Save name + email to profiles table
     const { error } = await supabaseClient
         .from('profiles')
         .upsert({
@@ -200,7 +199,6 @@ async function saveUserName() {
         return;
     }
 
-    // Also save in localStorage for quick access
     localStorage.setItem('mq_name', name);
     updateProfileCircle(name);
     showScreen('menu-screen');
@@ -213,10 +211,72 @@ function updateProfileCircle(name) {
     }
 }
 
-function showHighScores() {
+// ========== HIGH SCORES ==========
+async function showHighScores() {
     const list = document.getElementById('highscores-list');
-    list.innerHTML = "<p style='text-align:center; font-weight:700;'>No scores yet.<br>Play quizzes to see high scores here.</p>";
+    list.innerHTML = "<p style='text-align:center; font-weight:700;'>Loading...</p>";
     showScreen('highscores-screen');
+
+    const { data, error } = await supabaseClient
+        .from('scores')
+        .select('*')
+        .order('score', { ascending: false })
+        .limit(20);
+
+    if (error) {
+        list.innerHTML = "<p style='text-align:center; color:red;'>Error loading scores</p>";
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        list.innerHTML = "<p style='text-align:center; font-weight:700;'>No scores yet.<br>Play quizzes to see high scores here.</p>";
+        return;
+    }
+
+    let html = "";
+    data.forEach((row, index) => {
+        html += `
+            <div style="background: var(--bg-cyan); border: 3px solid #000; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-weight: 700;">
+                <div style="font-size: 18px; color: var(--primary-blue);">${index + 1}. ${row.name || "Unknown"}</div>
+                <div style="font-size: 14px; margin-top: 4px;">
+                    ${row.subject || ""} · ${row.grade || ""} · ${row.term || ""}<br>
+                    Score: <span style="color: green;">${row.score}%</span>
+                </div>
+            </div>
+        `;
+    });
+
+    list.innerHTML = html;
+}
+
+// ========== SAVE SCORE ==========
+async function saveScoreToSupabase(finalPercentage) {
+    const name = localStorage.getItem('mq_name') || "Unknown";
+    const grade = selectedGrade || "Unknown";
+    const subject = selectedSubj || "Unknown";
+    const term = currentTerm || "Unknown";
+    const medium = "Sinhala Medium";
+    const exam_type = "School Term Test";
+    const paper_type = "Past Papers";
+
+    const { error } = await supabaseClient
+        .from('scores')
+        .insert({
+            name: name,
+            grade: grade,
+            subject: subject,
+            term: term,
+            score: finalPercentage,
+            medium: medium,
+            exam_type: exam_type,
+            paper_type: paper_type
+        });
+
+    if (error) {
+        console.error("Error saving score:", error.message);
+    } else {
+        console.log("Score saved successfully!");
+    }
 }
 
 // 4. QUIZ FLOW
@@ -262,6 +322,7 @@ function toggleSettings(show) {
 
 async function startGame(term) {
     try {
+        currentTerm = term;   // save the term
         const isDhamma = !document.getElementById('subject-screen');
         const dataFile = isDhamma ? "edu.json" : "master_data.json";
 
@@ -392,10 +453,15 @@ function handleEnd(msg, isCorrect) {
             loadQuestion(); 
         } else {
             isQuizActive = false;
+            const finalPercentage = Math.round((score / shuffled.length) * 100);
+
+            // Save score to Supabase
+            saveScoreToSupabase(finalPercentage);
+
             showScreen('result-screen');
             const scoreDisplay = document.getElementById('final-score') || document.getElementById('final-score-val');
             if (scoreDisplay) {
-                scoreDisplay.innerText = Math.round((score / shuffled.length) * 100) + "%";
+                scoreDisplay.innerText = finalPercentage + "%";
             }
         }
     }, 1650);
