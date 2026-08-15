@@ -40,13 +40,11 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }, 1650);
 
-    // Load profile letter
     const savedName = localStorage.getItem('mq_name');
     if (savedName) {
         updateProfileCircle(savedName);
     }
 
-    // Coming from Past Papers
     if (urlParams.get('from') === 'pastpapers') {
         const highestTimeoutId = setTimeout(";");
         for (let i = 0; i < highestTimeoutId; i++) {
@@ -156,7 +154,6 @@ async function handleLogin() {
         return;
     }
 
-    // Check if name exists
     const { data: profile } = await supabaseClient
         .from('profiles')
         .select('name')
@@ -365,7 +362,7 @@ async function startGame(term) {
     }
 }
 
-// ========== FIXED QUIZ CORE ==========
+// ========== QUIZ CORE ==========
 function loadQuestion() {
     isAnswered = false;
 
@@ -438,12 +435,20 @@ function check() {
         }
     }
 
-    if (selected === -1) return;
+    // ========== NEW: No answer selected ==========
+    if (selected === -1) {
+        const feedback = document.getElementById('feedback');
+        if (feedback) {
+            feedback.innerText = "Please select an answer";
+            feedback.style.color = "green";
+        }
+        return;
+    }
 
     clearInterval(timer);
     isAnswered = true;
 
-    const correct = shuffled[current].ans;
+    const correct = shuffled[current].correct;
 
     document.querySelectorAll('input[name="opt"]').forEach(r => r.disabled = true);
 
@@ -461,7 +466,7 @@ function check() {
 }
 
 function highlightCorrect() {
-    const correct = shuffled[current].ans;
+    const correct = shuffled[current].correct;
     const text = document.getElementById(`t${correct}`);
     if (text) {
         text.classList.add('correct-text');
@@ -527,7 +532,7 @@ function generateJSON() {
         document.getElementById('adm-o3').value
     ];
     const ans = parseInt(document.getElementById('adm-cor').value);
-    const output = { q, options, ans };
+    const output = { q, options, correct: ans };
     document.getElementById('json-output').value = JSON.stringify(output) + ",";
 }
 
