@@ -3,7 +3,7 @@ let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
 let selectedMode = ""; 
 let isQuizActive = false; 
-let currentTerm = "";   // to store the term
+let currentTerm = "";
 
 // ========== SUPABASE CONNECTION ==========
 const SUPABASE_URL = 'https://eiyeimfuogqwitbelcpa.supabase.co';
@@ -21,13 +21,13 @@ window.addEventListener('DOMContentLoaded', () => {
     
     setTimeout(() => { 
         const start = document.getElementById('start-screen');
-        if(start) {
+        if (start) {
             start.style.transition = "opacity 0.5s";
             start.style.opacity = "0";
             setTimeout(() => {
                 start.style.display = "none";
 
-                if(screenToLoad === 'mode-screen') {
+                if (screenToLoad === 'mode-screen') {
                     showScreen('mode-screen', true);
                 } else {
                     if (loginScreenExist) {
@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }, 1650);
 
-    // Load profile letter if name exists
+    // Load profile letter
     const savedName = localStorage.getItem('mq_name');
     if (savedName) {
         updateProfileCircle(savedName);
@@ -97,7 +97,7 @@ function showScreen(screenId, isBack = false) {
             s.style.display = "none";
             s.classList.remove('active');
         });
-        if(targetScreen) {
+        if (targetScreen) {
             targetScreen.style.display = "flex";
             targetScreen.classList.add('active');
         }
@@ -132,10 +132,10 @@ async function handleSignup() {
         feedback.innerText = error.message;
         feedback.style.color = "red";
     } else {
-        feedback.innerText = "Account created! Check your email to confirm.";
+        feedback.innerText = "Account created! You can login now.";
         feedback.style.color = "green";
         setTimeout(() => {
-            showScreen('name-screen');
+            showScreen('login-screen');
         }, 1500);
     }
 }
@@ -156,7 +156,7 @@ async function handleLogin() {
         return;
     }
 
-    // Check if name already exists in profiles table
+    // Check if name exists
     const { data: profile } = await supabaseClient
         .from('profiles')
         .select('name')
@@ -255,9 +255,6 @@ async function saveScoreToSupabase(finalPercentage) {
     const grade = selectedGrade || "Unknown";
     const subject = selectedSubj || "Unknown";
     const term = currentTerm || "Unknown";
-    const medium = "Sinhala Medium";
-    const exam_type = "School Term Test";
-    const paper_type = "Past Papers";
 
     const { error } = await supabaseClient
         .from('scores')
@@ -267,9 +264,9 @@ async function saveScoreToSupabase(finalPercentage) {
             subject: subject,
             term: term,
             score: finalPercentage,
-            medium: medium,
-            exam_type: exam_type,
-            paper_type: paper_type
+            medium: "Sinhala Medium",
+            exam_type: "School Term Test",
+            paper_type: "Past Papers"
         });
 
     if (error) {
@@ -309,7 +306,7 @@ function selectGameMode(mode) {
 
 function toggleSettings(show) {
     const overlay = document.getElementById('settings-overlay');
-    if(show) {
+    if (show) {
         overlay.style.display = 'flex';
     } else {
         difficultyTime = parseInt(document.getElementById('diff-select').value);
@@ -322,7 +319,7 @@ function toggleSettings(show) {
 
 async function startGame(term) {
     try {
-        currentTerm = term;   // save the term
+        currentTerm = term;
         const isDhamma = !document.getElementById('subject-screen');
         const dataFile = isDhamma ? "edu.json" : "master_data.json";
 
@@ -368,94 +365,136 @@ async function startGame(term) {
     }
 }
 
-// 5. CORE QUIZ
+// ========== FIXED QUIZ CORE ==========
 function loadQuestion() {
     isAnswered = false;
-    document.getElementById('main-submit').style.visibility = "visible";
-    document.getElementById('feedback').innerText = "";
+
+    const submitBtn = document.getElementById('main-submit');
+    if (submitBtn) submitBtn.style.visibility = "visible";
+
+    const feedback = document.getElementById('feedback');
+    if (feedback) {
+        feedback.innerText = "";
+        feedback.style.color = "";
+    }
 
     const data = shuffled[current];
+    if (!data) {
+        console.error("No question data");
+        return;
+    }
+
     document.getElementById('q-idx').innerText = current + 1;
     document.getElementById('q-text').innerText = data.q;
 
-    for(let i = 0; i < 4; i++) {
-        const r = document.getElementById(`o${i}`);
-        const t = document.getElementById(`t${i}`);
-        t.innerText = data.options[i];
-        t.classList.remove('correct-text', 'wrong-text');
-        r.checked = false; 
-        r.disabled = false;
+    for (let i = 0; i < 4; i++) {
+        const radio = document.getElementById(`o${i}`);
+        const text = document.getElementById(`t${i}`);
+
+        if (radio) {
+            radio.checked = false;
+            radio.disabled = false;
+        }
+        if (text) {
+            text.innerText = data.options[i];
+            text.classList.remove('correct-text', 'wrong-text');
+            text.style.color = "#000";
+        }
     }
+
     startTimer();
 }
 
 function startTimer() {
-    clearInterval(timer); 
+    clearInterval(timer);
+
     const savedTime = localStorage.getItem('master_quiz_time');
-    difficultyTime = savedTime ? parseInt(savedTime) : difficultyTime;
+    difficultyTime = savedTime ? parseInt(savedTime) : (difficultyTime || 5);
     timeLeft = difficultyTime;
 
     const box = document.getElementById('timer-box');
-    box.innerText = `Time: ${timeLeft}s`;
+    if (box) box.innerText = `Time: ${timeLeft}s`;
 
     timer = setInterval(() => {
         timeLeft--;
-        box.innerText = `Time: ${timeLeft}s`;
-        if(timeLeft <= 0) { 
-            clearInterval(timer); 
-            highlightCorrect(); 
-            handleEnd("Time's Up!", false); 
+        if (box) box.innerText = `Time: ${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            highlightCorrect();
+            handleEnd("Time's Up!", false);
         }
     }, 1000);
 }
 
 function check() {
-    if(isAnswered) return;
-    let sel = -1;
-    for(let i = 0; i < 4; i++) { 
-        if(document.getElementById(`o${i}`).checked) sel = i; 
+    if (isAnswered) return;
+
+    let selected = -1;
+    for (let i = 0; i < 4; i++) {
+        if (document.getElementById(`o${i}`).checked) {
+            selected = i;
+            break;
+        }
     }
 
-    if(sel === -1) return;
+    if (selected === -1) return;
 
     clearInterval(timer);
-    const cor = shuffled[current].ans;
-    if(sel === cor) { 
-        score++; 
-        document.getElementById(`t${sel}`).classList.add('correct-text'); 
-        handleEnd("Correct! ✅", true); 
-    } else { 
-        document.getElementById(`t${sel}`).classList.add('wrong-text'); 
-        highlightCorrect(); 
-        handleEnd("Wrong! ❌", false); 
+    isAnswered = true;
+
+    const correct = shuffled[current].ans;
+
+    document.querySelectorAll('input[name="opt"]').forEach(r => r.disabled = true);
+
+    if (selected === correct) {
+        score++;
+        document.getElementById(`t${selected}`).classList.add('correct-text');
+        document.getElementById(`t${selected}`).style.color = "green";
+        handleEnd("Correct! ✅", true);
+    } else {
+        document.getElementById(`t${selected}`).classList.add('wrong-text');
+        document.getElementById(`t${selected}`).style.color = "red";
+        highlightCorrect();
+        handleEnd("Wrong! ❌", false);
     }
 }
 
 function highlightCorrect() {
-    const cor = shuffled[current].ans;
-    document.getElementById(`t${cor}`).classList.add('correct-text');
+    const correct = shuffled[current].ans;
+    const text = document.getElementById(`t${correct}`);
+    if (text) {
+        text.classList.add('correct-text');
+        text.style.color = "green";
+    }
 }
 
 function handleEnd(msg, isCorrect) {
     isAnswered = true;
-    document.getElementById('main-submit').style.visibility = "hidden";
-    document.querySelectorAll('input[name="opt"]').forEach(r => r.disabled = true);
 
-    const f = document.getElementById('feedback');
-    f.innerText = msg; 
-    f.style.color = isCorrect ? "green" : "red";
+    const submitBtn = document.getElementById('main-submit');
+    if (submitBtn) submitBtn.style.visibility = "hidden";
 
-    document.getElementById('live-score').innerText = Math.round((score / (current + 1)) * 100) + "%";
+    const feedback = document.getElementById('feedback');
+    if (feedback) {
+        feedback.innerText = msg;
+        feedback.style.color = isCorrect ? "green" : "red";
+    }
+
+    const liveScore = document.getElementById('live-score');
+    if (liveScore) {
+        liveScore.innerText = Math.round((score / (current + 1)) * 100) + "%";
+    }
 
     setTimeout(() => {
         current++;
-        if(current < shuffled.length) {
-            loadQuestion(); 
+
+        if (current < shuffled.length) {
+            loadQuestion();
         } else {
             isQuizActive = false;
             const finalPercentage = Math.round((score / shuffled.length) * 100);
 
-            // Save score to Supabase
             saveScoreToSupabase(finalPercentage);
 
             showScreen('result-screen');
@@ -464,16 +503,17 @@ function handleEnd(msg, isCorrect) {
                 scoreDisplay.innerText = finalPercentage + "%";
             }
         }
-    }, 1650);
+    }, 1600);
 }
 
 function handleBackRequest() {
-    if(confirm("Exit Quiz?")) {
+    if (confirm("Exit Quiz?")) {
         isQuizActive = false;
+        clearInterval(timer);
         if (document.getElementById('subject-screen')) {
             showScreen('subject-screen');
         } else {
-            location.reload();
+            showScreen('menu-screen');
         }
     }
 }
