@@ -40,11 +40,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }, 1650);
 
+    // Load profile letter
     const savedName = localStorage.getItem('mq_name');
     if (savedName) {
         updateProfileCircle(savedName);
     }
 
+    // Coming from Past Papers
     if (urlParams.get('from') === 'pastpapers') {
         const highestTimeoutId = setTimeout(";");
         for (let i = 0; i < highestTimeoutId; i++) {
@@ -304,12 +306,25 @@ function selectGameMode(mode) {
 function toggleSettings(show) {
     const overlay = document.getElementById('settings-overlay');
     if (show) {
+        // Load current saved values when opening settings
+        const savedTime = localStorage.getItem('master_quiz_time');
+        const savedLimit = localStorage.getItem('master_quiz_limit');
+
+        if (savedTime) {
+            document.getElementById('diff-select').value = savedTime;
+        }
+        if (savedLimit) {
+            document.getElementById('limit-select').value = savedLimit;
+        }
+
         overlay.style.display = 'flex';
     } else {
         difficultyTime = parseInt(document.getElementById('diff-select').value);
         sessionLimit = parseInt(document.getElementById('limit-select').value);
+
         localStorage.setItem('master_quiz_time', difficultyTime);
         localStorage.setItem('master_quiz_limit', sessionLimit);
+
         overlay.style.display = 'none';
     }
 }
@@ -317,6 +332,14 @@ function toggleSettings(show) {
 async function startGame(term) {
     try {
         currentTerm = term;
+
+        // Always load the latest settings when starting a quiz
+        const savedTime = localStorage.getItem('master_quiz_time');
+        const savedLimit = localStorage.getItem('master_quiz_limit');
+
+        if (savedTime) difficultyTime = parseInt(savedTime);
+        if (savedLimit) sessionLimit = parseInt(savedLimit);
+
         const isDhamma = !document.getElementById('subject-screen');
         const dataFile = isDhamma ? "edu.json" : "master_data.json";
 
@@ -346,6 +369,7 @@ async function startGame(term) {
             return;
         }
 
+        // Apply the question limit here
         shuffled = [...questions].sort(() => Math.random() - 0.5).slice(0, sessionLimit);
         current = 0; 
         score = 0;
@@ -435,7 +459,7 @@ function check() {
         }
     }
 
-    // ========== NEW: No answer selected ==========
+    // No answer selected
     if (selected === -1) {
         const feedback = document.getElementById('feedback');
         if (feedback) {
