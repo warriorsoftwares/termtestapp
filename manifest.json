@@ -1,6 +1,6 @@
 {
-  "name": "Master's Quizzes",
-  "short_name": "MasterQuiz",
+  "name": "Master's Quizzes Pro",
+  "short_name": "GL26",
   "description": "Free interactive quizzes for Sri Lankan students. Power of BCG!",
   "start_url": "/index.html",
   "display": "standalone",
