@@ -576,3 +576,8 @@ window.check = check;
 window.handleBackRequest = handleBackRequest;
 window.generateJSON = generateJSON;
 window.goHome = goHome;
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js")
+    .then(() => console.log("Service Worker registered"))
+    .catch((err) => console.log("SW error:", err));
+}
