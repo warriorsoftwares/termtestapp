@@ -583,27 +583,36 @@ if ("serviceWorker" in navigator) {
 }
 // ========== PWA INSTALL POPUP ==========
 let deferredPrompt = null;
+let installPopupReady = false;
 
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
+    installPopupReady = true;
+});
 
-    // Show popup only if user hasn't chosen "Later" recently
+// Show popup only after login (when menu screen is shown)
+function showInstallPopupIfNeeded() {
+    if (!installPopupReady || !deferredPrompt) return;
+
     const laterTime = localStorage.getItem("install_later");
     if (laterTime && Date.now() - parseInt(laterTime) < 3 * 24 * 60 * 60 * 1000) {
         return; // Don't show for 3 days
     }
 
+    // Already installed?
+    if (window.matchMedia("(display-mode: standalone)").matches) return;
+
     const popup = document.getElementById("install-popup");
-    if (popup) {
-        popup.style.display = "flex";
-    }
-});
+    if (popup) popup.style.display = "flex";
+}
+
+// Call this after successful login / when going to menu-screen
+// Example: inside your login success code, after showScreen('menu-screen')
+// showInstallPopupIfNeeded();
 
 document.getElementById("install-btn")?.addEventListener("click", async () => {
-    const popup = document.getElementById("install-popup");
-    if (popup) popup.style.display = "none";
-
+    hideInstallPopup();
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
@@ -613,14 +622,20 @@ document.getElementById("install-btn")?.addEventListener("click", async () => {
 });
 
 document.getElementById("later-btn")?.addEventListener("click", () => {
-    const popup = document.getElementById("install-popup");
-    if (popup) popup.style.display = "none";
+    hideInstallPopup();
     localStorage.setItem("install_later", Date.now().toString());
 });
 
-// Optional: hide popup if already installed
-window.addEventListener("appinstalled", () => {
+document.getElementById("install-close")?.addEventListener("click", () => {
+    hideInstallPopup();
+});
+
+function hideInstallPopup() {
     const popup = document.getElementById("install-popup");
     if (popup) popup.style.display = "none";
+}
+
+window.addEventListener("appinstalled", () => {
+    hideInstallPopup();
     deferredPrompt = null;
 });
