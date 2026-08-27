@@ -11,6 +11,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// ========== PWA INSTALL POPUP VARIABLES ==========
+let deferredPrompt = null;
+let installPopupReady = false;
+
 // 1. INITIALIZATION
 window.addEventListener('DOMContentLoaded', () => { 
     const urlParams = new URLSearchParams(window.location.search);
@@ -18,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const loginScreenExist = document.getElementById('login-screen');
 
     history.replaceState({ screen: loginScreenExist ? 'login-screen' : 'dhamma-screen' }, "", "");
-    
+
     setTimeout(() => { 
         const start = document.getElementById('start-screen');
         if (start) {
@@ -166,6 +170,7 @@ async function handleLogin() {
         localStorage.setItem('mq_name', profile.name);
         updateProfileCircle(profile.name);
         showScreen('menu-screen');
+        showInstallPopupIfNeeded();
     } else {
         showScreen('name-screen');
     }
@@ -201,6 +206,7 @@ async function saveUserName() {
     localStorage.setItem('mq_name', name);
     updateProfileCircle(name);
     showScreen('menu-screen');
+    showInstallPopupIfNeeded();
 }
 
 function updateProfileCircle(name) {
@@ -306,7 +312,6 @@ function selectGameMode(mode) {
 function toggleSettings(show) {
     const overlay = document.getElementById('settings-overlay');
     if (show) {
-        // Load current saved values when opening settings
         const savedTime = localStorage.getItem('master_quiz_time');
         const savedLimit = localStorage.getItem('master_quiz_limit');
 
@@ -333,7 +338,6 @@ async function startGame(term) {
     try {
         currentTerm = term;
 
-        // Always load the latest settings when starting a quiz
         const savedTime = localStorage.getItem('master_quiz_time');
         const savedLimit = localStorage.getItem('master_quiz_limit');
 
@@ -369,7 +373,6 @@ async function startGame(term) {
             return;
         }
 
-        // Apply the question limit here
         shuffled = [...questions].sort(() => Math.random() - 0.5).slice(0, sessionLimit);
         current = 0; 
         score = 0;
@@ -459,7 +462,6 @@ function check() {
         }
     }
 
-    // No answer selected
     if (selected === -1) {
         const feedback = document.getElementById('feedback');
         if (feedback) {
@@ -560,6 +562,63 @@ function generateJSON() {
     document.getElementById('json-output').value = JSON.stringify(output) + ",";
 }
 
+// ========== PWA INSTALL POPUP ==========
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installPopupReady = true;
+});
+
+function showInstallPopupIfNeeded() {
+    if (!installPopupReady || !deferredPrompt) return;
+
+    const laterTime = localStorage.getItem("install_later");
+    if (laterTime && Date.now() - parseInt(laterTime) < 3 * 24 * 60 * 60 * 1000) {
+        return;
+    }
+
+    if (window.matchMedia("(display-mode: standalone)").matches) return;
+
+    const popup = document.getElementById("install-popup");
+    if (popup) popup.style.display = "flex";
+}
+
+function hideInstallPopup() {
+    const popup = document.getElementById("install-popup");
+    if (popup) popup.style.display = "none";
+}
+
+document.addEventListener("click", async (e) => {
+    if (e.target.id === "install-btn") {
+        hideInstallPopup();
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log("Install outcome:", outcome);
+            deferredPrompt = null;
+        }
+    }
+
+    if (e.target.id === "later-btn" || e.target.id === "install-close") {
+        hideInstallPopup();
+        if (e.target.id === "later-btn") {
+            localStorage.setItem("install_later", Date.now().toString());
+        }
+    }
+});
+
+window.addEventListener("appinstalled", () => {
+    hideInstallPopup();
+    deferredPrompt = null;
+});
+
+// Service Worker
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch((err) => console.log("SW error:", err));
+}
+
 // 6. GLOBAL WINDOW MAPPINGS
 window.showScreen = showScreen;
 window.handleLogin = handleLogin;
@@ -576,66 +635,4 @@ window.check = check;
 window.handleBackRequest = handleBackRequest;
 window.generateJSON = generateJSON;
 window.goHome = goHome;
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js")
-    .then(() => console.log("Service Worker registered"))
-    .catch((err) => console.log("SW error:", err));
-}
-// ========== PWA INSTALL POPUP ==========
-let deferredPrompt = null;
-let installPopupReady = false;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installPopupReady = true;
-});
-
-// Show popup only after login (when menu screen is shown)
-function showInstallPopupIfNeeded() {
-    if (!installPopupReady || !deferredPrompt) return;
-
-    const laterTime = localStorage.getItem("install_later");
-    if (laterTime && Date.now() - parseInt(laterTime) < 3 * 24 * 60 * 60 * 1000) {
-        return; // Don't show for 3 days
-    }
-
-    // Already installed?
-    if (window.matchMedia("(display-mode: standalone)").matches) return;
-
-    const popup = document.getElementById("install-popup");
-    if (popup) popup.style.display = "flex";
-}
-
-// Call this after successful login / when going to menu-screen
-// Example: inside your login success code, after showScreen('menu-screen')
-// showInstallPopupIfNeeded();
-
-document.getElementById("install-btn")?.addEventListener("click", async () => {
-    hideInstallPopup();
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        console.log("Install outcome:", outcome);
-        deferredPrompt = null;
-    }
-});
-
-document.getElementById("later-btn")?.addEventListener("click", () => {
-    hideInstallPopup();
-    localStorage.setItem("install_later", Date.now().toString());
-});
-
-document.getElementById("install-close")?.addEventListener("click", () => {
-    hideInstallPopup();
-});
-
-function hideInstallPopup() {
-    const popup = document.getElementById("install-popup");
-    if (popup) popup.style.display = "none";
-}
-
-window.addEventListener("appinstalled", () => {
-    hideInstallPopup();
-    deferredPrompt = null;
-});
+window.showInstallPopupIfNeeded = showInstallPopupIfNeeded;
