@@ -2,20 +2,21 @@
   "name": "Masters Quizzes Pro",
   "short_name": "GL26",
   "description": "Free interactive quizzes for Sri Lankan students. Power of BCG!",
-  "start_url": "/index.html",
+  "start_url": "/termtestapp/index.html",
+  "scope": "/termtestapp/",
   "display": "standalone",
   "background_color": "#40fff5",
   "theme_color": "#1c15ff",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "/termtestapp/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "/termtestapp/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
