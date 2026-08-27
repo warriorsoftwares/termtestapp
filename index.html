@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1c15ff">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="MasterQuiz">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1c15ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GL26">
     <meta name="google-site-verification" content="masters quizzes sri lanka" />
     <meta name="description" content="Play Master's Quizzes! Test your knowledge with our free interactive quizzes. Challenge yourself and see your score instantly.For Sri Lankans only.Power of BCG!">
     <meta name="keywords" content="masters quizzes pro,master's quizzes,masters quizzes sri lanka,master quizzes,master quiz,masterquiz,masters quizzes pro in sri lanka,quiz website,super quizzes,master's quizzes pro srilanka" /> 
-    <title>Master's Quizzes</title>
+    <title>Masters Quizzes Pro</title>
     <link rel="canonical" href="https://github.io" />
-    <link rel="preload" href="globe.png" as="png">
+    <link rel="preload" href="globe.png" as="image">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
@@ -192,32 +192,34 @@
         <h1 class="q-header-title no-shadow-title">High Scores</h1>
         <div id="highscores-list" style="width: 90%; max-width: 500px; margin-top: 20px; text-align: left;"></div>
     </div>
-<!-- INSTALL APP POPUP -->
-<div id="install-popup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:99999; align-items:center; justify-content:center; padding:20px;">
-    <div style="position:relative; background:#40fff5; border:4px solid #004d40; border-radius:22px; padding:28px 22px; max-width:320px; width:100%; text-align:center; box-shadow:6px 6px 0 rgba(0,0,0,0.25);">
-        
-        <!-- X Close Button -->
-        <button id="install-close" style="position:absolute; top:10px; left:12px; width:32px; height:32px; border-radius:50%; border:3px solid #004d40; background:#f8ff2b; color:#1c15ff; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1;">
-            ✕
-        </button>
 
-        <div style="font-size:42px; margin-bottom:10px;">📱</div>
-        <h2 style="color:#1c15ff; font-size:22px; margin-bottom:8px; font-weight:900;">Install GL26</h2>
-        <p style="font-size:14px; font-weight:700; color:#333; margin-bottom:22px; line-height:1.4;">
-            Install our app for a better experience.<br>
-            Play quizzes faster like a real app!
-        </p>
+    <!-- INSTALL APP POPUP -->
+    <div id="install-popup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:99999; align-items:center; justify-content:center; padding:20px;">
+        <div style="position:relative; background:#40fff5; border:4px solid #004d40; border-radius:22px; padding:32px 24px 24px; max-width:320px; width:100%; text-align:center; box-shadow:6px 6px 0 rgba(0,0,0,0.25);">
 
-        <button id="install-btn" style="display:block; width:100%; height:50px; margin-bottom:12px; background:linear-gradient(145deg,#f8ff2b,#e1e800); border:4px solid #004d40; border-radius:40px; font-size:18px; font-weight:900; color:#1c15ff; cursor:pointer; box-shadow:3px 3px 0 #004d40;">
-            Install
-        </button>
+            <!-- X Close Button -->
+            <button id="install-close" style="position:absolute; top:10px; left:12px; width:32px; height:32px; border-radius:50%; border:3px solid #004d40; background:#f8ff2b; color:#1c15ff; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1;">
+                ✕
+            </button>
 
-        <button id="later-btn" style="display:block; width:100%; height:46px; background:transparent; border:3px solid #1c15ff; border-radius:40px; font-size:16px; font-weight:800; color:#1c15ff; cursor:pointer;">
-            Later
-        </button>
+            <h2 style="color:#1c15ff; font-size:22px; margin:10px 0 12px; font-weight:900; line-height:1.3;">
+                Install our own quiz app
+            </h2>
+            <p style="font-size:14px; font-weight:700; color:#333; margin-bottom:24px; line-height:1.45;">
+                Get faster access and a better experience.<br>
+                Play quizzes like a real app!
+            </p>
+
+            <button id="install-btn" style="display:block; width:100%; height:52px; margin-bottom:12px; background:linear-gradient(145deg,#f8ff2b,#e1e800); border:4px solid #004d40; border-radius:40px; font-size:18px; font-weight:900; color:#1c15ff; cursor:pointer; box-shadow:3px 3px 0 #004d40;">
+                Install
+            </button>
+
+            <button id="later-btn" style="display:block; width:100%; height:46px; background:transparent; border:3px solid #1c15ff; border-radius:40px; font-size:16px; font-weight:800; color:#1c15ff; cursor:pointer;">
+                Later
+            </button>
+        </div>
     </div>
-</div>
-    <script src="script.js"></script>
 
+    <script src="script.js"></script>
 </body>
 </html>
