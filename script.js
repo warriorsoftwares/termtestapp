@@ -44,13 +44,11 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }, 1650);
 
-    // Load profile letter
     const savedName = localStorage.getItem('mq_name');
     if (savedName) {
         updateProfileCircle(savedName);
     }
 
-    // Coming from Past Papers
     if (urlParams.get('from') === 'pastpapers') {
         const highestTimeoutId = setTimeout(";");
         for (let i = 0; i < highestTimeoutId; i++) {
@@ -74,7 +72,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Browser closing protection
 window.addEventListener('beforeunload', (e) => {
     if (isQuizActive) {
         e.preventDefault();
@@ -612,14 +609,14 @@ window.addEventListener("appinstalled", () => {
     deferredPrompt = null;
 });
 
-// Service Worker
+// Service Worker (correct path)
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/sw.js")
+    navigator.serviceWorker.register("/termtestapp/sw.js")
         .then(() => console.log("Service Worker registered"))
         .catch((err) => console.log("SW error:", err));
 }
 
-// 6. GLOBAL WINDOW MAPPINGS
+// GLOBAL WINDOW MAPPINGS
 window.showScreen = showScreen;
 window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
