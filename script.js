@@ -581,3 +581,46 @@ if ("serviceWorker" in navigator) {
     .then(() => console.log("Service Worker registered"))
     .catch((err) => console.log("SW error:", err));
 }
+// ========== PWA INSTALL POPUP ==========
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // Show popup only if user hasn't chosen "Later" recently
+    const laterTime = localStorage.getItem("install_later");
+    if (laterTime && Date.now() - parseInt(laterTime) < 3 * 24 * 60 * 60 * 1000) {
+        return; // Don't show for 3 days
+    }
+
+    const popup = document.getElementById("install-popup");
+    if (popup) {
+        popup.style.display = "flex";
+    }
+});
+
+document.getElementById("install-btn")?.addEventListener("click", async () => {
+    const popup = document.getElementById("install-popup");
+    if (popup) popup.style.display = "none";
+
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log("Install outcome:", outcome);
+        deferredPrompt = null;
+    }
+});
+
+document.getElementById("later-btn")?.addEventListener("click", () => {
+    const popup = document.getElementById("install-popup");
+    if (popup) popup.style.display = "none";
+    localStorage.setItem("install_later", Date.now().toString());
+});
+
+// Optional: hide popup if already installed
+window.addEventListener("appinstalled", () => {
+    const popup = document.getElementById("install-popup");
+    if (popup) popup.style.display = "none";
+    deferredPrompt = null;
+});
