@@ -1,363 +1,268 @@
-/* 
-   MASTER'S QUIZZES PRO - COMPLETE STYLESHEET 
-   Theme: Cyan, Yellow, and Royal Gold 
-*/
-
-:root {
+/* ========== 8 THEMES ========== */
+:root, [data-theme="classic"] {
     --bg-cyan: #40fff5;
+    --bg-card: rgba(255,255,255,0.30);
     --accent-yellow: #f8ff2b;
+    --accent2: #e1e800;
     --primary-blue: #1c15ff;
+    --btn-border: #004d40;
+    --text-main: #000000;
     --success-green: #229400;
     --error-red: #ff000a;
-    --royal-gold: #FFD700; 
-    --underline-pink: #FF1493; 
-    --btn-border: #004d40;
+    --underline-pink: #FF1493;
+    --input-bg: #ffffff;
+    --muted: #333333;
 }
 
-/* 1. Base Setup - only overflow fixed, sizes kept original */
-body { 
-    background-color: var(--bg-cyan); 
-    margin: 0; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    overflow-x: hidden;
-    overflow-y: auto;
-    touch-action: manipulation;
+[data-theme="ocean"] {
+    --bg-cyan: #e0f7fa;
+    --bg-card: #ffffff;
+    --accent-yellow: #00bcd4;
+    --accent2: #0097a7;
+    --primary-blue: #01579b;
+    --btn-border: #006064;
+    --text-main: #00363a;
+    --success-green: #2e7d32;
+    --error-red: #c62828;
+    --underline-pink: #e91e63;
+    --input-bg: #f5f5f5;
+    --muted: #455a64;
 }
 
-/* 2. Animations */
-@keyframes rotateNova { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-@keyframes fadeInSlide {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+[data-theme="sunset"] {
+    --bg-cyan: #fff3e0;
+    --bg-card: #ffffff;
+    --accent-yellow: #ff9800;
+    --accent2: #f57c00;
+    --primary-blue: #e65100;
+    --btn-border: #bf360c;
+    --text-main: #3e2723;
+    --success-green: #558b2f;
+    --error-red: #c62828;
+    --underline-pink: #d81b60;
+    --input-bg: #fff8e1;
+    --muted: #5d4037;
 }
 
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+[data-theme="forest"] {
+    --bg-cyan: #e8f5e9;
+    --bg-card: #ffffff;
+    --accent-yellow: #66bb6a;
+    --accent2: #43a047;
+    --primary-blue: #1b5e20;
+    --btn-border: #2e7d32;
+    --text-main: #1b5e20;
+    --success-green: #2e7d32;
+    --error-red: #c62828;
+    --underline-pink: #ad1457;
+    --input-bg: #f1f8e9;
+    --muted: #33691e;
 }
 
-/* 3. Screen Logic */
-.screen { 
-    display: none; 
-    position: fixed; 
-    inset: 0; 
-    background: var(--bg-cyan); 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    z-index: 4000;
-    overflow-y: auto; 
-    padding: 20px 0;
+[data-theme="dark"] {
+    --bg-cyan: #0a0a0a;
+    --bg-card: #161616;
+    --accent-yellow: #f8ff2b;
+    --accent2: #e1e800;
+    --primary-blue: #1c15ff;
+    --btn-border: #40fff5;
+    --text-main: #ffffff;
+    --success-green: #69f0ae;
+    --error-red: #ff5252;
+    --underline-pink: #ff80ab;
+    --input-bg: #222222;
+    --muted: #e0e0e0;
 }
 
-.screen.active {
+[data-theme="purple"] {
+    --bg-cyan: #f3e5f5;
+    --bg-card: #ffffff;
+    --accent-yellow: #ab47bc;
+    --accent2: #8e24aa;
+    --primary-blue: #6a1b9a;
+    --btn-border: #4a148c;
+    --text-main: #4a148c;
+    --success-green: #2e7d32;
+    --error-red: #c62828;
+    --underline-pink: #d500f9;
+    --input-bg: #fce4ec;
+    --muted: #6a1b9a;
+}
+
+[data-theme="candy"] {
+    --bg-cyan: #fce4ec;
+    --bg-card: #ffffff;
+    --accent-yellow: #f06292;
+    --accent2: #ec407a;
+    --primary-blue: #ad1457;
+    --btn-border: #c2185b;
+    --text-main: #4a148c;
+    --success-green: #43a047;
+    --error-red: #e53935;
+    --underline-pink: #d500f9;
+    --input-bg: #f3e5f5;
+    --muted: #880e4f;
+}
+
+[data-theme="midnight"] {
+    --bg-cyan: #0d1b2a;
+    --bg-card: #1b263b;
+    --accent-yellow: #00d4ff;
+    --accent2: #0096c7;
+    --primary-blue: #90e0ef;
+    --btn-border: #00d4ff;
+    --text-main: #e0e1dd;
+    --success-green: #80ed99;
+    --error-red: #ff6b6b;
+    --underline-pink: #ff85a1;
+    --input-bg: #415a77;
+    --muted: #adb5bd;
+}
+
+body {
+    background-color: var(--bg-cyan) !important;
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] .btn-menu,
+[data-theme="dark"] .btn-submit {
+    color: #1c15ff !important;
+    border-color: #40fff5 !important;
+}
+
+/* Theme buttons inside settings */
+#theme-buttons {
     display: flex;
-    animation: fadeInSlide 0.4s ease-out forwards;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 10px 0 18px;
 }
 
-.screen.fade-out {
-    animation: fadeOut 0.3s ease-in forwards;
-}
-
-/* 4. Start Screen & Globe */
-#start-screen { 
-    position: fixed; 
-    inset: 0; 
-    background: var(--bg-cyan); 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: flex-start; 
-    z-index: 9999; 
-    padding-top: 50px; 
-}
-
-.start-title { 
-    font-family: 'Georgia', serif; 
-    font-size: clamp(30px, 4vw, 54px); 
-    font-weight: 900; 
-    color: var(--royal-gold); 
-    text-align: center; 
-    text-decoration: underline double var(--underline-pink); 
-    text-underline-offset: 15px; 
-}
-
-#nova-globe { 
-    width: clamp(280px, 35vw, 450px); 
-    height: clamp(280px, 35vw, 450px); 
-    margin-top: 80px; 
-    border-radius: 50%; 
-    background: url('globe.jpg') center/cover no-repeat; 
-    box-shadow: 0 0 30px rgba(0,0,0,0.25); 
-    animation: rotateNova 25s linear infinite; 
-}
-
-/* 5. Navigation & Headers */
-.top-nav { 
-    position: absolute; 
-    top: 20px; 
-    width: 90%; 
-    display: flex; 
-    justify-content: flex-start;
-}
-
-.btn-nav-icon { 
-    background: var(--accent-yellow); 
-    border: 3px solid var(--btn-border); 
-    border-radius: 12px; 
-    width: clamp(42px, 5vw, 65px); 
-    height: clamp(42px, 5vw, 65px); 
-    font-size: clamp(20px, 2.5vw, 32px); 
-    cursor: pointer; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    box-shadow: 2px 2px 0px var(--btn-border); 
-}
-
-.q-header-title { 
-    font-size: clamp(28px, 3.5vw, 48px); 
-    color: var(--primary-blue); 
-    font-weight: 900; 
-    text-align: center; 
-    margin-bottom: 20px; 
-}
-
-.no-shadow-title { 
-    font-family: 'Georgia', serif; 
-    text-decoration: underline double var(--underline-pink);
-    text-transform: capitalize;
-    text-underline-offset: 10px; 
-}
-
-/* 6. Buttons */
-.btn-menu { 
-    display: block; 
-    margin: 12px auto; 
-    text-transform: capitalize;
-    width: clamp(280px, 35vw, 450px); 
-    height: clamp(58px, 7vw, 90px); 
-    background: linear-gradient(145deg, var(--accent-yellow), #e1e800); 
-    border: 4px solid var(--btn-border); 
-    border-radius: 50px; 
-    font-size: clamp(20px, 2.5vw, 32px); 
-    color: var(--primary-blue); 
-    font-weight: 900; 
-    box-shadow: 4px 4px 0px var(--btn-border); 
-    cursor: pointer; 
-    transition: transform 0.1s; 
-}
-
-.btn-menu:active { transform: scale(0.96); }
-
-.no-shadow-btn { box-shadow: none !important; }
-
-/* 7. Quiz UI Components */
-.stats-bar { 
-    width: 85%; 
-    display: flex; 
-    justify-content: space-between; 
-    font-weight: 900; 
-    font-size: clamp(18px, 2.2vw, 28px); 
-    margin-bottom: 15px; 
-}
-
-.q-row { 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    width: 90%; 
-    margin-bottom: 20px; 
-}
-
-.q-circle { 
-    width: clamp(55px, 7vw, 85px); 
-    height: clamp(55px, 7vw, 85px); 
-    background: var(--accent-yellow); 
-    border: 3.5px solid var(--primary-blue); 
-    border-radius: 50%; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    font-size: clamp(24px, 3vw, 38px); 
-    font-weight: 900; 
-    flex-shrink: 0; 
-}
-
-.q-box { 
-    flex-grow: 1; 
-    min-height: 60px; 
-    background: var(--bg-cyan); 
-    border: 3px solid #000; 
-    border-radius: 15px; 
-    display: flex; 
-    align-items: center; 
-    padding: 12px 15px; 
-    font-weight: 700; 
-    font-size: clamp(16px, 2vw, 26px); 
-    line-height: 1.4;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* 8. Options UI */
-.opt-row { 
-    display: flex; 
-    align-items: center; 
-    width: 85%; 
-    margin-bottom: 10px; 
-    padding: 14px; 
-    border: 3px solid #000; 
-    border-radius: 18px; 
-    background-color: transparent; 
-    cursor: pointer; 
-    transition: background 0.2s; 
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.opt-row input[type="radio"] { 
-    margin-right: 15px; 
-    transform: scale(1.6); 
-}
-
-.yasiru { 
-    font-size: clamp(18px, 2.2vw, 28px); 
-    font-weight: 900; 
-    color: #000; 
-    transition: color 0.3s ease; 
-}
-
-.correct-text { color: var(--success-green) !important; }
-.wrong-text { color: var(--error-red) !important; }
-
-/* 9. Feedback & Submit */
-#feedback { 
-    min-height: 35px; 
-    width: 90%; 
-    text-align: center; 
-    font-size: clamp(22px, 2.8vw, 36px); 
-    font-weight: 900; 
-    margin: 10px 0; 
-}
-
-.btn-submit { 
-    display: block; 
-    margin: 10px auto; 
-    width: clamp(200px, 25vw, 320px); 
-    height: clamp(55px, 7vw, 85px); 
-    background: var(--accent-yellow); 
-    border: 4px solid var(--success-green); 
-    border-radius: 40px; 
-    font-size: clamp(22px, 2.8vw, 34px); 
-    color: #1a008f; 
-    font-weight: 900; 
+.theme-btn {
+    padding: 8px 12px;
+    border-radius: 25px;
+    border: 3px solid #222;
+    background: #f8ff2b;
+    color: #1c15ff;
+    font-weight: 800;
+    font-size: 12px;
     cursor: pointer;
-    text-transform: capitalize; 
+    box-shadow: 2px 2px 0 #222;
 }
 
-/* 10. Result Screen */
-#final-score { 
-    font-size: clamp(70px, 9vw, 120px); 
-    font-weight: 900; 
-    color: var(--success-green); 
-    border: 8px double #000; 
-    padding: 20px 30px; 
-    border-radius: 20px; 
+.theme-btn.active {
+    background: #1c15ff;
+    color: #f8ff2b;
+    border-color: #f8ff2b;
+    box-shadow: 0 0 0 3px #FF1493;
+}
+
+.settings-title {
+    color: var(--success-green);
+    text-decoration: double underline var(--underline-pink);
+    text-underline-offset: 18px;
+    font-size: 45.5px;
+}
+
+/* Install popup */
+#install-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.install-card {
+    position: relative;
     background: var(--bg-cyan);
-}
-
-/* 11. Overlays & Cards */
-.overlay { 
-    display: none; 
-    position: fixed; 
-    inset: 0; 
-    background: rgba(0,0,0,0.5); 
-    z-index: 5000; 
-    justify-content: center; 
-    align-items: center; 
-}
-
-.settings-card { 
-    background: var(--bg-cyan); 
-    border: 4px solid #000; 
-    border-radius: 25px; 
-    width: clamp(300px, 40vw, 500px); 
-    padding: 25px; 
-    box-shadow: 8px 8px 0px rgba(0,0,0,0.2); 
-}
-
-.custom-select {
+    border: 4px solid var(--btn-border);
+    border-radius: 22px;
+    padding: 32px 24px 24px;
+    max-width: 320px;
     width: 100%;
-    height: clamp(45px, 6vw, 75px);
+    text-align: center;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+}
+
+#install-close {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid var(--btn-border);
     background: var(--accent-yellow);
-    border: 3px solid #000;
-    border-radius: 12px;
-    font-size: clamp(18px, 2.2vw, 28px);
-    font-weight: 700;
-    padding: 5px;
-    margin-top: 10px;
+    color: var(--primary-blue);
+    font-size: 18px;
+    font-weight: 900;
     cursor: pointer;
 }
 
-/* 12. Input Fields (Login & Admin) */
-input[type="text"], input[type="password"], input[type="email"], textarea {
-    width: 90%;
-    height: clamp(45px, 6vw, 75px);
-    margin-bottom: 15px;
-    border: 3px solid var(--btn-border);
-    border-radius: 12px;
-    padding: 0 15px;
-    font-size: clamp(17px, 2.2vw, 26px);
-    font-weight: 700;
-    background: #fff;
+#install-btn {
+    display: block;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 12px;
+    background: linear-gradient(145deg, var(--accent-yellow), var(--accent2));
+    border: 4px solid var(--btn-border);
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    cursor: pointer;
 }
 
-textarea { height: clamp(80px, 10vw, 150px); padding: 10px; font-family: monospace; }
+#later-btn {
+    display: block;
+    width: 100%;
+    height: 46px;
+    background: transparent;
+    border: 3px solid var(--primary-blue);
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary-blue);
+    cursor: pointer;
+}
 
-/* 13. Grids */
 .grade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    width: 90%;
-    margin-top: 10px;
 }
 
-/* Mobile Scrollbar fix */
-.subject-list::-webkit-scrollbar { width: 0; background: transparent; }
-
-/* Click Effect for Options */
-.opt-row:active { background-color: rgba(0,0,0,0.05); }
-
-.xxx{
-    display: none;
-}
-
-.hj{
-    color: #1523ff;
-    font-size: clamp(16.5px, 2vw, 26px);
-}
-/* Profile Circle */
-#profile-circle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    background: var(--accent-yellow);
-    border: 3px solid var(--btn-border);
-    border-radius: 50%;
+.subject-list {
+    overflow-y: auto;
+    width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: 900;
-    color: var(--primary-blue);
-    box-shadow: 2px 2px 0 var(--btn-border);
-    cursor: pointer;
-    z-index: 10;
+    padding-bottom: 20px;
+}
+
+#options-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#highscores-list {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+#final-score {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 20px 0;
 }
