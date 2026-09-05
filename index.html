@@ -8,25 +8,20 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="GL26">
-    <meta name="google-site-verification" content="masters quizzes sri lanka" />
-    <meta name="description" content="Play Master's Quizzes! Test your knowledge with our free interactive quizzes. Challenge yourself and see your score instantly.For Sri Lankans only.Power of BCG!">
-    <meta name="keywords" content="masters quizzes pro,master's quizzes,masters quizzes sri lanka,master quizzes,master quiz,masterquiz,masters quizzes pro in sri lanka,quiz website,super quizzes,master's quizzes pro srilanka" /> 
+    <meta name="description" content="Play Master's Quizzes! Test your knowledge with our free interactive quizzes. For Sri Lankans only. Power of BCG!">
     <title>Masters Quizzes Pro</title>
-    <link rel="canonical" href="https://github.io" />
-    <link rel="preload" href="globe.png" as="image">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 </head>
-<body>
+<body data-theme="classic">
 
-    <!-- 1. START SCREEN -->
+    <!-- START SCREEN -->
     <div id="start-screen">
         <h1 class="start-title">MASTER'S QUIZZES</h1>
         <div id="nova-globe"></div>
     </div>
 
-    <!-- 2. CREATE ACCOUNT SCREEN -->
+    <!-- CREATE ACCOUNT -->
     <div id="create-account-screen" class="screen">
         <h1 class="q-header-title no-shadow-title">Create Account</h1>
         <div style="width: 85%; display: flex; flex-direction: column; align-items: center;">
@@ -34,28 +29,28 @@
             <input type="password" id="signupPassword" placeholder="Password">
             <input type="password" id="signupConfirm" placeholder="Confirm Password">
             <button class="btn-menu" onclick="handleSignup()" style="width: 100%;">Create Account</button>
-            <p style="margin-top: 15px; font-weight: 700;">Already have an account? 
+            <p style="margin-top: 15px; font-weight: 700;">Already have an account?
                 <span style="color: var(--primary-blue); text-decoration: underline; cursor: pointer;" onclick="showScreen('login-screen')">Login</span>
             </p>
         </div>
         <p id="signup-feedback"></p>
     </div>
 
-    <!-- 3. LOGIN SCREEN -->
+    <!-- LOGIN -->
     <div id="login-screen" class="screen">
         <h1 class="q-header-title no-shadow-title">Login</h1>
         <div style="width: 85%; display: flex; flex-direction: column; align-items: center;">
             <input type="email" id="loginEmail" placeholder="Email">
             <input type="password" id="loginPassword" placeholder="Password">
             <button class="btn-menu" onclick="handleLogin()" style="width: 100%;">LOGIN</button>
-            <p style="margin-top: 15px; font-weight: 700;">Don't have an account? 
+            <p style="margin-top: 15px; font-weight: 700;">Don't have an account?
                 <span style="color: var(--primary-blue); text-decoration: underline; cursor: pointer;" onclick="showScreen('create-account-screen')">Create Account</span>
             </p>
         </div>
         <p id="login-feedback"></p>
     </div>
 
-    <!-- 4. NAME SCREEN (First time only) -->
+    <!-- NAME SCREEN -->
     <div id="name-screen" class="screen">
         <h1 class="q-header-title no-shadow-title">What's your name?</h1>
         <div style="width: 85%; display: flex; flex-direction: column; align-items: center;">
@@ -64,12 +59,10 @@
         </div>
     </div>
 
-    <!-- 5. MAIN MENU -->
+    <!-- MAIN MENU -->
     <div id="menu-screen" class="screen">
-        <!-- Profile Circle -->
         <div id="profile-circle">?</div>
-
-        <h1 class="q-header-title main-menu-title" style="font-size:40px; color:#20d400; text-decoration: underline double var(--underline-pink); text-underline-offset:10px;">Main Menu</h1>
+        <h1 class="q-header-title main-menu-title">Main Menu</h1>
         <button class="btn-menu" onclick="showScreen('mode-screen')">play</button>
         <button class="btn-menu" onclick="toggleSettings(true)">settings</button>
         <button class="btn-menu" onclick="alert('How to Play:\n1. Select your Grade and Subject.\n2. Answer questions before the timer runs out.\n3. Tap Submit to check your answer.')">how to play</button>
@@ -83,13 +76,17 @@
     <!-- SETTINGS OVERLAY -->
     <div id="settings-overlay" class="overlay">
         <div class="settings-card">
-            <center><h2 style="color: #28d011; text-decoration: double underline #FF69B4; text-underline-offset: 18px; font-size: 45.5px;">Settings</h2></center>
+            <center>
+                <h2 class="settings-title">Settings</h2>
+            </center>
+
             <label class="hj">Time per question:</label>
             <select id="diff-select" class="custom-select">
                 <option value="5">5 Seconds</option>
                 <option value="10">10 Seconds</option>
                 <option value="15">15 Seconds</option>
             </select>
+
             <label class="hj">Question Limit:</label>
             <select id="limit-select" class="custom-select">
                 <option value="10">10 Questions</option>
@@ -97,6 +94,19 @@
                 <option value="50">50 Questions</option>
                 <option value="100">100 Questions</option>
             </select>
+
+            <label class="hj" style="margin-top: 16px;">Theme:</label>
+            <div id="theme-buttons">
+                <button type="button" class="theme-btn" data-theme="classic">Classic Cyan</button>
+                <button type="button" class="theme-btn" data-theme="ocean">Ocean Blue</button>
+                <button type="button" class="theme-btn" data-theme="sunset">Sunset Orange</button>
+                <button type="button" class="theme-btn" data-theme="forest">Forest Green</button>
+                <button type="button" class="theme-btn" data-theme="dark">Dark Mode</button>
+                <button type="button" class="theme-btn" data-theme="purple">Purple</button>
+                <button type="button" class="theme-btn" data-theme="candy">Candy Pink</button>
+                <button type="button" class="theme-btn" data-theme="midnight">Midnight</button>
+            </div>
+
             <button class="btn-menu" onclick="toggleSettings(false)">SAVE</button>
         </div>
     </div>
@@ -117,7 +127,7 @@
     <div id="grade-screen" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="showScreen('mode-screen')">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">select grade</h1>
-        <div class="grade-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div class="grade-grid">
             <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 6')">grade 6</button>
             <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 7')">grade 7</button>
             <button class="btn-menu no-shadow-btn" style="width:140px;" onclick="selectGrade('Grade 8')">grade 8</button>
@@ -132,7 +142,7 @@
     <div id="subject-screen" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="showGrades()">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">select subject</h1>
-        <div class="subject-list" style="overflow-y: auto; width: 100%; display: flex; flex-direction: column; align-items: center; padding-bottom: 20px;">
+        <div class="subject-list">
             <button class="btn-menu no-shadow-btn" onclick="showTerms('භූගෝල විද්‍යාව')">භූගෝල විද්‍යාව</button>
             <button class="btn-menu no-shadow-btn" onclick="showTerms('ඉතිහාසය')">ඉතිහාසය</button>
             <button class="btn-menu no-shadow-btn" onclick="showTerms('විද්‍යාව')">විද්‍යාව</button>
@@ -155,19 +165,19 @@
         <button class="btn-menu no-shadow-btn" onclick="startGame('3rd Term')">3. third term</button>
     </div>
 
-    <!-- QUIZ CONTAINER -->
+    <!-- QUIZ -->
     <div id="quiz-container" class="screen">
         <div class="top-nav"><button class="btn-nav-icon" onclick="handleBackRequest()">⬅️</button></div>
-        <h1 class="q-header-title" id="active-subj" style="text-decoration: double underline #FF1493; text-underline-offset: 10px;">geography</h1>
+        <h1 class="q-header-title" id="active-subj">geography</h1>
         <div class="stats-bar">
-            <div id="timer-box" style="color: var(--error-red);">time: 05s</div>
+            <div id="timer-box">time: 05s</div>
             <div>Score: <span id="live-score">0%</span></div>
         </div>
         <div class="q-row">
             <div class="q-circle" id="q-idx">1</div>
             <div class="q-box" id="q-text">ප්‍රශ්නය පූරණය වේ...</div>
         </div>
-        <div id="options-area" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <div id="options-area">
             <label class="opt-row"><input type="radio" name="opt" id="o0"><span class="yasiru" id="t0"></span></label>
             <label class="opt-row"><input type="radio" name="opt" id="o1"><span class="yasiru" id="t1"></span></label>
             <label class="opt-row"><input type="radio" name="opt" id="o2"><span class="yasiru" id="t2"></span></label>
@@ -177,46 +187,28 @@
         <button class="btn-submit" id="main-submit" onclick="check()">submit</button>
     </div>
 
-    <!-- RESULT SCREEN -->
+    <!-- RESULT -->
     <div id="result-screen" class="screen">
-        <h1 class="q-header-title" style="font-size: 40px; text-decoration: 4px double underline #FF1493; margin: 14px; text-underline-offset: 10px;">final score</h1>
-        <div id="final-score" style="font-size: 48px; font-weight: bold; margin: 20px 0;">0%</div>
+        <h1 class="q-header-title" style="font-size: 40px;">final score</h1>
+        <div id="final-score">0%</div>
         <button class="btn-menu" onclick="showScreen('menu-screen')">replay</button>
     </div>
 
-    <!-- HIGH SCORES SCREEN -->
+    <!-- HIGH SCORES -->
     <div id="highscores-screen" class="screen">
-        <div class="top-nav">
-            <button class="btn-nav-icon" onclick="showScreen('menu-screen')">⬅️</button>
-        </div>
+        <div class="top-nav"><button class="btn-nav-icon" onclick="showScreen('menu-screen')">⬅️</button></div>
         <h1 class="q-header-title no-shadow-title">High Scores</h1>
-        <div id="highscores-list" style="width: 90%; max-width: 500px; margin-top: 20px; text-align: left;"></div>
+        <div id="highscores-list"></div>
     </div>
 
-    <!-- INSTALL APP POPUP -->
-    <div id="install-popup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:99999; align-items:center; justify-content:center; padding:20px;">
-        <div style="position:relative; background:#40fff5; border:4px solid #004d40; border-radius:22px; padding:32px 24px 24px; max-width:320px; width:100%; text-align:center; box-shadow:6px 6px 0 rgba(0,0,0,0.25);">
-
-            <!-- X Close Button -->
-            <button id="install-close" style="position:absolute; top:10px; left:12px; width:32px; height:32px; border-radius:50%; border:3px solid #004d40; background:#f8ff2b; color:#1c15ff; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1;">
-                ✕
-            </button>
-
-            <h2 style="color:#1c15ff; font-size:22px; margin:10px 0 12px; font-weight:900; line-height:1.3;">
-                Install our own quiz app
-            </h2>
-            <p style="font-size:14px; font-weight:700; color:#333; margin-bottom:24px; line-height:1.45;">
-                Get faster access and a better experience.<br>
-                Play quizzes like a real app!
-            </p>
-
-            <button id="install-btn" style="display:block; width:100%; height:52px; margin-bottom:12px; background:linear-gradient(145deg,#f8ff2b,#e1e800); border:4px solid #004d40; border-radius:40px; font-size:18px; font-weight:900; color:#1c15ff; cursor:pointer; box-shadow:3px 3px 0 #004d40;">
-                Install
-            </button>
-
-            <button id="later-btn" style="display:block; width:100%; height:46px; background:transparent; border:3px solid #1c15ff; border-radius:40px; font-size:16px; font-weight:800; color:#1c15ff; cursor:pointer;">
-                Later
-            </button>
+    <!-- INSTALL POPUP -->
+    <div id="install-popup">
+        <div class="install-card">
+            <button id="install-close">✕</button>
+            <h2>Install our own quiz app</h2>
+            <p>Get faster access and a better experience.<br>Play quizzes like a real app!</p>
+            <button id="install-btn">Install</button>
+            <button id="later-btn">Later</button>
         </div>
     </div>
 
