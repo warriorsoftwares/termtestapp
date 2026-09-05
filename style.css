@@ -1,7 +1,9 @@
-/* ========== 8 THEMES ========== */
+/* ========== MASTERS QUIZZES / GL26 - FULL STYLE.CSS ========== */
+
+/* ---- 8 THEMES ---- */
 :root, [data-theme="classic"] {
     --bg-cyan: #40fff5;
-    --bg-card: rgba(255,255,255,0.30);
+    --bg-card: rgba(255,255,255,0.35);
     --accent-yellow: #f8ff2b;
     --accent2: #e1e800;
     --primary-blue: #1c15ff;
@@ -119,25 +121,244 @@
     --muted: #adb5bd;
 }
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
 body {
-    background-color: var(--bg-cyan) !important;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg-cyan);
     color: var(--text-main);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-[data-theme="dark"] .btn-menu,
-[data-theme="dark"] .btn-submit {
-    color: #1c15ff !important;
-    border-color: #40fff5 !important;
+/* ---- START SCREEN ---- */
+#start-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-cyan);
+    z-index: 9999;
 }
 
-/* Theme buttons inside settings */
+.start-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    text-align: center;
+    text-shadow: 3px 3px 0 #000;
+    margin-bottom: 20px;
+}
+
+#nova-globe {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--primary-blue));
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+}
+
+/* ---- SCREENS ---- */
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: 16px 12px 40px;
+    position: relative;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* ---- TITLES ---- */
+.q-header-title {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    text-align: center;
+    margin: 12px 0 18px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+}
+
+.no-shadow-title {
+    text-shadow: none;
+}
+
+.main-menu-title {
+    font-size: 40px;
+    color: #20d400;
+    text-decoration: underline double var(--underline-pink);
+    text-underline-offset: 10px;
+}
+
+/* ---- BUTTONS ---- */
+.btn-menu {
+    width: 85%;
+    max-width: 340px;
+    height: 54px;
+    margin: 8px 0;
+    background: linear-gradient(145deg, var(--accent-yellow), var(--accent2));
+    border: 4px solid var(--btn-border);
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--btn-border);
+    text-transform: lowercase;
+}
+
+.btn-menu:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--btn-border);
+}
+
+.no-shadow-btn {
+    box-shadow: none;
+}
+
+.btn-submit {
+    width: 70%;
+    max-width: 280px;
+    height: 52px;
+    margin-top: 16px;
+    background: linear-gradient(145deg, var(--accent-yellow), var(--accent2));
+    border: 4px solid var(--btn-border);
+    border-radius: 40px;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--btn-border);
+}
+
+.xxx {
+    width: 85%;
+    max-width: 340px;
+    margin: 8px 0;
+    background: transparent;
+    border: 3px dashed var(--btn-border);
+    border-radius: 30px;
+    color: var(--muted);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ---- PROFILE CIRCLE ---- */
+#profile-circle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-yellow);
+    border: 3px solid var(--btn-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    box-shadow: 3px 3px 0 var(--btn-border);
+    z-index: 20;
+}
+
+/* ---- TOP NAV ---- */
+.top-nav {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+}
+
+.btn-nav-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid var(--btn-border);
+    background: var(--accent-yellow);
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--btn-border);
+}
+
+/* ---- INPUTS ---- */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    height: 48px;
+    margin-bottom: 12px;
+    padding: 0 14px;
+    border: 3px solid var(--btn-border);
+    border-radius: 16px;
+    background: var(--input-bg);
+    color: var(--text-main);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* ---- SETTINGS ---- */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.settings-card {
+    background: var(--bg-cyan);
+    border: 4px solid var(--btn-border);
+    border-radius: 24px;
+    padding: 24px 18px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+.hj {
+    display: block;
+    font-weight: 800;
+    margin: 12px 0 6px;
+    color: var(--text-main);
+}
+
+.custom-select {
+    width: 100%;
+    height: 44px;
+    border: 3px solid var(--btn-border);
+    border-radius: 14px;
+    background: var(--input-bg);
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 0 10px;
+}
+
 #theme-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
-    margin: 10px 0 18px;
+    margin: 10px 0 16px;
 }
 
 .theme-btn {
@@ -159,110 +380,137 @@ body {
     box-shadow: 0 0 0 3px #FF1493;
 }
 
-.settings-title {
-    color: var(--success-green);
-    text-decoration: double underline var(--underline-pink);
-    text-underline-offset: 18px;
-    font-size: 45.5px;
+/* ---- QUIZ ---- */
+.stats-bar {
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    margin-bottom: 14px;
 }
 
-/* Install popup */
-#install-popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    z-index: 99999;
+#timer-box {
+    color: var(--error-red);
+}
+
+.q-row {
+    width: 92%;
+    max-width: 420px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.q-circle {
+    min-width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--accent-yellow);
+    border: 3px solid var(--btn-border);
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    font-weight: 900;
+    color: var(--primary-blue);
 }
 
-.install-card {
-    position: relative;
-    background: var(--bg-cyan);
-    border: 4px solid var(--btn-border);
-    border-radius: 22px;
-    padding: 32px 24px 24px;
-    max-width: 320px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
-}
-
-#install-close {
-    position: absolute;
-    top: 10px;
-    left: 12px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.q-box {
+    flex: 1;
+    background: var(--bg-card);
     border: 3px solid var(--btn-border);
-    background: var(--accent-yellow);
-    color: var(--primary-blue);
-    font-size: 18px;
-    font-weight: 900;
-    cursor: pointer;
-}
-
-#install-btn {
-    display: block;
-    width: 100%;
-    height: 52px;
-    margin-bottom: 12px;
-    background: linear-gradient(145deg, var(--accent-yellow), var(--accent2));
-    border: 4px solid var(--btn-border);
-    border-radius: 40px;
-    font-size: 18px;
-    font-weight: 900;
-    color: var(--primary-blue);
-    cursor: pointer;
-}
-
-#later-btn {
-    display: block;
-    width: 100%;
-    height: 46px;
-    background: transparent;
-    border: 3px solid var(--primary-blue);
-    border-radius: 40px;
+    border-radius: 16px;
+    padding: 14px;
+    font-weight: 700;
     font-size: 16px;
-    font-weight: 800;
-    color: var(--primary-blue);
-    cursor: pointer;
+    line-height: 1.4;
 }
 
+.opt-row {
+    width: 92%;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 3px solid var(--btn-border);
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin: 8px 0;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.opt-row input {
+    width: 20px;
+    height: 20px;
+}
+
+.yasiru {
+    flex: 1;
+}
+
+.correct-text {
+    color: green !important;
+}
+
+.wrong-text {
+    color: red !important;
+}
+
+#feedback {
+    min-height: 28px;
+    font-weight: 800;
+    margin: 8px 0;
+    text-align: center;
+}
+
+/* ---- GRADE / SUBJECT ---- */
 .grade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    justify-items: center;
 }
 
 .subject-list {
-    overflow-y: auto;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-y: auto;
     padding-bottom: 20px;
 }
 
-#options-area {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
+/* ---- HIGH SCORES ---- */
 #highscores-list {
     width: 90%;
     max-width: 500px;
-    margin-top: 20px;
-    text-align: left;
+    margin-top: 12px;
 }
 
 #final-score {
     font-size: 48px;
-    font-weight: bold;
+    font-weight: 900;
     margin: 20px 0;
+    color: var(--primary-blue);
+}
+
+/* ---- DARK MODE BUTTON FIX ---- */
+[data-theme="dark"] .btn-menu,
+[data-theme="dark"] .btn-submit {
+    color: #1c15ff !important;
+}
+
+[data-theme="dark"] .q-box,
+[data-theme="dark"] .opt-row {
+    color: #fff;
+}
+
+/* ---- MOBILE ---- */
+@media (max-width: 400px) {
+    .q-header-title { font-size: 26px; }
+    .btn-menu { font-size: 16px; height: 50px; }
+    .start-title { font-size: 28px; }
 }
