@@ -741,6 +741,7 @@
     </div>
 
     <script>
+        // ===== Existing filter script (KEEP THIS) =====
         const examSel = document.getElementById('examFilter');
         const paperTypeSel = document.getElementById('paperTypeFilter');
         const gradeSel = document.getElementById('gradeFilter');
@@ -785,5 +786,18 @@
 
         filterPapers();
     </script>
+
+    <!-- ===== ADD THIS NEW SCRIPT BELOW ===== -->
+    <script>
+        // Apply saved theme on Past Papers page
+        (function() {
+            const savedTheme = localStorage.getItem('mq_theme') || 'classic';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.body.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+</body>
+</html>
 </body>
 </html>
