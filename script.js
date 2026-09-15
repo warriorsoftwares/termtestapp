@@ -15,13 +15,70 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 let deferredPrompt = null;
 let installPopupReady = false;
 
-// 1. INITIALIZATION
-window.addEventListener('DOMContentLoaded', () => { 
-    const urlParams = new URLSearchParams(window.location.search);
-    const screenToLoad = urlParams.get('screen');
-    const loginScreenExist = document.getElementById('login-screen');
+// ========== THEME SYSTEM ==========
+function applyTheme(themeName) {
+    document.documentElement.setAttribute('data-theme', themeName);
+    document.body.setAttribute('data-theme', themeName);
+    localStorage.setItem('mq_theme', themeName);
 
-    history.replaceState({ screen: loginScreenExist ? 'login-screen' : 'dhamma-screen' }, "", "");
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === themeName);
+    });
+}
+
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('mq_theme') || 'classic';
+    applyTheme(savedTheme);
+}
+
+// Force apply theme as early as possible
+(function() {
+    const saved = localStorage.getItem('mq_theme') || 'classic';
+    document.documentElement.setAttribute('data-theme', saved);
+    if (document.body) {
+        document.body.setAttribute('data-theme', saved);
+    }
+})();
+
+// ========== INITIALIZATION ==========
+window.addEventListener('DOMContentLoaded', async () => {
+    loadSavedTheme();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromPastPapers = urlParams.get('from') === 'pastpapers';
+
+    // Check if user is already logged in
+    try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+
+        if (user) {
+            const savedName = localStorage.getItem('mq_name');
+
+            // Hide start + login screens
+            const start = document.getElementById('start-screen');
+            const login = document.getElementById('login-screen');
+            if (start) {
+                start.style.display = 'none';
+                start.style.opacity = '0';
+            }
+            if (login) login.style.display = 'none';
+
+            if (savedName) {
+                updateProfileCircle(savedName);
+                showScreen('menu-screen', true);
+                showInstallPopupIfNeeded();
+                return;
+            } else {
+                showScreen('name-screen', true);
+                return;
+            }
+        }
+    } catch (e) {
+        console.log("Auth check error:", e);
+    }
+
+    // Normal first-time flow
+    history.replaceState({ screen: 'login-screen' }, "", "");
 
     setTimeout(() => { 
         const start = document.getElementById('start-screen');
@@ -30,45 +87,21 @@ window.addEventListener('DOMContentLoaded', () => {
             start.style.opacity = "0";
             setTimeout(() => {
                 start.style.display = "none";
-
-                if (screenToLoad === 'mode-screen') {
-                    showScreen('mode-screen', true);
-                } else {
-                    if (loginScreenExist) {
-                        showScreen('login-screen', true); 
-                    } else {
-                        showScreen('dhamma-screen', true);
-                    }
-                }
-            }, 375);
+                showScreen('login-screen', true);
+            }, 400);
         }
-    }, 1650);
+    }, 1800);
 
     const savedName = localStorage.getItem('mq_name');
     if (savedName) {
         updateProfileCircle(savedName);
     }
+});
 
-    if (urlParams.get('from') === 'pastpapers') {
-        const highestTimeoutId = setTimeout(";");
-        for (let i = 0; i < highestTimeoutId; i++) {
-            clearTimeout(i);
-        }
-
-        const startScreen = document.getElementById('start-screen');
-        const loginScreen = document.getElementById('login-screen');
-
-        if (startScreen) {
-            startScreen.style.display = 'none';
-            startScreen.style.opacity = '0';
-        }
-        if (loginScreen) {
-            loginScreen.style.display = 'none';
-            loginScreen.style.opacity = '0';
-        }
-
-        showScreen('menu-screen');
-        history.replaceState(null, '', 'index.html');
+// Theme buttons
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('theme-btn')) {
+        applyTheme(e.target.dataset.theme);
     }
 });
 
@@ -80,7 +113,7 @@ window.addEventListener('beforeunload', (e) => {
     }
 });
 
-// 2. NAVIGATION
+// ========== NAVIGATION ==========
 function showScreen(screenId, isBack = false) {
     const screens = document.querySelectorAll('.screen');
     const targetScreen = document.getElementById(screenId);
@@ -91,8 +124,8 @@ function showScreen(screenId, isBack = false) {
         setTimeout(() => {
             currentActive.style.display = 'none';
             targetScreen.style.display = 'flex';
-            setTimeout(() => targetScreen.classList.add('active'), 50);
-        }, 400);
+            setTimeout(() => targetScreen.classList.add('active'), 30);
+        }, 200);
     } else {
         screens.forEach(s => {
             s.style.display = "none";
@@ -106,7 +139,7 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
-// 3. AUTH SYSTEM
+// ========== AUTH SYSTEM ==========
 async function handleSignup() {
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value;
@@ -278,7 +311,7 @@ async function saveScoreToSupabase(finalPercentage) {
     }
 }
 
-// 4. QUIZ FLOW
+// ========== QUIZ FLOW ==========
 function goHome() { 
     showScreen('menu-screen'); 
 }
@@ -312,12 +345,8 @@ function toggleSettings(show) {
         const savedTime = localStorage.getItem('master_quiz_time');
         const savedLimit = localStorage.getItem('master_quiz_limit');
 
-        if (savedTime) {
-            document.getElementById('diff-select').value = savedTime;
-        }
-        if (savedLimit) {
-            document.getElementById('limit-select').value = savedLimit;
-        }
+        if (savedTime) document.getElementById('diff-select').value = savedTime;
+        if (savedLimit) document.getElementById('limit-select').value = savedLimit;
 
         overlay.style.display = 'flex';
     } else {
@@ -419,7 +448,7 @@ function loadQuestion() {
         if (text) {
             text.innerText = data.options[i];
             text.classList.remove('correct-text', 'wrong-text');
-            text.style.color = "#000";
+            text.style.color = "";
         }
     }
 
@@ -609,7 +638,7 @@ window.addEventListener("appinstalled", () => {
     deferredPrompt = null;
 });
 
-// Service Worker (correct path)
+// Service Worker
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/termtestapp/sw.js")
         .then(() => console.log("Service Worker registered"))
