@@ -1,4 +1,4 @@
-/* ========== MASTERS QUIZZES / GL26 - FULL STYLE.CSS ========== */
+/* ========== MASTERS QUIZZES - FULL STYLE.CSS (Updated) ========== */
 
 /* ---- 8 THEMES ---- */
 :root, [data-theme="classic"] {
@@ -62,18 +62,18 @@
 }
 
 [data-theme="dark"] {
-    --bg-cyan: #0a0a0a;
-    --bg-card: #161616;
+    --bg-cyan: #0f0f0f;
+    --bg-card: #1c1c1c;
     --accent-yellow: #f8ff2b;
     --accent2: #e1e800;
-    --primary-blue: #1c15ff;
+    --primary-blue: #7c83ff;
     --btn-border: #40fff5;
-    --text-main: #ffffff;
+    --text-main: #f0f0f0;
     --success-green: #69f0ae;
     --error-red: #ff5252;
     --underline-pink: #ff80ab;
-    --input-bg: #222222;
-    --muted: #e0e0e0;
+    --input-bg: #2a2a2a;
+    --muted: #bbbbbb;
 }
 
 [data-theme="purple"] {
@@ -121,6 +121,7 @@
     --muted: #adb5bd;
 }
 
+/* ---- RESET ---- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -147,24 +148,43 @@ body {
     justify-content: center;
     background: var(--bg-cyan);
     z-index: 9999;
+    gap: 16px;
 }
 
 .start-title {
     font-size: 36px;
     font-weight: 900;
-    color: var(--primary-blue);
+    color: #f8ff2b;
     text-align: center;
     text-shadow: 3px 3px 0 #000;
-    margin-bottom: 20px;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.title-underline {
+    width: 260px;
+    height: 6px;
+    background: linear-gradient(90deg, #FF1493, #ff69b4);
+    border-radius: 10px;
+    margin-top: -6px;
 }
 
 #nova-globe {
-    width: 160px;
-    height: 160px;
+    width: 210px;
+    height: 210px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #fff, var(--primary-blue));
-    border: 4px solid #000;
-    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+    background: url('globe.jpg') center center / cover no-repeat;
+    border: 6px solid #000;
+    box-shadow: 
+        0 0 0 5px #40fff5,
+        8px 8px 0 rgba(0,0,0,0.25);
+    margin-top: 12px;
+    animation: spinGlobe 18s linear infinite;
+}
+
+@keyframes spinGlobe {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }
 
 /* ---- SCREENS ---- */
@@ -362,13 +382,13 @@ input[type="text"] {
 }
 
 .theme-btn {
-    padding: 8px 12px;
+    padding: 8px 14px;
     border-radius: 25px;
     border: 3px solid #222;
     background: #f8ff2b;
     color: #1c15ff;
     font-weight: 800;
-    font-size: 12px;
+    font-size: 13px;
     cursor: pointer;
     box-shadow: 2px 2px 0 #222;
 }
@@ -497,7 +517,7 @@ input[type="text"] {
     color: var(--primary-blue);
 }
 
-/* ---- DARK MODE BUTTON FIX ---- */
+/* ---- DARK MODE FIXES ---- */
 [data-theme="dark"] .btn-menu,
 [data-theme="dark"] .btn-submit {
     color: #1c15ff !important;
@@ -513,4 +533,5 @@ input[type="text"] {
     .q-header-title { font-size: 26px; }
     .btn-menu { font-size: 16px; height: 50px; }
     .start-title { font-size: 28px; }
+    #nova-globe { width: 180px; height: 180px; }
 }
