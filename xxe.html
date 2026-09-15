@@ -785,11 +785,9 @@
         medSel.addEventListener('change', filterPapers);
 
         filterPapers();
-    </script>
 
     <!-- ===== ADD THIS NEW SCRIPT BELOW ===== -->
-    <script>
-        // Apply saved theme on Past Papers page
+    // Apply saved theme on Past Papers page
         (function() {
             const savedTheme = localStorage.getItem('mq_theme') || 'classic';
             document.documentElement.setAttribute('data-theme', savedTheme);
