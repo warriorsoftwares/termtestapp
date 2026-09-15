@@ -579,3 +579,169 @@ input[type="text"] {
     transform: translate(3px, 3px);
     box-shadow: 2px 2px 0 var(--btn-border);
 }
+/* ==============================
+   PREMIUM SETTINGS + THEME BUTTONS
+   ============================== */
+
+.settings-card {
+    background: var(--bg-card);
+    border: 4px solid var(--btn-border);
+    border-radius: 24px;
+    padding: 28px 20px;
+    width: 100%;
+    max-width: 360px;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.22);
+    text-align: center;
+}
+
+.settings-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    margin-bottom: 18px;
+}
+
+/* Theme Buttons - Premium Style */
+#theme-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 14px 0 20px;
+}
+
+.theme-btn {
+    padding: 10px 14px;
+    border-radius: 30px;
+    border: 3px solid #222;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #222;
+    transition: 0.15s ease;
+    min-width: 90px;
+}
+
+/* Individual Theme Button Colors */
+.theme-btn[data-theme="classic"] {
+    background: linear-gradient(145deg, #f8ff2b, #e1e800);
+    color: #1c15ff;
+}
+
+.theme-btn[data-theme="ocean"] {
+    background: linear-gradient(145deg, #00bcd4, #0097a7);
+    color: #01579b;
+}
+
+.theme-btn[data-theme="sunset"] {
+    background: linear-gradient(145deg, #ff9800, #f57c00);
+    color: #e65100;
+}
+
+.theme-btn[data-theme="forest"] {
+    background: linear-gradient(145deg, #66bb6a, #43a047);
+    color: #1b5e20;
+}
+
+.theme-btn[data-theme="dark"] {
+    background: linear-gradient(145deg, #222, #111);
+    color: #f8ff2b;
+    border-color: #40fff5;
+}
+
+.theme-btn[data-theme="purple"] {
+    background: linear-gradient(145deg, #ab47bc, #8e24aa);
+    color: #f3e5f5;
+}
+
+.theme-btn[data-theme="candy"] {
+    background: linear-gradient(145deg, #f06292, #ec407a);
+    color: #fff;
+}
+
+.theme-btn[data-theme="midnight"] {
+    background: linear-gradient(145deg, #0d1b2a, #1b263b);
+    color: #00d4ff;
+    border-color: #00d4ff;
+}
+
+/* Active Theme Button */
+.theme-btn.active {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 3px #FF1493, 3px 3px 0 #222;
+}
+
+/* ==============================
+   FIXED INSTALL POPUP
+   ============================== */
+
+#install-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+#install-popup .install-card {
+    background: var(--bg-cyan);
+    border: 4px solid var(--btn-border);
+    border-radius: 24px;
+    padding: 30px 22px;
+    width: 100%;
+    max-width: 340px;
+    text-align: center;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.25);
+    position: relative;
+}
+
+#install-popup h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+}
+
+#install-popup p {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-main);
+}
+
+#install-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: 900;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+#install-btn, #later-btn {
+    width: 100%;
+    height: 48px;
+    margin: 8px 0;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    border: 3px solid var(--btn-border);
+}
+
+#install-btn {
+    background: linear-gradient(145deg, var(--accent-yellow), var(--accent2));
+    color: var(--primary-blue);
+    box-shadow: 4px 4px 0 var(--btn-border);
+}
+
+#later-btn {
+    background: transparent;
+    color: var(--text-main);
+}
