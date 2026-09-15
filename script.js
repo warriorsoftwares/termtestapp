@@ -1,3 +1,11 @@
+// ========== FORCE THEME IMMEDIATELY ==========
+(function() {
+    const saved = localStorage.getItem('mq_theme') || 'classic';
+    document.documentElement.setAttribute('data-theme', saved);
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.setAttribute('data-theme', saved);
+    });
+})();
 let masterData = {}; 
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
