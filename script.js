@@ -1,29 +1,21 @@
-// ========== FORCE THEME IMMEDIATELY ==========
-(function() {
-    const saved = localStorage.getItem('mq_theme') || 'classic';
-    document.documentElement.setAttribute('data-theme', saved);
-    document.addEventListener('DOMContentLoaded', () => {
-        document.body.setAttribute('data-theme', saved);
-    });
-})();
-let masterData = {}; 
+let masterData = {};
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
-let selectedMode = ""; 
-let isQuizActive = false; 
+let selectedMode = "";
+let isQuizActive = false;
 let currentTerm = "";
 
-// ========== SUPABASE CONNECTION ==========
+// ========== SUPABASE ==========
 const SUPABASE_URL = 'https://eiyeimfuogqwitbelcpa.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWVpbWZ1b2dxd2l0YmVsY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MjA0NDAsImV4cCI6MjEwMTk5NjQ0MH0.rLlmoY5icyyWp9o3vqJaMyoFi9H5-uugmYQanAg6N_w';
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ========== PWA INSTALL POPUP VARIABLES ==========
+// ========== PWA ==========
 let deferredPrompt = null;
 let installPopupReady = false;
 
-// ========== THEME SYSTEM ==========
+// ========== THEME ==========
 function applyTheme(themeName) {
     document.documentElement.setAttribute('data-theme', themeName);
     document.body.setAttribute('data-theme', themeName);
@@ -39,32 +31,27 @@ function loadSavedTheme() {
     applyTheme(savedTheme);
 }
 
-// Force apply theme as early as possible
-(function() {
+// Apply theme as early as possible
+(function () {
     const saved = localStorage.getItem('mq_theme') || 'classic';
     document.documentElement.setAttribute('data-theme', saved);
-    if (document.body) {
+    document.addEventListener('DOMContentLoaded', () => {
         document.body.setAttribute('data-theme', saved);
-    }
+    });
 })();
 
-// ========== INITIALIZATION ==========
+// ========== INIT ==========
 window.addEventListener('DOMContentLoaded', async () => {
     loadSavedTheme();
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const fromPastPapers = urlParams.get('from') === 'pastpapers';
-
-    // Check if user is already logged in
     try {
         const { data: { user } } = await supabaseClient.auth.getUser();
 
         if (user) {
             const savedName = localStorage.getItem('mq_name');
-
-            // Hide start + login screens
             const start = document.getElementById('start-screen');
             const login = document.getElementById('login-screen');
+
             if (start) {
                 start.style.display = 'none';
                 start.style.opacity = '0';
@@ -85,10 +72,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         console.log("Auth check error:", e);
     }
 
-    // Normal first-time flow
+    // First-time / not logged in
     history.replaceState({ screen: 'login-screen' }, "", "");
 
-    setTimeout(() => { 
+    setTimeout(() => {
         const start = document.getElementById('start-screen');
         if (start) {
             start.style.transition = "opacity 0.5s";
@@ -101,12 +88,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     }, 1800);
 
     const savedName = localStorage.getItem('mq_name');
-    if (savedName) {
-        updateProfileCircle(savedName);
-    }
+    if (savedName) updateProfileCircle(savedName);
 });
 
-// Theme buttons
+// Theme button clicks
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('theme-btn')) {
         applyTheme(e.target.dataset.theme);
@@ -147,7 +132,7 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
-// ========== AUTH SYSTEM ==========
+// ========== AUTH ==========
 async function handleSignup() {
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value;
@@ -165,10 +150,7 @@ async function handleSignup() {
         return;
     }
 
-    const { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password
-    });
+    const { error } = await supabaseClient.auth.signUp({ email, password });
 
     if (error) {
         feedback.innerText = error.message;
@@ -176,9 +158,7 @@ async function handleSignup() {
     } else {
         feedback.innerText = "Account created! You can login now.";
         feedback.style.color = "green";
-        setTimeout(() => {
-            showScreen('login-screen');
-        }, 1500);
+        setTimeout(() => showScreen('login-screen'), 1500);
     }
 }
 
@@ -187,10 +167,7 @@ async function handleLogin() {
     const password = document.getElementById('loginPassword').value;
     const feedback = document.getElementById('login-feedback');
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
     if (error) {
         feedback.innerText = error.message;
@@ -222,7 +199,6 @@ async function saveUserName() {
     }
 
     const { data: { user } } = await supabaseClient.auth.getUser();
-
     if (!user) {
         alert("You are not logged in");
         return;
@@ -230,13 +206,9 @@ async function saveUserName() {
 
     const { error } = await supabaseClient
         .from('profiles')
-        .upsert({
-            email: user.email,
-            name: name
-        });
+        .upsert({ email: user.email, name: name });
 
     if (error) {
-        console.error(error);
         alert("Error saving name: " + error.message);
         return;
     }
@@ -288,58 +260,44 @@ async function showHighScores() {
             </div>
         `;
     });
-
     list.innerHTML = html;
 }
 
-// ========== SAVE SCORE ==========
 async function saveScoreToSupabase(finalPercentage) {
     const name = localStorage.getItem('mq_name') || "Unknown";
-    const grade = selectedGrade || "Unknown";
-    const subject = selectedSubj || "Unknown";
-    const term = currentTerm || "Unknown";
 
     const { error } = await supabaseClient
         .from('scores')
         .insert({
             name: name,
-            grade: grade,
-            subject: subject,
-            term: term,
+            grade: selectedGrade || "Unknown",
+            subject: selectedSubj || "Unknown",
+            term: currentTerm || "Unknown",
             score: finalPercentage,
             medium: "Sinhala Medium",
             exam_type: "School Term Test",
             paper_type: "Past Papers"
         });
 
-    if (error) {
-        console.error("Error saving score:", error.message);
-    } else {
-        console.log("Score saved successfully!");
-    }
+    if (error) console.error("Error saving score:", error.message);
 }
 
 // ========== QUIZ FLOW ==========
-function goHome() { 
-    showScreen('menu-screen'); 
-}
+function goHome() { showScreen('menu-screen'); }
+function showGrades() { showScreen('grade-screen'); }
 
-function showGrades() { 
-    showScreen('grade-screen'); 
-}
-
-function selectGrade(grade) { 
-    selectedGrade = grade; 
+function selectGrade(grade) {
+    selectedGrade = grade;
     if (document.getElementById('subject-screen')) {
-        showScreen('subject-screen'); 
+        showScreen('subject-screen');
     } else if (document.getElementById('term-screen')) {
         showScreen('term-screen');
     }
 }
 
-function showTerms(subj) { 
-    selectedSubj = subj; 
-    showScreen('term-screen'); 
+function showTerms(subj) {
+    selectedSubj = subj;
+    showScreen('term-screen');
 }
 
 function selectGameMode(mode) {
@@ -352,18 +310,14 @@ function toggleSettings(show) {
     if (show) {
         const savedTime = localStorage.getItem('master_quiz_time');
         const savedLimit = localStorage.getItem('master_quiz_limit');
-
         if (savedTime) document.getElementById('diff-select').value = savedTime;
         if (savedLimit) document.getElementById('limit-select').value = savedLimit;
-
         overlay.style.display = 'flex';
     } else {
         difficultyTime = parseInt(document.getElementById('diff-select').value);
         sessionLimit = parseInt(document.getElementById('limit-select').value);
-
         localStorage.setItem('master_quiz_time', difficultyTime);
         localStorage.setItem('master_quiz_limit', sessionLimit);
-
         overlay.style.display = 'none';
     }
 }
@@ -374,7 +328,6 @@ async function startGame(term) {
 
         const savedTime = localStorage.getItem('master_quiz_time');
         const savedLimit = localStorage.getItem('master_quiz_limit');
-
         if (savedTime) difficultyTime = parseInt(savedTime);
         if (savedLimit) sessionLimit = parseInt(savedLimit);
 
@@ -389,13 +342,13 @@ async function startGame(term) {
             questions = (masterData[selectedGrade] && masterData[selectedGrade][term]) ? masterData[selectedGrade][term] : [];
         } else {
             const subjectMap = {
-                "විද්‍යාව": "Science", 
-                "ඉතිහාසය": "History", 
+                "විද්‍යාව": "Science",
+                "ඉතිහාසය": "History",
                 "භූගෝල විද්‍යාව": "Geography",
-                "ගණිතය": "Mathematics", 
-                "I.C.T": "I.C.T.", 
+                "ගණිතය": "Mathematics",
+                "I.C.T": "I.C.T.",
                 "තොරතුරු තාක්ෂණය": "I.C.T.",
-                "සිංහල": "Sinhala", 
+                "සිංහල": "Sinhala",
                 "බුද්ධ ධර්මය": "Buddhism"
             };
             const jsonKey = subjectMap[selectedSubj] || selectedSubj;
@@ -408,7 +361,7 @@ async function startGame(term) {
         }
 
         shuffled = [...questions].sort(() => Math.random() - 0.5).slice(0, sessionLimit);
-        current = 0; 
+        current = 0;
         score = 0;
         isQuizActive = true;
 
@@ -417,13 +370,12 @@ async function startGame(term) {
 
         showScreen('quiz-container');
         loadQuestion();
-    } catch (e) { 
+    } catch (e) {
         console.error(e);
-        alert("Error loading data file! Make sure master_data.json or edu.json exists."); 
+        alert("Error loading data file! Make sure master_data.json or edu.json exists.");
     }
 }
 
-// ========== QUIZ CORE ==========
 function loadQuestion() {
     isAnswered = false;
 
@@ -437,10 +389,7 @@ function loadQuestion() {
     }
 
     const data = shuffled[current];
-    if (!data) {
-        console.error("No question data");
-        return;
-    }
+    if (!data) return;
 
     document.getElementById('q-idx').innerText = current + 1;
     document.getElementById('q-text').innerText = data.q;
@@ -448,7 +397,6 @@ function loadQuestion() {
     for (let i = 0; i < 4; i++) {
         const radio = document.getElementById(`o${i}`);
         const text = document.getElementById(`t${i}`);
-
         if (radio) {
             radio.checked = false;
             radio.disabled = false;
@@ -476,7 +424,6 @@ function startTimer() {
     timer = setInterval(() => {
         timeLeft--;
         if (box) box.innerText = `Time: ${timeLeft}s`;
-
         if (timeLeft <= 0) {
             clearInterval(timer);
             highlightCorrect();
@@ -509,7 +456,6 @@ function check() {
     isAnswered = true;
 
     const correct = shuffled[current].correct;
-
     document.querySelectorAll('input[name="opt"]').forEach(r => r.disabled = true);
 
     if (selected === correct) {
@@ -553,20 +499,15 @@ function handleEnd(msg, isCorrect) {
 
     setTimeout(() => {
         current++;
-
         if (current < shuffled.length) {
             loadQuestion();
         } else {
             isQuizActive = false;
             const finalPercentage = Math.round((score / shuffled.length) * 100);
-
             saveScoreToSupabase(finalPercentage);
-
             showScreen('result-screen');
             const scoreDisplay = document.getElementById('final-score') || document.getElementById('final-score-val');
-            if (scoreDisplay) {
-                scoreDisplay.innerText = finalPercentage + "%";
-            }
+            if (scoreDisplay) scoreDisplay.innerText = finalPercentage + "%";
         }
     }, 1600);
 }
@@ -592,11 +533,10 @@ function generateJSON() {
         document.getElementById('adm-o3').value
     ];
     const ans = parseInt(document.getElementById('adm-cor').value);
-    const output = { q, options, correct: ans };
-    document.getElementById('json-output').value = JSON.stringify(output) + ",";
+    document.getElementById('json-output').value = JSON.stringify({ q, options, correct: ans }) + ",";
 }
 
-// ========== PWA INSTALL POPUP ==========
+// ========== INSTALL POPUP ==========
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -607,10 +547,7 @@ function showInstallPopupIfNeeded() {
     if (!installPopupReady || !deferredPrompt) return;
 
     const laterTime = localStorage.getItem("install_later");
-    if (laterTime && Date.now() - parseInt(laterTime) < 3 * 24 * 60 * 60 * 1000) {
-        return;
-    }
-
+    if (laterTime && Date.now() - parseInt(laterTime) < 3 * 24 * 60 * 60 * 1000) return;
     if (window.matchMedia("(display-mode: standalone)").matches) return;
 
     const popup = document.getElementById("install-popup");
@@ -627,8 +564,7 @@ document.addEventListener("click", async (e) => {
         hideInstallPopup();
         if (deferredPrompt) {
             deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log("Install outcome:", outcome);
+            await deferredPrompt.userChoice;
             deferredPrompt = null;
         }
     }
@@ -646,14 +582,13 @@ window.addEventListener("appinstalled", () => {
     deferredPrompt = null;
 });
 
-// Service Worker
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/termtestapp/sw.js")
         .then(() => console.log("Service Worker registered"))
         .catch((err) => console.log("SW error:", err));
 }
 
-// GLOBAL WINDOW MAPPINGS
+// GLOBAL
 window.showScreen = showScreen;
 window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
