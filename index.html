@@ -74,12 +74,10 @@
         <button class="xxx" style="font-size: 14px; height: 40px;" onclick="showScreen('admin-screen')">admin panel</button>
     </div>
 
-    <!-- SETTINGS OVERLAY -->
+    <!-- SETTINGS -->
     <div id="settings-overlay" class="overlay">
         <div class="settings-card">
-            <center>
-                <h2 class="settings-title">Settings</h2>
-            </center>
+            <h2 class="settings-title">Settings</h2>
 
             <label class="hj">Time per question:</label>
             <select id="diff-select" class="custom-select">
@@ -96,17 +94,20 @@
                 <option value="100">100 Questions</option>
             </select>
 
- <label class="hj" style="margin-top: 16px;">Theme:</label>
-<div id="theme-buttons">
-    <button type="button" class="theme-btn" data-theme="classic">Classic</button>
-    <button type="button" class="theme-btn" data-theme="ocean">Ocean</button>
-    <button type="button" class="theme-btn" data-theme="sunset">Sunset</button>
-    <button type="button" class="theme-btn" data-theme="forest">Forest</button>
-    <button type="button" class="theme-btn" data-theme="dark">Dark</button>
-    <button type="button" class="theme-btn" data-theme="purple">Purple</button>
-    <button type="button" class="theme-btn" data-theme="candy">Candy</button>
-    <button type="button" class="theme-btn" data-theme="midnight">Midnight</button>
-</div>
+            <label class="hj" style="margin-top: 16px;">Theme:</label>
+            <div id="theme-buttons">
+                <button type="button" class="theme-btn" data-theme="classic">Classic</button>
+                <button type="button" class="theme-btn" data-theme="ocean">Ocean</button>
+                <button type="button" class="theme-btn" data-theme="sunset">Sunset</button>
+                <button type="button" class="theme-btn" data-theme="forest">Forest</button>
+                <button type="button" class="theme-btn" data-theme="dark">Dark</button>
+                <button type="button" class="theme-btn" data-theme="purple">Purple</button>
+                <button type="button" class="theme-btn" data-theme="candy">Candy</button>
+                <button type="button" class="theme-btn" data-theme="midnight">Midnight</button>
+            </div>
+
+            <button class="btn-menu" onclick="toggleSettings(false)">SAVE</button>
+        </div>
     </div>
 
     <!-- MODE SCREEN -->
