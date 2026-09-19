@@ -1,4 +1,4 @@
-/* ========== MASTERS QUIZZES - FULL STYLE.CSS (Premium Update) ========== */
+/* ========== MASTERS QUIZZES / GL26 - FULL STYLE.CSS ========== */
 
 /* ---- 8 THEMES ---- */
 :root, [data-theme="classic"] {
@@ -62,18 +62,18 @@
 }
 
 [data-theme="dark"] {
-    --bg-cyan: #0f0f0f;
-    --bg-card: #1c1c1c;
+    --bg-cyan: #0a0a0a;
+    --bg-card: #161616;
     --accent-yellow: #f8ff2b;
     --accent2: #e1e800;
-    --primary-blue: #7c83ff;
+    --primary-blue: #1c15ff;
     --btn-border: #40fff5;
-    --text-main: #f0f0f0;
+    --text-main: #ffffff;
     --success-green: #69f0ae;
     --error-red: #ff5252;
     --underline-pink: #ff80ab;
-    --input-bg: #2a2a2a;
-    --muted: #bbbbbb;
+    --input-bg: #222222;
+    --muted: #e0e0e0;
 }
 
 [data-theme="purple"] {
@@ -121,7 +121,6 @@
     --muted: #adb5bd;
 }
 
-/* ---- RESET ---- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -148,41 +147,33 @@ body {
     justify-content: center;
     background: var(--bg-cyan);
     z-index: 9999;
-    gap: 16px;
 }
 
 .start-title {
     font-size: 36px;
     font-weight: 900;
-    color: #f8ff2b;
+    color: var(--primary-blue);
     text-align: center;
     text-shadow: 3px 3px 0 #000;
-    margin: 0;
-    letter-spacing: 1px;
-}
-
-.title-underline {
-    width: 260px;
-    height: 6px;
-    background: linear-gradient(90deg, #FF1493, #ff69b4);
-    border-radius: 10px;
-    margin-top: -6px;
+    margin-bottom: 20px;
 }
 
 #nova-globe {
-    width: 210px;
-    height: 210px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    background: url('globe.jpg') center center / cover no-repeat;
-    border: 6px solid #000;
-    box-shadow: 0 0 0 5px #40fff5, 8px 8px 0 rgba(0,0,0,0.25);
-    margin-top: 12px;
-    animation: spinGlobe 18s linear infinite;
+    background-image: url("globe.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+    animation: globeSpin 4s linear infinite;
 }
 
-@keyframes spinGlobe {
+@keyframes globeSpin {
     from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* ---- SCREENS ---- */
@@ -207,6 +198,7 @@ body {
     color: var(--primary-blue);
     text-align: center;
     margin: 12px 0 18px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
 }
 
 .no-shadow-title {
@@ -261,7 +253,19 @@ body {
     box-shadow: 4px 4px 0 var(--btn-border);
 }
 
-/* ---- PROFILE + NAV ---- */
+.xxx {
+    width: 85%;
+    max-width: 340px;
+    margin: 8px 0;
+    background: transparent;
+    border: 3px dashed var(--btn-border);
+    border-radius: 30px;
+    color: var(--muted);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ---- PROFILE CIRCLE ---- */
 #profile-circle {
     position: absolute;
     top: 16px;
@@ -281,6 +285,7 @@ body {
     z-index: 20;
 }
 
+/* ---- TOP NAV ---- */
 .top-nav {
     width: 100%;
     display: flex;
@@ -315,12 +320,12 @@ input[type="text"] {
     font-weight: 600;
 }
 
-/* ---- SETTINGS (Premium) ---- */
+/* ---- SETTINGS ---- */
 .overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.55);
     z-index: 5000;
     align-items: center;
     justify-content: center;
@@ -328,21 +333,14 @@ input[type="text"] {
 }
 
 .settings-card {
-    background: var(--bg-card);
+    background: var(--bg-cyan);
     border: 4px solid var(--btn-border);
     border-radius: 24px;
-    padding: 28px 20px;
+    padding: 24px 18px;
     width: 100%;
     max-width: 360px;
-    box-shadow: 8px 8px 0 rgba(0,0,0,0.22);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
     text-align: center;
-}
-
-.settings-title {
-    font-size: 26px;
-    font-weight: 900;
-    color: var(--primary-blue);
-    margin-bottom: 18px;
 }
 
 .hj {
@@ -354,113 +352,82 @@ input[type="text"] {
 
 .custom-select {
     width: 100%;
-    height: 46px;
+    height: 44px;
     border: 3px solid var(--btn-border);
     border-radius: 14px;
     background: var(--input-bg);
     color: var(--text-main);
     font-weight: 700;
     font-size: 15px;
-    padding: 0 12px;
+    padding: 0 10px;
 }
 
-/* Theme Buttons */
 #theme-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     justify-content: center;
-    margin: 14px 0 20px;
+    margin: 10px 0 16px;
 }
 
 .theme-btn {
-    padding: 10px 14px;
-    border-radius: 30px;
+    padding: 8px 12px;
+    border-radius: 25px;
     border: 3px solid #222;
     font-weight: 800;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
-    box-shadow: 3px 3px 0 #222;
-    min-width: 90px;
-    transition: 0.15s;
+    box-shadow: 2px 2px 0 #222;
 }
 
-.theme-btn[data-theme="classic"] {
-    background: linear-gradient(145deg, #f8ff2b, #e1e800);
-    color: #1c15ff;
+/* Theme buttons look like their own theme */
+.theme-classic {
+    background: #40fff5 !important;
+    color: #1c15ff !important;
+    border-color: #004d40 !important;
 }
-.theme-btn[data-theme="ocean"] {
-    background: linear-gradient(145deg, #00bcd4, #0097a7);
-    color: #01579b;
+.theme-ocean {
+    background: #e0f7fa !important;
+    color: #01579b !important;
+    border-color: #006064 !important;
 }
-.theme-btn[data-theme="sunset"] {
-    background: linear-gradient(145deg, #ff9800, #f57c00);
-    color: #e65100;
+.theme-sunset {
+    background: #fff3e0 !important;
+    color: #e65100 !important;
+    border-color: #bf360c !important;
 }
-.theme-btn[data-theme="forest"] {
-    background: linear-gradient(145deg, #66bb6a, #43a047);
-    color: #1b5e20;
+.theme-forest {
+    background: #e8f5e9 !important;
+    color: #1b5e20 !important;
+    border-color: #2e7d32 !important;
 }
-.theme-btn[data-theme="dark"] {
-    background: linear-gradient(145deg, #222, #111);
-    color: #f8ff2b;
-    border-color: #40fff5;
+.theme-dark {
+    background: #0a0a0a !important;
+    color: #f8ff2b !important;
+    border-color: #40fff5 !important;
 }
-.theme-btn[data-theme="purple"] {
-    background: linear-gradient(145deg, #ab47bc, #8e24aa);
-    color: #f3e5f5;
+.theme-purple {
+    background: #f3e5f5 !important;
+    color: #6a1b9a !important;
+    border-color: #4a148c !important;
 }
-.theme-btn[data-theme="candy"] {
-    background: linear-gradient(145deg, #f06292, #ec407a);
-    color: #fff;
+.theme-candy {
+    background: #fce4ec !important;
+    color: #ad1457 !important;
+    border-color: #c2185b !important;
 }
-.theme-btn[data-theme="midnight"] {
-    background: linear-gradient(145deg, #0d1b2a, #1b263b);
-    color: #00d4ff;
-    border-color: #00d4ff;
+.theme-midnight {
+    background: #0d1b2a !important;
+    color: #00d4ff !important;
+    border-color: #00d4ff !important;
 }
 
 .theme-btn.active {
-    transform: scale(1.06);
-    box-shadow: 0 0 0 3px #FF1493, 3px 3px 0 #222;
+    box-shadow: 0 0 0 3px #FF1493 !important;
+    transform: scale(1.05);
 }
 
-/* ---- INSTALL POPUP ---- */
-#install-popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    z-index: 99999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-#install-popup .install-card {
-    background: var(--bg-cyan);
-    border: 4px solid var(--btn-border);
-    border-radius: 24px;
-    padding: 30px 22px;
-    width: 100%;
-    max-width: 340px;
-    text-align: center;
-    box-shadow: 8px 8px 0 rgba(0,0,0,0.25);
-    position: relative;
-}
-
-#install-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    font-weight: 900;
-    cursor: pointer;
-}
-
-/* ---- QUIZ + OTHERS ---- */
+/* ---- QUIZ ---- */
 .stats-bar {
     width: 90%;
     max-width: 400px;
@@ -470,12 +437,15 @@ input[type="text"] {
     margin-bottom: 14px;
 }
 
-#timer-box { color: var(--error-red); }
+#timer-box {
+    color: var(--error-red);
+}
 
 .q-row {
     width: 92%;
     max-width: 420px;
     display: flex;
+    align-items: flex-start;
     gap: 10px;
     margin-bottom: 16px;
 }
@@ -500,6 +470,8 @@ input[type="text"] {
     border-radius: 16px;
     padding: 14px;
     font-weight: 700;
+    font-size: 16px;
+    line-height: 1.4;
 }
 
 .opt-row {
@@ -517,6 +489,31 @@ input[type="text"] {
     font-weight: 700;
 }
 
+.opt-row input {
+    width: 20px;
+    height: 20px;
+}
+
+.yasiru {
+    flex: 1;
+}
+
+.correct-text {
+    color: green !important;
+}
+
+.wrong-text {
+    color: red !important;
+}
+
+#feedback {
+    min-height: 28px;
+    font-weight: 800;
+    margin: 8px 0;
+    text-align: center;
+}
+
+/* ---- GRADE / SUBJECT ---- */
 .grade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -529,6 +526,15 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+/* ---- HIGH SCORES / RESULT ---- */
+#highscores-list {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 12px;
 }
 
 #final-score {
@@ -538,7 +544,88 @@ input[type="text"] {
     color: var(--primary-blue);
 }
 
-/* Dark mode fixes */
+/* ---- INSTALL POPUP ---- */
+#install-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.install-card {
+    position: relative;
+    background: var(--bg-cyan);
+    border: 4px solid var(--btn-border);
+    border-radius: 22px;
+    padding: 32px 24px 24px;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+}
+
+#install-close {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid var(--btn-border);
+    background: var(--accent-yellow);
+    color: var(--primary-blue);
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.install-card h2 {
+    color: var(--primary-blue);
+    font-size: 22px;
+    margin: 10px 0 12px;
+    font-weight: 900;
+}
+
+.install-card p {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.45;
+}
+
+#install-btn {
+    display: block;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 12px;
+    background: linear-gradient(145deg, var(--accent-yellow), var(--accent2));
+    border: 4px solid var(--btn-border);
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--primary-blue);
+    cursor: pointer;
+}
+
+#later-btn {
+    display: block;
+    width: 100%;
+    height: 46px;
+    background: transparent;
+    border: 3px solid var(--primary-blue);
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary-blue);
+    cursor: pointer;
+}
+
+/* ---- DARK MODE FIXES ---- */
 [data-theme="dark"] .btn-menu,
 [data-theme="dark"] .btn-submit {
     color: #1c15ff !important;
@@ -549,10 +636,9 @@ input[type="text"] {
     color: #fff;
 }
 
-/* Mobile */
+/* ---- MOBILE ---- */
 @media (max-width: 400px) {
     .q-header-title { font-size: 26px; }
     .btn-menu { font-size: 16px; height: 50px; }
     .start-title { font-size: 28px; }
-    #nova-globe { width: 180px; height: 180px; }
 }
