@@ -1,100 +1,59 @@
-let masterData = {};
+let masterData = {}; 
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
-let selectedMode = "";
-let isQuizActive = false;
+let selectedMode = ""; 
+let isQuizActive = false; 
 let currentTerm = "";
 
-// ========== SUPABASE ==========
 const SUPABASE_URL = 'https://eiyeimfuogqwitbelcpa.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWVpbWZ1b2dxd2l0YmVsY3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MjA0NDAsImV4cCI6MjEwMTk5NjQ0MH0.rLlmoY5icyyWp9o3vqJaMyoFi9H5-uugmYQanAg6N_w';
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ========== PWA ==========
 let deferredPrompt = null;
 let installPopupReady = false;
 
-// ========== THEME ==========
-function applyTheme(themeName) {
-    document.documentElement.setAttribute('data-theme', themeName);
-    document.body.setAttribute('data-theme', themeName);
-    localStorage.setItem('mq_theme', themeName);
+window.addEventListener('DOMContentLoaded', () => { 
+    const urlParams = new URLSearchParams(window.location.search);
+    const screenToLoad = urlParams.get('screen');
+    const loginScreenExist = document.getElementById('login-screen');
 
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.theme === themeName);
-    });
-}
+    history.replaceState({ screen: loginScreenExist ? 'login-screen' : 'dhamma-screen' }, "", "");
 
-function loadSavedTheme() {
-    const savedTheme = localStorage.getItem('mq_theme') || 'classic';
+    const savedTheme = localStorage.getItem("mq_theme") || "classic";
     applyTheme(savedTheme);
-}
 
-// Apply theme as early as possible
-(function () {
-    const saved = localStorage.getItem('mq_theme') || 'classic';
-    document.documentElement.setAttribute('data-theme', saved);
-    document.addEventListener('DOMContentLoaded', () => {
-        document.body.setAttribute('data-theme', saved);
-    });
-})();
-
-// ========== INIT ==========
-window.addEventListener('DOMContentLoaded', async () => {
-    loadSavedTheme();
-
-    try {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-
-        if (user) {
-            const savedName = localStorage.getItem('mq_name');
-            const start = document.getElementById('start-screen');
-            const login = document.getElementById('login-screen');
-
-            if (start) {
-                start.style.display = 'none';
-                start.style.opacity = '0';
-            }
-            if (login) login.style.display = 'none';
-
-            if (savedName) {
-                updateProfileCircle(savedName);
-                showScreen('menu-screen', true);
-                showInstallPopupIfNeeded();
-                return;
+    setTimeout(() => { 
+    const start = document.getElementById('start-screen');
+    if (start) {
+        start.style.transition = "opacity 0.4s";
+        start.style.opacity = "0";
+        setTimeout(() => {
+            start.style.display = "none";
+            if (screenToLoad === 'mode-screen') {
+                showScreen('mode-screen', true);
+            } else if (loginScreenExist) {
+                showScreen('login-screen', true); 
             } else {
-                showScreen('name-screen', true);
-                return;
+                showScreen('dhamma-screen', true);
             }
-        }
-    } catch (e) {
-        console.log("Auth check error:", e);
+        }, 400);
     }
-
-    // First-time / not logged in
-    history.replaceState({ screen: 'login-screen' }, "", "");
-
-    setTimeout(() => {
-        const start = document.getElementById('start-screen');
-        if (start) {
-            start.style.transition = "opacity 0.5s";
-            start.style.opacity = "0";
-            setTimeout(() => {
-                start.style.display = "none";
-                showScreen('login-screen', true);
-            }, 400);
-        }
-    }, 1800);
-
+}, 3000); // 3 seconds, then go to login
     const savedName = localStorage.getItem('mq_name');
     if (savedName) updateProfileCircle(savedName);
-});
 
-// Theme button clicks
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('theme-btn')) {
-        applyTheme(e.target.dataset.theme);
+    if (urlParams.get('from') === 'pastpapers') {
+        const highestTimeoutId = setTimeout(";");
+        for (let i = 0; i < highestTimeoutId; i++) clearTimeout(i);
+
+        const startScreen = document.getElementById('start-screen');
+        const loginScreen = document.getElementById('login-screen');
+        if (startScreen) { startScreen.style.display = 'none'; startScreen.style.opacity = '0'; }
+        if (loginScreen) { loginScreen.style.display = 'none'; loginScreen.style.opacity = '0'; }
+
+        showScreen('menu-screen');
+        history.replaceState(null, '', 'index.html');
     }
 });
 
@@ -106,7 +65,6 @@ window.addEventListener('beforeunload', (e) => {
     }
 });
 
-// ========== NAVIGATION ==========
 function showScreen(screenId, isBack = false) {
     const screens = document.querySelectorAll('.screen');
     const targetScreen = document.getElementById(screenId);
@@ -117,13 +75,10 @@ function showScreen(screenId, isBack = false) {
         setTimeout(() => {
             currentActive.style.display = 'none';
             targetScreen.style.display = 'flex';
-            setTimeout(() => targetScreen.classList.add('active'), 30);
-        }, 200);
+            setTimeout(() => targetScreen.classList.add('active'), 50);
+        }, 400);
     } else {
-        screens.forEach(s => {
-            s.style.display = "none";
-            s.classList.remove('active');
-        });
+        screens.forEach(s => { s.style.display = "none"; s.classList.remove('active'); });
         if (targetScreen) {
             targetScreen.style.display = "flex";
             targetScreen.classList.add('active');
@@ -132,7 +87,6 @@ function showScreen(screenId, isBack = false) {
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
 
-// ========== AUTH ==========
 async function handleSignup() {
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value;
@@ -151,7 +105,6 @@ async function handleSignup() {
     }
 
     const { error } = await supabaseClient.auth.signUp({ email, password });
-
     if (error) {
         feedback.innerText = error.message;
         feedback.style.color = "red";
@@ -168,7 +121,6 @@ async function handleLogin() {
     const feedback = document.getElementById('login-feedback');
 
     const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
     if (error) {
         feedback.innerText = error.message;
         feedback.style.color = "red";
@@ -193,21 +145,12 @@ async function handleLogin() {
 
 async function saveUserName() {
     const name = document.getElementById('userNameField').value.trim();
-    if (!name) {
-        alert("Please enter your name");
-        return;
-    }
+    if (!name) { alert("Please enter your name"); return; }
 
     const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-        alert("You are not logged in");
-        return;
-    }
+    if (!user) { alert("You are not logged in"); return; }
 
-    const { error } = await supabaseClient
-        .from('profiles')
-        .upsert({ email: user.email, name: name });
-
+    const { error } = await supabaseClient.from('profiles').upsert({ email: user.email, name });
     if (error) {
         alert("Error saving name: " + error.message);
         return;
@@ -221,12 +164,9 @@ async function saveUserName() {
 
 function updateProfileCircle(name) {
     const circle = document.getElementById('profile-circle');
-    if (circle && name) {
-        circle.innerText = name.charAt(0).toUpperCase();
-    }
+    if (circle && name) circle.innerText = name.charAt(0).toUpperCase();
 }
 
-// ========== HIGH SCORES ==========
 async function showHighScores() {
     const list = document.getElementById('highscores-list');
     list.innerHTML = "<p style='text-align:center; font-weight:700;'>Loading...</p>";
@@ -242,7 +182,6 @@ async function showHighScores() {
         list.innerHTML = "<p style='text-align:center; color:red;'>Error loading scores</p>";
         return;
     }
-
     if (!data || data.length === 0) {
         list.innerHTML = "<p style='text-align:center; font-weight:700;'>No scores yet.<br>Play quizzes to see high scores here.</p>";
         return;
@@ -250,54 +189,43 @@ async function showHighScores() {
 
     let html = "";
     data.forEach((row, index) => {
-        html += `
-            <div style="background: var(--bg-cyan); border: 3px solid #000; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-weight: 700;">
-                <div style="font-size: 18px; color: var(--primary-blue);">${index + 1}. ${row.name || "Unknown"}</div>
-                <div style="font-size: 14px; margin-top: 4px;">
-                    ${row.subject || ""} · ${row.grade || ""} · ${row.term || ""}<br>
-                    Score: <span style="color: green;">${row.score}%</span>
-                </div>
+        html += `<div style="background: var(--bg-cyan); border: 3px solid #000; border-radius: 12px; padding: 12px; margin-bottom: 10px; font-weight: 700;">
+            <div style="font-size: 18px; color: var(--primary-blue);">${index + 1}. ${row.name || "Unknown"}</div>
+            <div style="font-size: 14px; margin-top: 4px;">
+                ${row.subject || ""} · ${row.grade || ""} · ${row.term || ""}<br>
+                Score: <span style="color: green;">${row.score}%</span>
             </div>
-        `;
+        </div>`;
     });
     list.innerHTML = html;
 }
 
 async function saveScoreToSupabase(finalPercentage) {
-    const name = localStorage.getItem('mq_name') || "Unknown";
-
-    const { error } = await supabaseClient
-        .from('scores')
-        .insert({
-            name: name,
-            grade: selectedGrade || "Unknown",
-            subject: selectedSubj || "Unknown",
-            term: currentTerm || "Unknown",
-            score: finalPercentage,
-            medium: "Sinhala Medium",
-            exam_type: "School Term Test",
-            paper_type: "Past Papers"
-        });
-
+    const { error } = await supabaseClient.from('scores').insert({
+        name: localStorage.getItem('mq_name') || "Unknown",
+        grade: selectedGrade || "Unknown",
+        subject: selectedSubj || "Unknown",
+        term: currentTerm || "Unknown",
+        score: finalPercentage,
+        medium: "Sinhala Medium",
+        exam_type: "School Term Test",
+        paper_type: "Past Papers"
+    });
     if (error) console.error("Error saving score:", error.message);
 }
 
-// ========== QUIZ FLOW ==========
 function goHome() { showScreen('menu-screen'); }
 function showGrades() { showScreen('grade-screen'); }
 
-function selectGrade(grade) {
-    selectedGrade = grade;
-    if (document.getElementById('subject-screen')) {
-        showScreen('subject-screen');
-    } else if (document.getElementById('term-screen')) {
-        showScreen('term-screen');
-    }
+function selectGrade(grade) { 
+    selectedGrade = grade; 
+    if (document.getElementById('subject-screen')) showScreen('subject-screen'); 
+    else if (document.getElementById('term-screen')) showScreen('term-screen');
 }
 
-function showTerms(subj) {
-    selectedSubj = subj;
-    showScreen('term-screen');
+function showTerms(subj) { 
+    selectedSubj = subj; 
+    showScreen('term-screen'); 
 }
 
 function selectGameMode(mode) {
@@ -325,7 +253,6 @@ function toggleSettings(show) {
 async function startGame(term) {
     try {
         currentTerm = term;
-
         const savedTime = localStorage.getItem('master_quiz_time');
         const savedLimit = localStorage.getItem('master_quiz_limit');
         if (savedTime) difficultyTime = parseInt(savedTime);
@@ -333,7 +260,6 @@ async function startGame(term) {
 
         const isDhamma = !document.getElementById('subject-screen');
         const dataFile = isDhamma ? "edu.json" : "master_data.json";
-
         const response = await fetch(dataFile);
         masterData = await response.json();
 
@@ -342,13 +268,13 @@ async function startGame(term) {
             questions = (masterData[selectedGrade] && masterData[selectedGrade][term]) ? masterData[selectedGrade][term] : [];
         } else {
             const subjectMap = {
-                "විද්‍යාව": "Science",
-                "ඉතිහාසය": "History",
+                "විද්‍යාව": "Science", 
+                "ඉතිහාසය": "History", 
                 "භූගෝල විද්‍යාව": "Geography",
-                "ගණිතය": "Mathematics",
-                "I.C.T": "I.C.T.",
+                "ගණිතය": "Mathematics", 
+                "I.C.T": "I.C.T.", 
                 "තොරතුරු තාක්ෂණය": "I.C.T.",
-                "සිංහල": "Sinhala",
+                "සිංහල": "Sinhala", 
                 "බුද්ධ ධර්මය": "Buddhism"
             };
             const jsonKey = subjectMap[selectedSubj] || selectedSubj;
@@ -361,7 +287,7 @@ async function startGame(term) {
         }
 
         shuffled = [...questions].sort(() => Math.random() - 0.5).slice(0, sessionLimit);
-        current = 0;
+        current = 0; 
         score = 0;
         isQuizActive = true;
 
@@ -370,23 +296,19 @@ async function startGame(term) {
 
         showScreen('quiz-container');
         loadQuestion();
-    } catch (e) {
+    } catch (e) { 
         console.error(e);
-        alert("Error loading data file! Make sure master_data.json or edu.json exists.");
+        alert("Error loading data file! Make sure master_data.json or edu.json exists."); 
     }
 }
 
 function loadQuestion() {
     isAnswered = false;
-
     const submitBtn = document.getElementById('main-submit');
     if (submitBtn) submitBtn.style.visibility = "visible";
 
     const feedback = document.getElementById('feedback');
-    if (feedback) {
-        feedback.innerText = "";
-        feedback.style.color = "";
-    }
+    if (feedback) { feedback.innerText = ""; feedback.style.color = ""; }
 
     const data = shuffled[current];
     if (!data) return;
@@ -397,23 +319,18 @@ function loadQuestion() {
     for (let i = 0; i < 4; i++) {
         const radio = document.getElementById(`o${i}`);
         const text = document.getElementById(`t${i}`);
-        if (radio) {
-            radio.checked = false;
-            radio.disabled = false;
-        }
+        if (radio) { radio.checked = false; radio.disabled = false; }
         if (text) {
             text.innerText = data.options[i];
             text.classList.remove('correct-text', 'wrong-text');
-            text.style.color = "";
+            text.style.color = "#000";
         }
     }
-
     startTimer();
 }
 
 function startTimer() {
     clearInterval(timer);
-
     const savedTime = localStorage.getItem('master_quiz_time');
     difficultyTime = savedTime ? parseInt(savedTime) : (difficultyTime || 5);
     timeLeft = difficultyTime;
@@ -437,10 +354,7 @@ function check() {
 
     let selected = -1;
     for (let i = 0; i < 4; i++) {
-        if (document.getElementById(`o${i}`).checked) {
-            selected = i;
-            break;
-        }
+        if (document.getElementById(`o${i}`).checked) { selected = i; break; }
     }
 
     if (selected === -1) {
@@ -454,7 +368,6 @@ function check() {
 
     clearInterval(timer);
     isAnswered = true;
-
     const correct = shuffled[current].correct;
     document.querySelectorAll('input[name="opt"]').forEach(r => r.disabled = true);
 
@@ -482,7 +395,6 @@ function highlightCorrect() {
 
 function handleEnd(msg, isCorrect) {
     isAnswered = true;
-
     const submitBtn = document.getElementById('main-submit');
     if (submitBtn) submitBtn.style.visibility = "hidden";
 
@@ -493,9 +405,7 @@ function handleEnd(msg, isCorrect) {
     }
 
     const liveScore = document.getElementById('live-score');
-    if (liveScore) {
-        liveScore.innerText = Math.round((score / (current + 1)) * 100) + "%";
-    }
+    if (liveScore) liveScore.innerText = Math.round((score / (current + 1)) * 100) + "%";
 
     setTimeout(() => {
         current++;
@@ -516,11 +426,8 @@ function handleBackRequest() {
     if (confirm("Exit Quiz?")) {
         isQuizActive = false;
         clearInterval(timer);
-        if (document.getElementById('subject-screen')) {
-            showScreen('subject-screen');
-        } else {
-            showScreen('menu-screen');
-        }
+        if (document.getElementById('subject-screen')) showScreen('subject-screen');
+        else showScreen('menu-screen');
     }
 }
 
@@ -536,7 +443,6 @@ function generateJSON() {
     document.getElementById('json-output').value = JSON.stringify({ q, options, correct: ans }) + ",";
 }
 
-// ========== INSTALL POPUP ==========
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -545,11 +451,9 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 function showInstallPopupIfNeeded() {
     if (!installPopupReady || !deferredPrompt) return;
-
     const laterTime = localStorage.getItem("install_later");
     if (laterTime && Date.now() - parseInt(laterTime) < 3 * 24 * 60 * 60 * 1000) return;
     if (window.matchMedia("(display-mode: standalone)").matches) return;
-
     const popup = document.getElementById("install-popup");
     if (popup) popup.style.display = "flex";
 }
@@ -564,16 +468,17 @@ document.addEventListener("click", async (e) => {
         hideInstallPopup();
         if (deferredPrompt) {
             deferredPrompt.prompt();
-            await deferredPrompt.userChoice;
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log("Install outcome:", outcome);
             deferredPrompt = null;
         }
     }
-
     if (e.target.id === "later-btn" || e.target.id === "install-close") {
         hideInstallPopup();
-        if (e.target.id === "later-btn") {
-            localStorage.setItem("install_later", Date.now().toString());
-        }
+        if (e.target.id === "later-btn") localStorage.setItem("install_later", Date.now().toString());
+    }
+    if (e.target.classList.contains("theme-btn")) {
+        applyTheme(e.target.dataset.theme);
     }
 });
 
@@ -582,13 +487,20 @@ window.addEventListener("appinstalled", () => {
     deferredPrompt = null;
 });
 
+function applyTheme(themeName) {
+    document.body.setAttribute("data-theme", themeName);
+    localStorage.setItem("mq_theme", themeName);
+    document.querySelectorAll(".theme-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.theme === themeName);
+    });
+}
+
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/termtestapp/sw.js")
         .then(() => console.log("Service Worker registered"))
         .catch((err) => console.log("SW error:", err));
 }
 
-// GLOBAL
 window.showScreen = showScreen;
 window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
@@ -605,3 +517,4 @@ window.handleBackRequest = handleBackRequest;
 window.generateJSON = generateJSON;
 window.goHome = goHome;
 window.showInstallPopupIfNeeded = showInstallPopupIfNeeded;
+window.applyTheme = applyTheme;
