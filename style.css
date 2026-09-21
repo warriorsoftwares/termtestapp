@@ -736,3 +736,81 @@ input[type="text"] {
     bottom: 0 !important;
     left: 0 !important;
 }
+/* ===== THEME BUTTONS FIX (Settings) ===== */
+
+#theme-buttons {
+    display: -webkit-flex !important;
+    display: flex !important;
+    -webkit-flex-wrap: wrap !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    -webkit-justify-content: center !important;
+    justify-content: center !important;
+    margin: 12px 0 18px !important;
+    width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.theme-btn {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 10px 14px !important;
+    margin: 4px !important;
+    border-radius: 25px !important;
+    border: 3px solid #222 !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    box-shadow: 2px 2px 0 #222 !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+
+/* Each theme button solid colors (Samsung safe) */
+.theme-classic {
+    background: #40fff5 !important;
+    color: #1c15ff !important;
+    border-color: #004d40 !important;
+}
+.theme-ocean {
+    background: #e0f7fa !important;
+    color: #01579b !important;
+    border-color: #006064 !important;
+}
+.theme-sunset {
+    background: #fff3e0 !important;
+    color: #e65100 !important;
+    border-color: #bf360c !important;
+}
+.theme-forest {
+    background: #e8f5e9 !important;
+    color: #1b5e20 !important;
+    border-color: #2e7d32 !important;
+}
+.theme-dark {
+    background: #0a0a0a !important;
+    color: #f8ff2b !important;
+    border-color: #40fff5 !important;
+}
+.theme-purple {
+    background: #f3e5f5 !important;
+    color: #6a1b9a !important;
+    border-color: #4a148c !important;
+}
+.theme-candy {
+    background: #fce4ec !important;
+    color: #ad1457 !important;
+    border-color: #c2185b !important;
+}
+.theme-midnight {
+    background: #0d1b2a !important;
+    color: #00d4ff !important;
+    border-color: #00d4ff !important;
+}
+
+.theme-btn.active {
+    box-shadow: 0 0 0 3px #FF1493 !important;
+    transform: scale(1.05);
+}
