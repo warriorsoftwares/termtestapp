@@ -814,3 +814,60 @@ input[type="text"] {
     box-shadow: 0 0 0 3px #FF1493 !important;
     transform: scale(1.05);
 }
+/* ===== SETTINGS SCROLL FIX (theme buttons visible) ===== */
+
+#settings-overlay.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* when JS sets display:flex */
+#settings-overlay[style*="flex"] {
+    display: flex !important;
+}
+
+.settings-card {
+    background: #40fff5;
+    border: 4px solid #004d40;
+    border-radius: 24px;
+    padding: 20px 14px;
+    width: 100%;
+    max-width: 360px;
+    max-height: 85vh;          /* important */
+    overflow-y: auto;          /* important - can scroll */
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+#theme-buttons {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    justify-content: center !important;
+    margin: 12px 0 16px !important;
+    width: 100% !important;
+}
+
+.theme-btn {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 10px 12px !important;
+    margin: 3px !important;
+    border-radius: 25px !important;
+    border: 3px solid #222 !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+}
