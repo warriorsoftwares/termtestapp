@@ -1,6 +1,5 @@
-/* ========== MASTERS QUIZZES / GL26 - CLEAN + RESPONSIVE ========== */
+/* ========== MASTERS QUIZZES / GL26 - FULL CSS ========== */
 
-/* ---- 8 THEMES ---- */
 :root, [data-theme="classic"] {
     --bg-cyan: #40fff5;
     --bg-card: rgba(255,255,255,0.35);
@@ -137,7 +136,6 @@ body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ---- START SCREEN ---- */
 #start-screen {
     position: fixed;
     top: 0; right: 0; bottom: 0; left: 0;
@@ -176,7 +174,6 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* ---- SCREENS ---- */
 .screen {
     display: none;
     flex-direction: column;
@@ -193,7 +190,6 @@ body {
     display: flex;
 }
 
-/* ---- TITLES ---- */
 .q-header-title {
     font-size: clamp(26px, 5.5vw, 40px);
     font-weight: 900;
@@ -211,7 +207,6 @@ body {
     text-underline-offset: 10px;
 }
 
-/* ---- BUTTONS ---- */
 .btn-menu {
     width: 85%;
     max-width: 380px;
@@ -225,7 +220,7 @@ body {
     color: #1c15ff;
     cursor: pointer;
     box-shadow: 4px 4px 0 #004d40;
-    text-transform: lowercase;
+    text-transform: capitalize;
     display: block;
     -webkit-appearance: none;
     appearance: none;
@@ -251,6 +246,7 @@ body {
     color: #1c15ff;
     cursor: pointer;
     box-shadow: 4px 4px 0 #004d40;
+    text-transform: capitalize;
     display: block;
 }
 
@@ -267,9 +263,9 @@ body {
     font-size: 14px;
     cursor: pointer;
     display: block;
+    text-transform: capitalize;
 }
 
-/* ---- PROFILE ---- */
 #profile-circle {
     position: absolute;
     top: 16px;
@@ -289,7 +285,6 @@ body {
     z-index: 20;
 }
 
-/* ---- TOP NAV ---- */
 .top-nav {
     width: 100%;
     display: flex;
@@ -310,7 +305,6 @@ body {
     justify-content: center;
 }
 
-/* ---- INPUTS ---- */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
@@ -326,13 +320,12 @@ input[type="text"] {
     font-weight: 600;
 }
 
-/* ---- SETTINGS ---- */
 .overlay {
     display: none;
     position: fixed;
     top: 0; right: 0; bottom: 0; left: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 5000;
+    background: rgba(0,0,0,0.75);
+    z-index: 10000;
     align-items: center;
     justify-content: center;
     padding: 12px;
@@ -356,6 +349,16 @@ input[type="text"] {
     -webkit-overflow-scrolling: touch;
     box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
     text-align: center;
+    position: relative;
+    z-index: 10001;
+}
+
+.settings-title {
+    color: #28d011;
+    text-decoration: double underline #FF69B4;
+    text-underline-offset: 12px;
+    font-size: clamp(32px, 8vw, 45px);
+    margin-bottom: 12px;
 }
 
 .hj {
@@ -377,7 +380,6 @@ input[type="text"] {
     padding: 0 10px;
 }
 
-/* Theme buttons - NOT full width */
 #theme-buttons {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -402,6 +404,7 @@ input[type="text"] {
     box-shadow: 2px 2px 0 #222 !important;
     -webkit-appearance: none;
     appearance: none;
+    text-transform: none !important;
 }
 
 .theme-classic { background: #40fff5 !important; color: #1c15ff !important; border-color: #004d40 !important; }
@@ -418,7 +421,6 @@ input[type="text"] {
     transform: scale(1.05);
 }
 
-/* ---- QUIZ ---- */
 .stats-bar {
     width: 90%;
     max-width: 420px;
@@ -510,6 +512,7 @@ input[type="text"] {
 }
 
 #highscores-list { width: 90%; max-width: 500px; margin-top: 12px; }
+
 #final-score {
     font-size: clamp(40px, 10vw, 56px);
     font-weight: 900;
@@ -517,7 +520,6 @@ input[type="text"] {
     color: var(--primary-blue);
 }
 
-/* ---- INSTALL POPUP ---- */
 #install-popup {
     display: none;
     position: fixed;
@@ -598,27 +600,23 @@ input[type="text"] {
     cursor: pointer;
 }
 
-/* ---- DARK MODE ---- */
 [data-theme="dark"] .btn-menu,
 [data-theme="dark"] .btn-submit { color: #1c15ff !important; }
 [data-theme="dark"] .q-box,
 [data-theme="dark"] .opt-row { color: #fff; }
 
-/* ---- PHONE (small) ---- */
 @media (max-width: 400px) {
     .q-header-title { font-size: 26px; }
     .btn-menu { font-size: 16px; height: 50px; }
     .start-title { font-size: 28px; }
 }
 
-/* ---- TABLET ---- */
 @media (min-width: 600px) {
     .screen { max-width: 560px; padding: 24px 20px 50px; }
     .btn-menu { max-width: 400px; height: 58px; font-size: 19px; }
     .settings-card { max-width: 440px; }
 }
 
-/* ---- PC / LARGE ---- */
 @media (min-width: 900px) {
     .screen { max-width: 640px; padding: 32px 24px 60px; }
     .btn-menu { max-width: 420px; height: 62px; font-size: 20px; }
