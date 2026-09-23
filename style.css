@@ -1,5 +1,6 @@
-/* ========== MASTERS QUIZZES / GL26 - FULL CSS ========== */
+/* ========== MASTERS QUIZZES / GL26 - FULL FLUID CSS ========== */
 
+/* ---- 8 THEMES ---- */
 :root, [data-theme="classic"] {
     --bg-cyan: #40fff5;
     --bg-card: rgba(255,255,255,0.35);
@@ -120,11 +121,16 @@
     --muted: #adb5bd;
 }
 
+/* ---- BASE (fluid) ---- */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: clamp(14px, 2.5vw, 20px);
 }
 
 body {
@@ -136,13 +142,10 @@ body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ---- START SCREEN (your preferred design) ---- */
+/* ---- START SCREEN ---- */
 #start-screen {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    top: 0; right: 0; bottom: 0; left: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -152,29 +155,29 @@ body {
 }
 
 .start-title {
-    font-size: clamp(32px, 8vw, 48px);
+    font-size: clamp(28px, 8vw, 52px);
     font-weight: 900;
-    color: #f8ff2b;                 /* yellow title */
+    color: #f8ff2b;
     text-align: center;
     text-shadow: none;
-    margin: 0 0 8px;
-    letter-spacing: 1px;
-    border-bottom: 4px double #FF1493; /* pink underline */
-    padding-bottom: 8px;
+    margin: 0 0 2vw;
+    letter-spacing: 0.5px;
+    border-bottom: clamp(3px, 0.8vw, 5px) double #FF1493;
+    padding-bottom: 2vw;
     display: inline-block;
 }
 
 #nova-globe {
-    width: clamp(200px, 55vw, 320px);
-    height: clamp(200px, 55vw, 320px);
-    margin-top: 28px;
+    width: clamp(160px, 50vw, 320px);
+    height: clamp(160px, 50vw, 320px);
+    margin-top: 4vw;
     border-radius: 50%;
     background-image: url("globe.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border: none;                   /* no black ring */
-    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    border: none;
+    box-shadow: 0 3vw 6vw rgba(0,0,0,0.25);
     animation: globeSpin 14s linear infinite;
     will-change: transform;
     backface-visibility: hidden;
@@ -186,15 +189,16 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* ---- SCREENS ---- */
 .screen {
     display: none;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    width: 100%;
-    max-width: 520px;
+    width: 92%;
+    max-width: 640px;
     margin: 0 auto;
-    padding: 16px 12px 40px;
+    padding: 4vw 3vw 8vw;
     position: relative;
 }
 
@@ -202,36 +206,48 @@ body {
     display: flex;
 }
 
+/* ---- TITLES ---- */
 .q-header-title {
-    font-size: clamp(26px, 5.5vw, 40px);
+    font-size: clamp(24px, 7vw, 42px);
     font-weight: 900;
     color: var(--primary-blue);
     text-align: center;
-    margin: 12px 0 18px;
+    margin: 2vw 0 3vw;
 }
 
 .no-shadow-title { text-shadow: none; }
 
 .main-menu-title {
-    font-size: clamp(32px, 7vw, 48px);
+    font-size: clamp(28px, 8vw, 48px);
     color: #20d400;
     text-decoration: underline double var(--underline-pink);
-    text-underline-offset: 10px;
+    text-underline-offset: 0.4em;
 }
 
+/* Login / Create / Name title underline */
+#login-screen .q-header-title,
+#create-account-screen .q-header-title,
+#name-screen .q-header-title {
+    color: #1c15ff;
+    text-decoration: underline double #FF1493;
+    text-underline-offset: 0.35em;
+    text-shadow: none;
+}
+
+/* ---- BUTTONS (fluid) ---- */
 .btn-menu {
     width: 85%;
-    max-width: 380px;
-    height: clamp(50px, 8vw, 60px);
-    margin: 8px auto;
+    max-width: 420px;
+    height: clamp(48px, 12vw, 64px);
+    margin: 2vw auto;
     background: #f8ff2b;
-    border: 4px solid #004d40;
-    border-radius: 40px;
-    font-size: clamp(16px, 3.5vw, 20px);
+    border: clamp(2px, 0.7vw, 4px) solid #004d40;
+    border-radius: clamp(24px, 10vw, 40px);
+    font-size: clamp(15px, 4vw, 22px);
     font-weight: 900;
     color: #1c15ff;
     cursor: pointer;
-    box-shadow: 4px 4px 0 #004d40;
+    box-shadow: clamp(2px, 0.8vw, 4px) clamp(2px, 0.8vw, 4px) 0 #004d40;
     text-transform: capitalize;
     display: block;
     -webkit-appearance: none;
@@ -240,98 +256,102 @@ body {
 
 .btn-menu:active {
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 #004d40;
+    box-shadow: 1px 1px 0 #004d40;
 }
 
 .no-shadow-btn { box-shadow: none; }
 
 .btn-submit {
     width: 70%;
-    max-width: 300px;
-    height: clamp(50px, 8vw, 58px);
-    margin: 16px auto 0;
+    max-width: 320px;
+    height: clamp(48px, 11vw, 60px);
+    margin: 3vw auto 0;
     background: #f8ff2b;
-    border: 4px solid #004d40;
-    border-radius: 40px;
-    font-size: clamp(18px, 4vw, 22px);
+    border: clamp(2px, 0.7vw, 4px) solid #004d40;
+    border-radius: clamp(24px, 10vw, 40px);
+    font-size: clamp(16px, 4.2vw, 22px);
     font-weight: 900;
     color: #1c15ff;
     cursor: pointer;
-    box-shadow: 4px 4px 0 #004d40;
+    box-shadow: clamp(2px, 0.8vw, 4px) clamp(2px, 0.8vw, 4px) 0 #004d40;
     text-transform: capitalize;
     display: block;
 }
 
 .xxx {
     width: 85%;
-    max-width: 380px;
-    height: 40px;
-    margin: 8px auto;
+    max-width: 420px;
+    height: clamp(36px, 9vw, 44px);
+    margin: 2vw auto;
     background: transparent;
-    border: 3px dashed var(--btn-border);
-    border-radius: 30px;
+    border: clamp(2px, 0.5vw, 3px) dashed var(--btn-border);
+    border-radius: clamp(16px, 6vw, 30px);
     color: var(--muted);
     font-weight: 700;
-    font-size: 14px;
+    font-size: clamp(12px, 3vw, 15px);
     cursor: pointer;
     display: block;
     text-transform: capitalize;
 }
 
+/* ---- PROFILE ---- */
 #profile-circle {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    width: clamp(44px, 8vw, 56px);
-    height: clamp(44px, 8vw, 56px);
+    top: 3vw;
+    right: 3vw;
+    width: clamp(42px, 11vw, 56px);
+    height: clamp(42px, 11vw, 56px);
     border-radius: 50%;
     background: #f8ff2b;
-    border: 3px solid #004d40;
+    border: clamp(2px, 0.6vw, 3px) solid #004d40;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(18px, 4vw, 24px);
+    font-size: clamp(16px, 4.5vw, 24px);
     font-weight: 900;
     color: #1c15ff;
-    box-shadow: 3px 3px 0 #004d40;
+    box-shadow: 2px 2px 0 #004d40;
     z-index: 20;
 }
 
+/* ---- TOP NAV ---- */
 .top-nav {
     width: 100%;
     display: flex;
-    margin-bottom: 8px;
+    margin-bottom: 2vw;
 }
 
 .btn-nav-icon {
-    width: 48px;
-    height: 48px;
+    width: clamp(42px, 11vw, 52px);
+    height: clamp(42px, 11vw, 52px);
     border-radius: 50%;
-    border: 3px solid #004d40;
+    border: clamp(2px, 0.6vw, 3px) solid #004d40;
     background: #f8ff2b;
-    font-size: 22px;
+    font-size: clamp(18px, 5vw, 24px);
     cursor: pointer;
-    box-shadow: 3px 3px 0 #004d40;
+    box-shadow: 2px 2px 0 #004d40;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* ---- INPUTS ---- */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
     width: 100%;
-    height: clamp(46px, 7vw, 54px);
-    margin-bottom: 12px;
-    padding: 0 14px;
-    border: 3px solid var(--btn-border);
-    border-radius: 16px;
+    height: clamp(44px, 11vw, 56px);
+    margin-bottom: 2.5vw;
+    padding: 0 3vw;
+    border: clamp(2px, 0.6vw, 3px) solid var(--btn-border);
+    border-radius: clamp(12px, 3.5vw, 16px);
     background: var(--input-bg);
     color: var(--text-main);
-    font-size: 16px;
+    font-size: clamp(14px, 3.5vw, 18px);
     font-weight: 600;
 }
 
+/* ---- SETTINGS ---- */
 .overlay {
     display: none;
     position: fixed;
@@ -340,7 +360,7 @@ input[type="text"] {
     z-index: 10000;
     align-items: center;
     justify-content: center;
-    padding: 12px;
+    padding: 3vw;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -351,15 +371,15 @@ input[type="text"] {
 
 .settings-card {
     background: var(--bg-cyan);
-    border: 4px solid var(--btn-border);
-    border-radius: 24px;
-    padding: 20px 14px;
-    width: 100%;
-    max-width: 400px;
+    border: clamp(3px, 0.8vw, 4px) solid var(--btn-border);
+    border-radius: clamp(16px, 4vw, 24px);
+    padding: clamp(14px, 4vw, 28px);
+    width: 92%;
+    max-width: 480px;
     max-height: 88vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
     text-align: center;
     position: relative;
     z-index: 10001;
@@ -368,36 +388,37 @@ input[type="text"] {
 .settings-title {
     color: #28d011;
     text-decoration: double underline #FF69B4;
-    text-underline-offset: 12px;
-    font-size: clamp(32px, 8vw, 45px);
-    margin-bottom: 12px;
+    text-underline-offset: 0.3em;
+    font-size: clamp(28px, 8vw, 44px);
+    margin-bottom: 2vw;
 }
 
 .hj {
     display: block;
     font-weight: 800;
-    margin: 12px 0 6px;
+    margin: 2.5vw 0 1.5vw;
     color: var(--text-main);
+    font-size: clamp(13px, 3.2vw, 16px);
 }
 
 .custom-select {
     width: 100%;
-    height: 44px;
-    border: 3px solid var(--btn-border);
-    border-radius: 14px;
+    height: clamp(40px, 10vw, 48px);
+    border: clamp(2px, 0.6vw, 3px) solid var(--btn-border);
+    border-radius: clamp(10px, 3vw, 14px);
     background: var(--input-bg);
     color: var(--text-main);
     font-weight: 700;
-    font-size: 15px;
-    padding: 0 10px;
+    font-size: clamp(13px, 3.2vw, 16px);
+    padding: 0 2vw;
 }
 
 #theme-buttons {
     display: flex !important;
     flex-wrap: wrap !important;
-    gap: 8px;
+    gap: 2vw;
     justify-content: center;
-    margin: 12px 0 16px;
+    margin: 3vw 0 4vw;
     width: 100%;
 }
 
@@ -406,12 +427,12 @@ input[type="text"] {
     width: auto !important;
     height: auto !important;
     min-height: 0 !important;
-    padding: 10px 14px !important;
-    margin: 3px !important;
-    border-radius: 25px !important;
-    border: 3px solid #222 !important;
+    padding: clamp(8px, 2vw, 12px) clamp(10px, 3vw, 16px) !important;
+    margin: 1vw !important;
+    border-radius: clamp(16px, 5vw, 25px) !important;
+    border: clamp(2px, 0.5vw, 3px) solid #222 !important;
     font-weight: 800 !important;
-    font-size: 12px !important;
+    font-size: clamp(11px, 2.8vw, 14px) !important;
     cursor: pointer !important;
     box-shadow: 2px 2px 0 #222 !important;
     -webkit-appearance: none;
@@ -433,47 +454,50 @@ input[type="text"] {
     transform: scale(1.05);
 }
 
+/* ---- QUIZ ---- */
 .stats-bar {
-    width: 90%;
-    max-width: 420px;
+    width: 92%;
+    max-width: 500px;
     display: flex;
     justify-content: space-between;
     font-weight: 800;
-    margin-bottom: 14px;
+    font-size: clamp(13px, 3.2vw, 16px);
+    margin-bottom: 3vw;
 }
 
 #timer-box { color: var(--error-red); }
 
 .q-row {
     width: 92%;
-    max-width: 440px;
+    max-width: 500px;
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 2vw;
+    margin-bottom: 3vw;
 }
 
 .q-circle {
-    min-width: 42px;
-    height: 42px;
+    min-width: clamp(36px, 10vw, 48px);
+    height: clamp(36px, 10vw, 48px);
     border-radius: 50%;
     background: #f8ff2b;
-    border: 3px solid #004d40;
+    border: clamp(2px, 0.5vw, 3px) solid #004d40;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 900;
+    font-size: clamp(14px, 3.5vw, 18px);
     color: #1c15ff;
 }
 
 .q-box {
     flex: 1;
     background: var(--bg-card);
-    border: 3px solid var(--btn-border);
-    border-radius: 16px;
-    padding: 14px;
+    border: clamp(2px, 0.6vw, 3px) solid var(--btn-border);
+    border-radius: clamp(12px, 3vw, 16px);
+    padding: clamp(10px, 2.5vw, 16px);
     font-weight: 700;
-    font-size: clamp(15px, 3.2vw, 18px);
+    font-size: clamp(14px, 3.5vw, 18px);
     line-height: 1.4;
 }
 
@@ -486,32 +510,49 @@ input[type="text"] {
 
 .opt-row {
     width: 92%;
-    max-width: 440px;
+    max-width: 500px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 2vw;
     background: var(--bg-card);
-    border: 3px solid var(--btn-border);
-    border-radius: 16px;
-    padding: 12px 14px;
-    margin: 8px 0;
+    border: clamp(2px, 0.6vw, 3px) solid var(--btn-border);
+    border-radius: clamp(12px, 3vw, 16px);
+    padding: clamp(10px, 2.5vw, 14px);
+    margin: 1.5vw 0;
     cursor: pointer;
     font-weight: 700;
+    font-size: clamp(13px, 3.2vw, 17px);
 }
 
-.opt-row input { width: 20px; height: 20px; }
+.opt-row input {
+    width: clamp(16px, 4vw, 22px);
+    height: clamp(16px, 4vw, 22px);
+}
+
 .yasiru { flex: 1; }
 .correct-text { color: green !important; }
 .wrong-text { color: red !important; }
-#feedback { min-height: 28px; font-weight: 800; margin: 8px 0; text-align: center; }
+
+#feedback {
+    min-height: 1.5em;
+    font-weight: 800;
+    margin: 2vw 0;
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 18px);
+}
 
 .grade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 2.5vw;
     justify-items: center;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+}
+
+.grade-grid .btn-menu {
+    width: 90%;
+    max-width: 180px;
 }
 
 .subject-list {
@@ -520,18 +561,23 @@ input[type="text"] {
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    padding-bottom: 20px;
+    padding-bottom: 4vw;
 }
 
-#highscores-list { width: 90%; max-width: 500px; margin-top: 12px; }
+#highscores-list {
+    width: 92%;
+    max-width: 520px;
+    margin-top: 3vw;
+}
 
 #final-score {
-    font-size: clamp(40px, 10vw, 56px);
+    font-size: clamp(36px, 12vw, 56px);
     font-weight: 900;
-    margin: 20px 0;
+    margin: 4vw 0;
     color: var(--primary-blue);
 }
 
+/* ---- INSTALL POPUP ---- */
 #install-popup {
     display: none;
     position: fixed;
@@ -540,60 +586,60 @@ input[type="text"] {
     z-index: 99999;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 4vw;
 }
 
 .install-card {
     position: relative;
     background: var(--bg-cyan);
-    border: 4px solid var(--btn-border);
-    border-radius: 22px;
-    padding: 32px 24px 24px;
-    max-width: 340px;
-    width: 100%;
+    border: clamp(3px, 0.8vw, 4px) solid var(--btn-border);
+    border-radius: clamp(16px, 4vw, 22px);
+    padding: clamp(24px, 6vw, 36px) clamp(16px, 4vw, 24px);
+    max-width: 360px;
+    width: 92%;
     text-align: center;
-    box-shadow: 6px 6px 0 rgba(0,0,0,0.25);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.25);
 }
 
 #install-close {
     position: absolute;
-    top: 10px;
-    left: 12px;
-    width: 32px;
-    height: 32px;
+    top: 2vw;
+    left: 2vw;
+    width: clamp(28px, 8vw, 36px);
+    height: clamp(28px, 8vw, 36px);
     border-radius: 50%;
     border: 3px solid var(--btn-border);
     background: #f8ff2b;
     color: #1c15ff;
-    font-size: 18px;
+    font-size: clamp(14px, 4vw, 18px);
     font-weight: 900;
     cursor: pointer;
 }
 
 .install-card h2 {
     color: var(--primary-blue);
-    font-size: 22px;
-    margin: 10px 0 12px;
+    font-size: clamp(18px, 5vw, 22px);
+    margin: 2vw 0 3vw;
     font-weight: 900;
 }
 
 .install-card p {
-    font-size: 14px;
+    font-size: clamp(12px, 3.2vw, 15px);
     font-weight: 700;
     color: var(--muted);
-    margin-bottom: 24px;
+    margin-bottom: 4vw;
     line-height: 1.45;
 }
 
 #install-btn {
     display: block;
     width: 100%;
-    height: 52px;
-    margin-bottom: 12px;
+    height: clamp(48px, 12vw, 54px);
+    margin-bottom: 2.5vw;
     background: #f8ff2b;
     border: 4px solid #004d40;
     border-radius: 40px;
-    font-size: 18px;
+    font-size: clamp(16px, 4vw, 18px);
     font-weight: 900;
     color: #1c15ff;
     cursor: pointer;
@@ -602,40 +648,20 @@ input[type="text"] {
 #later-btn {
     display: block;
     width: 100%;
-    height: 46px;
+    height: clamp(42px, 10vw, 48px);
     background: transparent;
     border: 3px solid var(--primary-blue);
     border-radius: 40px;
-    font-size: 16px;
+    font-size: clamp(14px, 3.5vw, 16px);
     font-weight: 800;
     color: var(--primary-blue);
     cursor: pointer;
 }
 
+/* ---- DARK MODE ---- */
 [data-theme="dark"] .btn-menu,
 [data-theme="dark"] .btn-submit { color: #1c15ff !important; }
 [data-theme="dark"] .q-box,
 [data-theme="dark"] .opt-row { color: #fff; }
-
-@media (max-width: 400px) {
-    .q-header-title { font-size: 26px; }
-    .btn-menu { font-size: 16px; height: 50px; }
-    .start-title { font-size: 28px; }
-}
-
-@media (min-width: 600px) {
-    .screen { max-width: 560px; padding: 24px 20px 50px; }
-    .btn-menu { max-width: 400px; height: 58px; font-size: 19px; }
-    .settings-card { max-width: 440px; }
-}
-
-@media (min-width: 900px) {
-    .screen { max-width: 640px; padding: 32px 24px 60px; }
-    .btn-menu { max-width: 420px; height: 62px; font-size: 20px; }
-    .btn-submit { max-width: 320px; height: 58px; font-size: 22px; }
-    .settings-card { max-width: 480px; padding: 28px 22px; }
-    .theme-btn { font-size: 13px !important; padding: 11px 16px !important; }
-    .q-box, .opt-row { max-width: 500px; font-size: 18px; }
-    .start-title { font-size: 52px; }
-    #nova-globe { width: 240px; height: 240px; }
-}
+[data-theme="dark"] #start-screen { background: #0a0a0a; }
+[data-theme="dark"] .start-title { color: #f8ff2b; }
