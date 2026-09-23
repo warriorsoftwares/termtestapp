@@ -1,8 +1,8 @@
-let masterData = {}; 
+let masterData = {};
 let shuffled = [], current = 0, score = 0, isAnswered = false, timer;
 let timeLeft = 5, selectedGrade = "", selectedSubj = "", difficultyTime = 5, sessionLimit = 100;
-let selectedMode = ""; 
-let isQuizActive = false; 
+let selectedMode = "";
+let isQuizActive = false;
 let currentTerm = "";
 
 const SUPABASE_URL = 'https://eiyeimfuogqwitbelcpa.supabase.co';
@@ -13,7 +13,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 let deferredPrompt = null;
 let installPopupReady = false;
 
-window.addEventListener('DOMContentLoaded', () => { 
+window.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const screenToLoad = urlParams.get('screen');
     const loginScreenExist = document.getElementById('login-screen');
@@ -23,23 +23,24 @@ window.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem("mq_theme") || "classic";
     applyTheme(savedTheme);
 
-    setTimeout(() => { 
-    const start = document.getElementById('start-screen');
-    if (start) {
-        start.style.transition = "opacity 0.4s";
-        start.style.opacity = "0";
-        setTimeout(() => {
-            start.style.display = "none";
-            if (screenToLoad === 'mode-screen') {
-                showScreen('mode-screen', true);
-            } else if (loginScreenExist) {
-                showScreen('login-screen', true); 
-            } else {
-                showScreen('dhamma-screen', true);
-            }
-        }, 400);
-    }
-}, 3000); // 3 seconds, then go to login
+    setTimeout(() => {
+        const start = document.getElementById('start-screen');
+        if (start) {
+            start.style.transition = "opacity 0.4s";
+            start.style.opacity = "0";
+            setTimeout(() => {
+                start.style.display = "none";
+                if (screenToLoad === 'mode-screen') {
+                    showScreen('mode-screen', true);
+                } else if (loginScreenExist) {
+                    showScreen('login-screen', true);
+                } else {
+                    showScreen('dhamma-screen', true);
+                }
+            }, 400);
+        }
+    }, 3000);
+
     const savedName = localStorage.getItem('mq_name');
     if (savedName) updateProfileCircle(savedName);
 
@@ -217,15 +218,15 @@ async function saveScoreToSupabase(finalPercentage) {
 function goHome() { showScreen('menu-screen'); }
 function showGrades() { showScreen('grade-screen'); }
 
-function selectGrade(grade) { 
-    selectedGrade = grade; 
-    if (document.getElementById('subject-screen')) showScreen('subject-screen'); 
+function selectGrade(grade) {
+    selectedGrade = grade;
+    if (document.getElementById('subject-screen')) showScreen('subject-screen');
     else if (document.getElementById('term-screen')) showScreen('term-screen');
 }
 
-function showTerms(subj) { 
-    selectedSubj = subj; 
-    showScreen('term-screen'); 
+function showTerms(subj) {
+    selectedSubj = subj;
+    showScreen('term-screen');
 }
 
 function selectGameMode(mode) {
@@ -240,7 +241,11 @@ function toggleSettings(show) {
         const savedLimit = localStorage.getItem('master_quiz_limit');
         if (savedTime) document.getElementById('diff-select').value = savedTime;
         if (savedLimit) document.getElementById('limit-select').value = savedLimit;
+
         overlay.style.display = 'flex';
+        overlay.offsetHeight;
+        const card = overlay.querySelector('.settings-card');
+        if (card) card.scrollTop = 0;
     } else {
         difficultyTime = parseInt(document.getElementById('diff-select').value);
         sessionLimit = parseInt(document.getElementById('limit-select').value);
@@ -268,13 +273,13 @@ async function startGame(term) {
             questions = (masterData[selectedGrade] && masterData[selectedGrade][term]) ? masterData[selectedGrade][term] : [];
         } else {
             const subjectMap = {
-                "විද්‍යාව": "Science", 
-                "ඉතිහාසය": "History", 
+                "විද්‍යාව": "Science",
+                "ඉතිහාසය": "History",
                 "භූගෝල විද්‍යාව": "Geography",
-                "ගණිතය": "Mathematics", 
-                "I.C.T": "I.C.T.", 
+                "ගණිතය": "Mathematics",
+                "I.C.T": "I.C.T.",
                 "තොරතුරු තාක්ෂණය": "I.C.T.",
-                "සිංහල": "Sinhala", 
+                "සිංහල": "Sinhala",
                 "බුද්ධ ධර්මය": "Buddhism"
             };
             const jsonKey = subjectMap[selectedSubj] || selectedSubj;
@@ -287,7 +292,7 @@ async function startGame(term) {
         }
 
         shuffled = [...questions].sort(() => Math.random() - 0.5).slice(0, sessionLimit);
-        current = 0; 
+        current = 0;
         score = 0;
         isQuizActive = true;
 
@@ -296,9 +301,9 @@ async function startGame(term) {
 
         showScreen('quiz-container');
         loadQuestion();
-    } catch (e) { 
+    } catch (e) {
         console.error(e);
-        alert("Error loading data file! Make sure master_data.json or edu.json exists."); 
+        alert("Error loading data file! Make sure master_data.json or edu.json exists.");
     }
 }
 
