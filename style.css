@@ -136,7 +136,7 @@ body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* ---- START SCREEN ---- */
+/* ---- START SCREEN (royal gold + thick underline) ---- */
 #start-screen {
     position: fixed;
     top: 0;
@@ -154,12 +154,12 @@ body {
 .start-title {
     font-size: 9vw;
     font-weight: 900;
-    color: #f8ff2b;
+    color: #D4AF37;
     text-align: center;
-    text-shadow: none;
-    margin: 0 0 2vw;
-    border-bottom: 0.75vw double #FF1493;
-    padding-bottom: 1.8vw;
+    text-shadow: 0.2vw 0.2vw 0 #000;
+    margin: 0 0 2.5vw;
+    border-bottom: 1.4vw double #FF1493;
+    padding-bottom: 2.2vw;
     display: inline-block;
     letter-spacing: 0.15vw;
 }
@@ -760,7 +760,7 @@ input[type="text"] {
 }
 
 [data-theme="dark"] .start-title {
-    color: #f8ff2b;
+    color: #D4AF37;
 }
 
 [data-theme="dark"] #final-score {
