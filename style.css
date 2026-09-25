@@ -97,17 +97,29 @@ a {
     z-index: 9999;
 }
 
+#start-screen .start-title,
 .start-title {
-    font-size: 10vw;
-    font-weight: 900;
-    color: #ffbd15;
-    text-align: center;
-    text-shadow: 0.3vw 0.3vw 0 #000;
-    margin: 0 0 3vw;
-    border-bottom: 2.2vw double #FF1493;
-    padding-bottom: 2.8vw;
-    display: inline-block;
-    letter-spacing: 0.2vw;
+    font-size: 10vw !important;
+    font-weight: 900 !important;
+    color: #ffbd15 !important;
+    text-align: center !important;
+    text-shadow: 0.3vw 0.3vw 0 #000 !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    border-bottom: 2.2vw double #FF1493 !important;
+    padding-bottom: 2.8vw !important;
+    margin: 0 0 3vw !important;
+    display: inline-block !important;
+    letter-spacing: 0.2vw !important;
+    line-height: 1.15 !important;
+    white-space: nowrap !important;
+}
+
+#start-screen h1.start-title,
+#start-screen h1 {
+    color: #ffbd15 !important;
+    text-decoration: none !important;
+    text-transform: none !important;
 }
 
 #nova-globe {
@@ -186,7 +198,7 @@ a {
     align-items: center;
 }
 
-/* ========== ALL TITLES ========== */
+/* ========== ALL TITLES (not start) ========== */
 .q-header-title,
 h1.q-header-title,
 .main-menu-title,
@@ -198,7 +210,7 @@ h1.q-header-title,
 #menu-screen h1,
 #highscores-screen h1,
 #quiz-screen h1,
-[id$="-screen"] h1,
+[id$="-screen"] h1:not(.start-title),
 [id$="-screen"] .q-header-title {
     font-size: 9.5vw !important;
     font-weight: 900 !important;
@@ -744,8 +756,9 @@ input:focus {
 [data-theme="dark"] #start-screen {
     background: #0a0a0a;
 }
-[data-theme="dark"] .start-title {
-    color: #ffbd15;
+[data-theme="dark"] .start-title,
+[data-theme="dark"] #start-screen h1 {
+    color: #ffbd15 !important;
 }
 [data-theme="dark"] #final-score {
     color: #fff;
