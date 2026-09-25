@@ -766,3 +766,75 @@ input:focus {
 [data-theme="dark"] a {
     color: #90e0ef;
 }
+/* ===== BIGGER BUTTONS + CLASSIC FLAT START TITLE ===== */
+
+/* Start title — no 3D, classical flat letters */
+#start-screen .start-title,
+.start-title {
+    font-size: 10vw !important;
+    font-weight: 900 !important;
+    color: #ffbd15 !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    border-bottom: 2.2vw double #FF1493 !important;
+    padding-bottom: 2.8vw !important;
+    margin: 0 0 3vw !important;
+    display: inline-block !important;
+    letter-spacing: 0.15vw !important;
+    line-height: 1.15 !important;
+    white-space: nowrap !important;
+}
+
+/* ALL menu buttons — much bigger */
+.btn-menu,
+button.btn-menu,
+[id$="-screen"] .btn-menu,
+.grade-grid .btn-menu,
+.subject-list .btn-menu {
+    width: 94% !important;
+    height: 17vw !important;
+    min-height: 68px !important;
+    margin: 3.5vw auto !important;
+    font-size: 5.2vw !important;
+    font-weight: 900 !important;
+    border-width: 1vw !important;
+    border-radius: 12vw !important;
+    box-shadow: 1vw 1vw 0 #004d40 !important;
+}
+
+/* Term screen — even bigger (only 3 buttons) */
+#term-screen .btn-menu {
+    height: 18vw !important;
+    min-height: 72px !important;
+    margin: 4.5vw auto !important;
+    font-size: 5.5vw !important;
+}
+
+/* Mode / subject */
+#mode-screen .btn-menu,
+#subject-screen .btn-menu,
+#dhamma-screen .btn-menu {
+    height: 16vw !important;
+    min-height: 64px !important;
+    margin: 3.5vw auto !important;
+    font-size: 5vw !important;
+}
+
+/* Grade grid buttons */
+.grade-grid .btn-menu {
+    height: 15vw !important;
+    min-height: 60px !important;
+    font-size: 4.8vw !important;
+    margin: 0 !important;
+}
+
+/* Submit / login buttons */
+.btn-submit,
+#login-screen .btn-menu,
+#create-account-screen .btn-menu {
+    height: 16vw !important;
+    min-height: 64px !important;
+    font-size: 5.2vw !important;
+}
