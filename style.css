@@ -85,29 +85,51 @@ a {
     text-decoration: underline;
 }
 
-/* ===== FIX START TITLE - gold, one thick underline only ===== */
-#start-screen .start-title,
-.start-title {
-    font-size: 10vw !important;
-    font-weight: 900 !important;
-    color: #ffbd15 !important;
-    text-align: center !important;
-    text-shadow: 0.3vw 0.3vw 0 #000 !important;
-    text-decoration: none !important;
-    text-transform: none !important;
-    border-bottom: 2.2vw double #FF1493 !important;
-    padding-bottom: 2.8vw !important;
-    margin: 0 0 3vw !important;
-    display: inline-block !important;
-    letter-spacing: 0.2vw !important;
-    line-height: 1.15 !important;
-    white-space: nowrap !important;
+/* ========== START SCREEN ========== */
+#start-screen {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #40fff5;
+    z-index: 9999;
 }
 
-#start-screen h1.start-title,
-#start-screen h1 {
-    color: #ffbd15 !important;
-    text-decoration: none !important;
+.start-title {
+    font-size: 10vw;
+    font-weight: 900;
+    color: #ffbd15;
+    text-align: center;
+    text-shadow: 0.3vw 0.3vw 0 #000;
+    margin: 0 0 3vw;
+    border-bottom: 2.2vw double #FF1493;
+    padding-bottom: 2.8vw;
+    display: inline-block;
+    letter-spacing: 0.2vw;
+}
+
+#nova-globe {
+    width: 58vw;
+    height: 58vw;
+    margin-top: 5vw;
+    border-radius: 50%;
+    background-image: url("globe.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    box-shadow: 0 3vw 6vw rgba(0,0,0,0.25);
+    animation: globeSpin 14s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+@keyframes globeSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* ========== SCREENS ========== */
