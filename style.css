@@ -766,3 +766,100 @@ input[type="text"] {
 [data-theme="dark"] #final-score {
     color: #fff;
 }
+/* ===== FORCE STYLES ON EVERY SCREEN ===== */
+
+/* All titles — every screen */
+.q-header-title,
+h1.q-header-title,
+.main-menu-title,
+#mode-screen h1,
+#dhamma-screen h1,
+#grade-screen h1,
+#subject-screen h1,
+#term-screen h1,
+[id$="-screen"] h1,
+[id$="-screen"] .q-header-title {
+    font-size: 8.5vw !important;
+    font-weight: 900 !important;
+    color: #1c15ff !important;
+    text-align: center !important;
+    margin: 3vw 0 5vw !important;
+}
+
+.main-menu-title {
+    color: #20d400 !important;
+    text-decoration: underline double #FF1493 !important;
+    text-underline-offset: 0.3em !important;
+}
+
+/* All yellow menu buttons — every screen */
+.btn-menu,
+button.btn-menu,
+#mode-screen .btn-menu,
+#dhamma-screen .btn-menu,
+#grade-screen .btn-menu,
+#subject-screen .btn-menu,
+#term-screen .btn-menu,
+.grade-grid .btn-menu,
+.subject-list .btn-menu,
+[id$="-screen"] .btn-menu {
+    width: 90% !important;
+    height: 13vw !important;
+    min-height: 52px !important;
+    margin: 2.5vw auto !important;
+    background: #f8ff2b !important;
+    border: 0.8vw solid #004d40 !important;
+    border-radius: 10vw !important;
+    font-size: 4.5vw !important;
+    font-weight: 900 !important;
+    color: #1c15ff !important;
+    box-shadow: 0.8vw 0.8vw 0 #004d40 !important;
+    text-transform: capitalize !important;
+    display: block !important;
+}
+
+/* Grade grid stays 2 columns */
+.grade-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 3vw !important;
+    width: 92% !important;
+}
+
+.grade-grid .btn-menu {
+    width: 95% !important;
+    margin: 0 !important;
+    height: 12vw !important;
+    font-size: 4.2vw !important;
+}
+
+.grade-grid .btn-menu:last-child:nth-child(odd) {
+    grid-column: 1 / -1 !important;
+}
+
+/* Mode / subject list full width */
+#mode-screen .btn-menu,
+.subject-list .btn-menu,
+#subject-screen .btn-menu,
+#term-screen .btn-menu {
+    width: 90% !important;
+}
+
+/* Back button same on every screen */
+.btn-nav-icon,
+.top-nav .btn-nav-icon {
+    width: 12vw !important;
+    height: 12vw !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
+    background: #f8ff2b !important;
+    border: 0.6vw solid #004d40 !important;
+    border-radius: 50% !important;
+    box-shadow: 0.5vw 0.5vw 0 #004d40 !important;
+}
+
+/* Every .screen centered content */
+.screen,
+[id$="-screen"] {
+    align-items: center !important;
+}
