@@ -13,6 +13,11 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
 let deferredPrompt = null;
 let installPopupReady = false;
 
+// Age roller state
+let ageList = [];
+let userChangedGrade = false;
+const AGE_ITEM_H = 56;
+
 window.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const screenToLoad = urlParams.get('screen');
@@ -22,6 +27,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const savedTheme = localStorage.getItem("mq_theme") || "classic";
     applyTheme(savedTheme);
+
+    initProfileForm();
 
     setTimeout(() => {
         const start = document.getElementById('start-screen');
@@ -41,10 +48,10 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }, 3000);
 
-    const savedName = localStorage.getItem('mq_name');
+    const savedName = localStorage.getItem('mq_username') || localStorage.getItem('mq_name');
     if (savedName) updateProfileCircle(savedName);
 
-    if (urlParams.get('from') === 'pastpapers') {
+    if (urlParams.get('from') === 'pastpapers' || urlParams.get('from') === 'privacy') {
         const highestTimeoutId = setTimeout(";");
         for (let i = 0; i < highestTimeoutId; i++) clearTimeout(i);
 
@@ -56,6 +63,17 @@ window.addEventListener('DOMContentLoaded', () => {
         showScreen('menu-screen');
         history.replaceState(null, '', 'index.html');
     }
+
+    // Photo button (upload later – opens file picker only for now)
+    const photoBtn = document.getElementById('photoLinkBtn');
+    const avatarFile = document.getElementById('avatarFile');
+    if (photoBtn && avatarFile) {
+        photoBtn.addEventListener('click', () => avatarFile.click());
+        avatarFile.addEventListener('change', () => {
+            alert('Profile photo upload will be enabled in a later update.');
+            avatarFile.value = '';
+        });
+    }
 });
 
 window.addEventListener('beforeunload', (e) => {
@@ -65,6 +83,105 @@ window.addEventListener('beforeunload', (e) => {
         return e.returnValue;
     }
 });
+
+/* ========== PROFILE FORM (age roller + grade + country) ========== */
+
+function gradeFromAge(age, countryCode) {
+    age = parseInt(age, 10);
+    if (countryCode === 'IN') {
+        if (age <= 5) return 1;
+        if (age >= 17) return 12;
+        return Math.min(12, age - 5);
+    }
+    if (countryCode === 'SE') {
+        if (age <= 6) return 1;
+        if (age <= 15) return age - 6;
+        if (age <= 18) return Math.min(12, 9 + (age - 15));
+        return 13;
+    }
+    // Sri Lanka default
+    if (age <= 5) return 1;
+    if (age >= 18) return 13;
+    return Math.min(13, age - 5);
+}
+
+function initProfileForm() {
+    const roller = document.getElementById('ageRoller');
+    const gradeSelect = document.getElementById('gradeSelect');
+    const countrySelect = document.getElementById('countrySelect');
+    const flagBox = document.getElementById('flagBox');
+    const ageValue = document.getElementById('ageValue');
+
+    if (!roller || !gradeSelect) return;
+
+    ageList = [];
+    for (let i = 5; i <= 20; i++) ageList.push(i);
+
+    roller.innerHTML = '';
+    ageList.forEach((a) => {
+        const div = document.createElement('div');
+        div.className = 'roller-item';
+        div.textContent = a;
+        div.style.cssText = 'height:56px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#1c15ff;scroll-snap-align:center;flex-shrink:0;';
+        roller.appendChild(div);
+    });
+
+    gradeSelect.innerHTML = '';
+    for (let g = 1; g <= 13; g++) {
+        const opt = document.createElement('option');
+        opt.value = String(g);
+        opt.textContent = 'Grade ' + g;
+        gradeSelect.appendChild(opt);
+    }
+
+    function currentAge() {
+        const index = Math.round(roller.scrollTop / AGE_ITEM_H);
+        const clamped = Math.max(0, Math.min(ageList.length - 1, index));
+        return ageList[clamped];
+    }
+
+    function applyAutoGrade() {
+        if (userChangedGrade) return;
+        const code = countrySelect ? countrySelect.value : 'LK';
+        const g = gradeFromAge(currentAge(), code);
+        gradeSelect.value = String(g);
+        if (ageValue) ageValue.textContent = currentAge();
+    }
+
+    function snapAge() {
+        const index = Math.round(roller.scrollTop / AGE_ITEM_H);
+        const clamped = Math.max(0, Math.min(ageList.length - 1, index));
+        roller.scrollTo({ top: clamped * AGE_ITEM_H, behavior: 'smooth' });
+        applyAutoGrade();
+    }
+
+    let scrollTimeout;
+    roller.addEventListener('scroll', () => {
+        userChangedGrade = false;
+        if (ageValue) ageValue.textContent = currentAge();
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(snapAge, 90);
+    });
+
+    gradeSelect.addEventListener('change', () => {
+        userChangedGrade = true;
+    });
+
+    const flags = { LK: '🇱🇰', IN: '🇮🇳', SE: '🇸🇪' };
+    if (countrySelect && flagBox) {
+        countrySelect.addEventListener('change', () => {
+            flagBox.textContent = flags[countrySelect.value] || '🏳️';
+            userChangedGrade = false;
+            applyAutoGrade();
+        });
+    }
+
+    const start = ageList.indexOf(14);
+    roller.scrollTop = (start >= 0 ? start : 0) * AGE_ITEM_H;
+    applyAutoGrade();
+}
+
+/* ========== SCREENS ========== */
 
 function showScreen(screenId, isBack = false) {
     const screens = document.querySelectorAll('.screen');
@@ -87,6 +204,8 @@ function showScreen(screenId, isBack = false) {
     }
     if (!isBack) history.pushState({ screen: screenId }, "", "");
 }
+
+/* ========== AUTH + PROFILE ========== */
 
 async function handleSignup() {
     const email = document.getElementById('signupEmail').value.trim();
@@ -121,52 +240,165 @@ async function handleLogin() {
     const password = document.getElementById('loginPassword').value;
     const feedback = document.getElementById('login-feedback');
 
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    const { data: loginData, error } = await supabaseClient.auth.signInWithPassword({ email, password });
     if (error) {
         feedback.innerText = error.message;
         feedback.style.color = "red";
         return;
     }
 
-    const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('name')
-        .eq('email', email)
-        .single();
+    const user = loginData.user;
+    let profile = null;
 
-    if (profile && profile.name) {
-        localStorage.setItem('mq_name', profile.name);
-        updateProfileCircle(profile.name);
+    if (user) {
+        const { data } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .maybeSingle();
+        profile = data;
+
+        // fallback for old rows that only have email
+        if (!profile) {
+            const { data: byEmail } = await supabaseClient
+                .from('profiles')
+                .select('*')
+                .eq('email', email)
+                .maybeSingle();
+            profile = byEmail;
+        }
+    }
+
+    const display = (profile && (profile.username || profile.name)) || null;
+
+    if (display) {
+        localStorage.setItem('mq_name', profile.name || display);
+        if (profile.username) localStorage.setItem('mq_username', profile.username);
+        updateProfileCircle(profile.username || profile.name);
         showScreen('menu-screen');
         showInstallPopupIfNeeded();
     } else {
         showScreen('name-screen');
+        initProfileForm();
     }
 }
 
 async function saveUserName() {
-    const name = document.getElementById('userNameField').value.trim();
-    if (!name) { alert("Please enter your name"); return; }
+    const name = (document.getElementById('userNameField') || {}).value;
+    const username = (document.getElementById('usernameField') || {}).value;
+    const school = (document.getElementById('schoolField') || {}).value;
+    const gradeSelect = document.getElementById('gradeSelect');
+    const countrySelect = document.getElementById('countrySelect');
+    const ageValue = document.getElementById('ageValue');
+    const feedback = document.getElementById('profile-feedback');
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) { alert("You are not logged in"); return; }
+    const nameTrim = (name || '').trim();
+    const usernameTrim = (username || '').trim();
 
-    const { error } = await supabaseClient.from('profiles').upsert({ email: user.email, name });
-    if (error) {
-        alert("Error saving name: " + error.message);
+    if (!nameTrim) {
+        if (feedback) { feedback.innerText = "Please enter your name"; feedback.style.color = "red"; }
+        else alert("Please enter your name");
+        return;
+    }
+    if (!usernameTrim) {
+        if (feedback) { feedback.innerText = "Please enter a username"; feedback.style.color = "red"; }
+        else alert("Please enter a username");
         return;
     }
 
-    localStorage.setItem('mq_name', name);
-    updateProfileCircle(name);
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) {
+        alert("You are not logged in");
+        return;
+    }
+
+    const age = ageValue ? parseInt(ageValue.textContent, 10) : 14;
+    const grade = gradeSelect ? parseInt(gradeSelect.value, 10) : null;
+    const country = countrySelect ? countrySelect.value : 'LK';
+
+    const row = {
+        id: user.id,
+        email: user.email,
+        name: nameTrim,
+        username: usernameTrim,
+        age: age,
+        grade: grade,
+        country: country,
+        school: (school || '').trim() || null,
+        updated_at: new Date().toISOString()
+    };
+
+    const { error } = await supabaseClient.from('profiles').upsert(row, { onConflict: 'id' });
+    if (error) {
+        if (feedback) { feedback.innerText = "Error: " + error.message; feedback.style.color = "red"; }
+        else alert("Error saving profile: " + error.message);
+        return;
+    }
+
+    localStorage.setItem('mq_name', nameTrim);
+    localStorage.setItem('mq_username', usernameTrim);
+    updateProfileCircle(usernameTrim);
     showScreen('menu-screen');
     showInstallPopupIfNeeded();
 }
 
-function updateProfileCircle(name) {
+function updateProfileCircle(text) {
     const circle = document.getElementById('profile-circle');
-    if (circle && name) circle.innerText = name.charAt(0).toUpperCase();
+    if (circle && text) circle.innerText = text.charAt(0).toUpperCase();
 }
+
+async function openAccountScreen() {
+    showScreen('account-screen');
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) {
+        alert('Please login first');
+        showScreen('login-screen');
+        return;
+    }
+
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+
+    const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val != null && val !== '' ? val : '—';
+    };
+
+    set('acc-email', user.email);
+    if (profile) {
+        set('acc-username', profile.username);
+        set('acc-name', profile.name);
+        set('acc-age', profile.age);
+        set('acc-grade', profile.grade != null ? 'Grade ' + profile.grade : null);
+        set('acc-country', profile.country);
+        set('acc-school', profile.school);
+        const letter = (profile.username || profile.name || '?').charAt(0).toUpperCase();
+        const avatar = document.getElementById('account-avatar');
+        if (avatar) avatar.textContent = letter;
+        updateProfileCircle(profile.username || profile.name);
+    } else {
+        set('acc-username', localStorage.getItem('mq_username'));
+        set('acc-name', localStorage.getItem('mq_name'));
+    }
+}
+
+async function promptChangePassword() {
+    const next = prompt('Enter your new password (min 6 characters):');
+    if (!next) return;
+    if (next.length < 6) {
+        alert('Password must be at least 6 characters');
+        return;
+    }
+    const { error } = await supabaseClient.auth.updateUser({ password: next });
+    if (error) alert('Error: ' + error.message);
+    else alert('Password updated successfully');
+}
+
+/* ========== HIGH SCORES ========== */
 
 async function showHighScores() {
     const list = document.getElementById('highscores-list');
@@ -203,7 +435,7 @@ async function showHighScores() {
 
 async function saveScoreToSupabase(finalPercentage) {
     const { error } = await supabaseClient.from('scores').insert({
-        name: localStorage.getItem('mq_name') || "Unknown",
+        name: localStorage.getItem('mq_name') || localStorage.getItem('mq_username') || "Unknown",
         grade: selectedGrade || "Unknown",
         subject: selectedSubj || "Unknown",
         term: currentTerm || "Unknown",
@@ -214,6 +446,8 @@ async function saveScoreToSupabase(finalPercentage) {
     });
     if (error) console.error("Error saving score:", error.message);
 }
+
+/* ========== QUIZ FLOW (unchanged) ========== */
 
 function goHome() { showScreen('menu-screen'); }
 function showGrades() { showScreen('grade-screen'); }
@@ -448,6 +682,8 @@ function generateJSON() {
     document.getElementById('json-output').value = JSON.stringify({ q, options, correct: ans }) + ",";
 }
 
+/* ========== PWA + THEME ========== */
+
 window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -523,3 +759,5 @@ window.generateJSON = generateJSON;
 window.goHome = goHome;
 window.showInstallPopupIfNeeded = showInstallPopupIfNeeded;
 window.applyTheme = applyTheme;
+window.openAccountScreen = openAccountScreen;
+window.promptChangePassword = promptChangePassword;
