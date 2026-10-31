@@ -55,18 +55,41 @@
         <p id="login-feedback"></p>
     </div>
 
-    <!-- 4. NAME SCREEN -->
+    <!-- 4. FILL PROFILE INFO -->
     <div id="name-screen" class="screen">
-        <h1 class="q-header-title no-shadow-title">What's your name?</h1>
+        <h1 class="q-header-title no-shadow-title">Fill your information</h1>
         <div style="width: 85%; display: flex; flex-direction: column; align-items: center;">
-            <input type="text" id="userNameField" placeholder="Enter your name">
-            <button class="btn-menu" onclick="saveUserName()" style="width: 100%;">continue</button>
+            <input type="text" id="userNameField" placeholder="Name" maxlength="40">
+            <input type="text" id="usernameField" placeholder="Username" maxlength="20">
+
+            <label class="hj" style="align-self: flex-start; margin-top: 10px;">Age — roll</label>
+            <div class="roller-wrap" style="width:100%; height:56px; border:3px solid #004d40; border-radius:16px; background:#fff; overflow:hidden;">
+                <div class="roller" id="ageRoller" style="height:56px; overflow-y:scroll; scroll-snap-type:y mandatory;"></div>
+            </div>
+            <p style="font-size:13px; font-weight:700; margin:6px 0 10px;">Age: <span id="ageValue">14</span></p>
+
+            <label class="hj" style="align-self: flex-start;">Grade (auto — you can change)</label>
+            <select id="gradeSelect" class="custom-select" style="width:100%; margin-bottom:10px;"></select>
+
+            <label class="hj" style="align-self: flex-start;">Country</label>
+            <div style="width:100%; display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <div id="flagBox" style="width:48px; height:36px; border:3px solid #004d40; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px; background:#fff;">🇱🇰</div>
+                <select id="countrySelect" class="custom-select" style="flex:1;">
+                    <option value="LK" selected>Sri Lanka</option>
+                    <option value="IN">India</option>
+                    <option value="SE">Sweden</option>
+                </select>
+            </div>
+
+            <input type="text" id="schoolField" placeholder="School (optional)">
+            <button class="btn-menu" type="button" onclick="saveUserName()" style="width:100%;">continue</button>
+            <p id="profile-feedback" style="margin-top:10px; font-weight:700;"></p>
         </div>
     </div>
 
     <!-- 5. MAIN MENU -->
     <div id="menu-screen" class="screen">
-        <div id="profile-circle">?</div>
+        <div id="profile-circle" onclick="openAccountScreen()" style="cursor:pointer;">?</div>
         <h1 class="q-header-title main-menu-title">Main Menu</h1>
         <button class="btn-menu" onclick="showScreen('mode-screen')">play</button>
         <button class="btn-menu" onclick="toggleSettings(true)">settings</button>
@@ -75,7 +98,36 @@
         <button class="btn-menu" onclick="window.location.href='xxe.html'">past papers</button>
         <button class="btn-menu" onclick="alert('Master\'s Quizzes v1.0\nCreated for Students.\nPower of BCG!')">info</button>
         <button class="btn-menu" onclick="window.location.href='super.html'">about us</button>
-<button class="btn-menu" type="button" onclick="window.location.href='privacy.html'">Privacy Policy</button>
+        <button class="btn-menu" type="button" onclick="window.location.href='privacy.html'">Privacy Policy</button>
+    </div>
+
+    <!-- ACCOUNT SCREEN -->
+    <div id="account-screen" class="screen">
+        <div class="top-nav">
+            <button class="btn-nav-icon" type="button" onclick="showScreen('menu-screen')">⬅️</button>
+        </div>
+        <h1 class="q-header-title no-shadow-title">Account</h1>
+
+        <div style="text-align:center; margin-bottom:12px;">
+            <div id="account-avatar" style="width:100px; height:100px; margin:0 auto; border-radius:50%; border:5px solid #004d40; background:#f8ff2b; color:#1c15ff; font-size:42px; font-weight:900; display:flex; align-items:center; justify-content:center; box-shadow:4px 4px 0 #004d40;">?</div>
+            <button type="button" id="photoLinkBtn" style="margin-top:10px; background:none; border:none; color:#1c15ff; font-weight:800; text-decoration:underline; font-size:15px; cursor:pointer;">
+                Upload profile photo
+            </button>
+            <input type="file" id="avatarFile" accept="image/*" style="display:none;">
+        </div>
+
+        <div style="width:90%; max-width:400px; background:rgba(255,255,255,0.45); border:4px solid #004d40; border-radius:20px; padding:14px; box-shadow:3px 3px 0 #004d40;">
+            <p style="font-weight:800; margin:8px 0;"><span style="color:#333;">Username:</span> <span id="acc-username">—</span></p>
+            <p style="font-weight:800; margin:8px 0;"><span style="color:#333;">Name:</span> <span id="acc-name">—</span></p>
+            <p style="font-weight:800; margin:8px 0;"><span style="color:#333;">Email:</span> <span id="acc-email">—</span></p>
+            <p style="font-weight:800; margin:8px 0;"><span style="color:#333;">Age:</span> <span id="acc-age">—</span></p>
+            <p style="font-weight:800; margin:8px 0;"><span style="color:#333;">Grade:</span> <span id="acc-grade">—</span></p>
+            <p style="font-weight:800; margin:8px 0;"><span style="color:#333;">Country:</span> <span id="acc-country">—</span></p>
+            <p style="font-weight:800; margin:8px 0;"><span style="color:#333;">School:</span> <span id="acc-school">—</span></p>
+        </div>
+
+        <button class="btn-menu" type="button" onclick="promptChangePassword()" style="width:85%; margin-top:14px;">Change password</button>
+        <button class="btn-menu" type="button" onclick="showScreen('name-screen')" style="width:85%;">Edit profile info</button>
     </div>
 
     <!-- SETTINGS -->
