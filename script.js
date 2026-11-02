@@ -64,7 +64,6 @@ window.addEventListener('DOMContentLoaded', () => {
         history.replaceState(null, '', 'index.html');
     }
 
-    // Photo button (upload later – opens file picker only for now)
     const photoBtn = document.getElementById('photoLinkBtn');
     const avatarFile = document.getElementById('avatarFile');
     if (photoBtn && avatarFile) {
@@ -84,7 +83,7 @@ window.addEventListener('beforeunload', (e) => {
     }
 });
 
-/* ========== PROFILE FORM (age roller + grade + country) ========== */
+/* ========== PROFILE FORM ========== */
 
 function gradeFromAge(age, countryCode) {
     age = parseInt(age, 10);
@@ -99,7 +98,6 @@ function gradeFromAge(age, countryCode) {
         if (age <= 18) return Math.min(12, 9 + (age - 15));
         return 13;
     }
-    // Sri Lanka default
     if (age <= 5) return 1;
     if (age >= 18) return 13;
     return Math.min(13, age - 5);
@@ -258,7 +256,6 @@ async function handleLogin() {
             .maybeSingle();
         profile = data;
 
-        // fallback for old rows that only have email
         if (!profile) {
             const { data: byEmail } = await supabaseClient
                 .from('profiles')
@@ -328,10 +325,35 @@ async function saveUserName() {
         updated_at: new Date().toISOString()
     };
 
-    const { error } = await supabaseClient.from('profiles').upsert(row, { onConflict: 'id' });
+    // FIXED: no upsert / ON CONFLICT — insert or update manually
+    const { data: existing, error: findError } = await supabaseClient
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .maybeSingle();
+
+    let error = findError;
+
+    if (!error) {
+        if (existing) {
+            ({ error } = await supabaseClient
+                .from('profiles')
+                .update(row)
+                .eq('id', user.id));
+        } else {
+            ({ error } = await supabaseClient
+                .from('profiles')
+                .insert(row));
+        }
+    }
+
     if (error) {
-        if (feedback) { feedback.innerText = "Error: " + error.message; feedback.style.color = "red"; }
-        else alert("Error saving profile: " + error.message);
+        if (feedback) {
+            feedback.innerText = "Error: " + error.message;
+            feedback.style.color = "red";
+        } else {
+            alert("Error saving profile: " + error.message);
+        }
         return;
     }
 
@@ -447,7 +469,7 @@ async function saveScoreToSupabase(finalPercentage) {
     if (error) console.error("Error saving score:", error.message);
 }
 
-/* ========== QUIZ FLOW (unchanged) ========== */
+/* ========== QUIZ FLOW ========== */
 
 function goHome() { showScreen('menu-screen'); }
 function showGrades() { showScreen('grade-screen'); }
